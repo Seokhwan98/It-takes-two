@@ -33,24 +33,24 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        // var inputs = new MyNetworkInput();
-        //
-        // if (Input.GetKey(KeyCode.W)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FORWARD, true);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.S)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_BACKWARD, true);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.A)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_LEFT, true);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.D)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHT, true);
-        // }
-        //
+        var inputs = new MyNetworkInput();
+        
+        if (Input.GetKey(KeyCode.W)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_FORWARD, true);
+        }
+        
+        if (Input.GetKey(KeyCode.S)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_BACKWARD, true);
+        }
+        
+        if (Input.GetKey(KeyCode.A)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_LEFT, true);
+        }
+        
+        if (Input.GetKey(KeyCode.D)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHT, true);
+        }
+        
         // if (Input.GetKey(KeyCode.Space)) {
         //     inputs.Buttons.Set(MyNetworkInput.BUTTON_JUMP, true);
         // }
@@ -62,8 +62,8 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
         // if (Input.GetMouseButton(0)) {
         //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
         // }
-        //
-        // input.Set(inputs);
+        
+        input.Set(inputs);
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
     public void OnConnectedToServer(NetworkRunner runner) {}

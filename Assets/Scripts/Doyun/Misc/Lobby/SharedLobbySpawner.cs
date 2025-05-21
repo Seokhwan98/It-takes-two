@@ -8,6 +8,5 @@ public class SharedLobbySpawner : NetworkBehaviour {
     public override void Spawned()
     {
         Runner.Spawn(_playerPrefab, Vector3.up * 3, inputAuthority: Runner.LocalPlayer);
-        Debug.Log("1");
     }
 }
