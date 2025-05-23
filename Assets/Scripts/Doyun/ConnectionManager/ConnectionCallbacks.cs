@@ -51,14 +51,14 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHT, true);
         }
         
-        // if (Input.GetKey(KeyCode.Space)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_JUMP, true);
-        // }
-        //
-        // if (Input.GetKey(KeyCode.E)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_ACTION1, true);
-        // }
-        //
+        if (Input.GetKey(KeyCode.E)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_INTERACT, true);
+        }
+        
+        if (Input.GetKey(KeyCode.Q)) {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_END_INTERACT, true);
+        }
+        
         // if (Input.GetMouseButton(0)) {
         //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
         // }
