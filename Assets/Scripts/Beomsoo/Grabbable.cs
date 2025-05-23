@@ -26,11 +26,11 @@ public class Grabbable : NetworkBehaviour, IInteraction
         if (HasStateAuthority)
         {
             this.currentInteractor = interactor;
-            UpdateGrabPosition();
             if (_rb != null)
             {
                 _rb.isKinematic = true;
             }
+            UpdateGrabPosition();
         }
     }
 

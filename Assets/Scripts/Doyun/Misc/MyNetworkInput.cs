@@ -6,9 +6,8 @@ public struct MyNetworkInput : INetworkInput
     public const int BUTTON_BACKWARD = 1;
     public const int BUTTON_LEFT = 2;
     public const int BUTTON_RIGHT = 3;
-    public const int BUTTON_JUMP = 4;
-    public const int BUTTON_ACTION1 = 5;
-    public const int BUTTON_FIRE = 6;
+    public const int BUTTON_INTERACT = 4;
+    public const int BUTTON_END_INTERACT = 5;
     
     public NetworkButtons Buttons;
 
