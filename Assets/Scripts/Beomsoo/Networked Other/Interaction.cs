@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IInteraction
 {
-    public void Interact(Player interactor) {  }
-    public void FinishInteract(Player interactor) {  }
+    public void Interact(Interactor interactor) {  }
+    public void FinishInteract(Interactor interactor) {  }
 }

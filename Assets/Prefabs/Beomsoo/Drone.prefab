@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6917935424698027076}
   - component: {fileID: 8630800499489143597}
   m_Layer: 0
-  m_Name: DemoObject
+  m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
