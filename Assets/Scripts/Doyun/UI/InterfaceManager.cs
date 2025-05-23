@@ -4,6 +4,8 @@ using UnityEngine;
 public class InterfaceManager : MonoBehaviour
 {
     public static InterfaceManager Instance { get; private set; }
+    
+    public GateUI GateUI;
 
     private void Awake()
     {

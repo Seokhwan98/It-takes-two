@@ -1,18 +1,24 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
+using static ConnectionData.ConnectionTarget;
 
 public class ConnectionManager : MonoBehaviour
 {
     public static ConnectionManager Instance { get; private set; }
     
+    public bool IsGameHost() => _gameConnection.IsRunning && _gameConnection.Runner.IsServer;
     public ConnectionContainer GetLobbyConnection() => _lobbyConnection;
+    public ConnectionContainer GetGameConnection() => _gameConnection;
     
     [SerializeField] private App _app;
+    [SerializeField] private ConnectionData _defaultLobby;
     
     private ConnectionContainer _lobbyConnection = new ConnectionContainer();
+    private ConnectionContainer _gameConnection = new ConnectionContainer();
 
     private void Awake()
     {
@@ -27,15 +33,38 @@ public class ConnectionManager : MonoBehaviour
         }
     }
 
+    public void LoadGameLevel()
+    {
+        StartCoroutine(LoadGameProcess());
+    }
+
+    private IEnumerator LoadGameProcess()
+    {
+        if (!_gameConnection.IsRunning) yield break;
+        if (!_gameConnection.Runner.IsServer) yield break;
+
+        yield return new WaitUntil(() => _gameConnection.App);
+        _gameConnection.App.RPC_ShutdownRunner(Lobby);
+        
+        if (_gameConnection.Runner.IsServer)
+        {
+            _gameConnection.Runner.SessionInfo.IsOpen = false;
+            _gameConnection.Runner.LoadScene(SceneRef.FromIndex(_gameConnection.ActiveConnection.SceneIndex));
+        }
+    }
+
     public async Task ConnectToRunner(ConnectionData connectionData, Action<NetworkRunner> onInitialized = default, Action<ShutdownReason> onFailed = default)
     {
-        var connection = _lobbyConnection;
+        var connection = connectionData.Target == Lobby ? _lobbyConnection : _gameConnection;
         connection.ActiveConnection = connectionData;
-        
-        var gameMode = GameMode.Shared;
+
+        var gameMode = connectionData.Target == Lobby ? GameMode.Shared : GameMode.AutoHostOrClient;
         
         var sceneInfo = new NetworkSceneInfo();
-        sceneInfo.AddSceneRef(SceneRef.FromIndex(connectionData.SceneIndex));
+        if (connectionData.Target == Lobby)
+        {
+            sceneInfo.AddSceneRef(SceneRef.FromIndex(connectionData.SceneIndex));
+        }
         
         var sessionProperties = new Dictionary<string, SessionProperty>()
             { { "ID", (int)connectionData.ID } };
@@ -52,11 +81,14 @@ public class ConnectionManager : MonoBehaviour
             connection.Callback = new ConnectionCallbacks();
         }
         
-        if (connection.IsRunning)
+        if (connectionData.Target == Game)
+            connection.Callback.ActionOnShutdown += OnGameShutdown;
+        
+        if (connectionData.Target == Lobby && _gameConnection.IsRunning)
         {
-            Debug.Log("Shutdown");
             await connection.Runner.Shutdown();
         }
+        
         connection.Runner.AddCallbacks(connection.Callback);
         
         onInitialized += runner =>
@@ -74,10 +106,19 @@ public class ConnectionManager : MonoBehaviour
             EnableClientSessionCreation = true,
             Scene = sceneInfo, PlayerCount = connectionData.MaxClients,
             OnGameStarted = onInitialized,
-            SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
+
         });
 
         if (!startResult.Ok)
             onFailed?.Invoke(startResult.ShutdownReason);
+    }
+    
+    private void OnGameShutdown(NetworkRunner runner, ShutdownReason reason)
+    {
+        if (reason == ShutdownReason.DisconnectedByPluginLogic)
+        {
+            _ = ConnectToRunner(_defaultLobby);
+        }
     }
 }

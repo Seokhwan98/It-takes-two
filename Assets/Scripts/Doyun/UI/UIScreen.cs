@@ -2,7 +2,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class UIScreen : MonoBehaviour {
-    
     public static UIScreen activeScreen;
     
     [HideInInspector] public UIScreen previousScreen = null;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1367043984268377578}
   - component: {fileID: 2904461595144121375}
   - component: {fileID: 8469500152695076564}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 2698024148
+  SortKey: 1683394086
   ObjectInterest: 0
   Flags: 262145
   NestedObjects: []
@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a5c350a38048a4a9ced091d33305b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeLookPrefab: {fileID: 3442855572116039646, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
+  cameraPivot: {fileID: 4912874453696671022}
 --- !u!1 &6390005808455898977
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +149,7 @@ GameObject:
   - component: {fileID: 6663805192870114942}
   - component: {fileID: 3024839178969563912}
   - component: {fileID: 6390468903786644945}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,8 +236,7 @@ GameObject:
   - component: {fileID: 4912874453696671022}
   - component: {fileID: 8181879433478331248}
   - component: {fileID: 9213492966525903553}
-  - component: {fileID: 2093451834956411088}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,24 +311,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2093451834956411088
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8004039869221697288}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
