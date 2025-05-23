@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7716978852392704833}
   - component: {fileID: 3750784069909066592}
   - component: {fileID: 2202262506328372757}
+  - component: {fileID: 7518410305760910061}
   - component: {fileID: 4290803494118984406}
-  - component: {fileID: 6385338025141182830}
   m_Layer: 0
   m_Name: Grabbable Ball
   m_TagString: Untagged
@@ -75,8 +75,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 7518410305760910061}
   - {fileID: 4290803494118984406}
-  - {fileID: 6385338025141182830}
   - {fileID: 4497990824317700492}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &2202262506328372757
@@ -106,21 +106,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4290803494118984406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4570893564054277331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af42868da7f046b180ed83116280bcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localOffset: {x: 0, y: 4, z: 4}
-  _model: {fileID: 5443978788517056204}
---- !u!114 &6385338025141182830
+--- !u!114 &7518410305760910061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,6 +129,20 @@ MonoBehaviour:
     Position: 0.01
     Rotation: 0.01
     Scale: 0.01
+--- !u!114 &4290803494118984406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570893564054277331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5af42868da7f046b180ed83116280bcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localOffset: {x: 0, y: 3, z: 4}
+  _model: {fileID: 5443978788517056204}
 --- !u!1001 &5478167839559870759
 PrefabInstance:
   m_ObjectHideFlags: 0
