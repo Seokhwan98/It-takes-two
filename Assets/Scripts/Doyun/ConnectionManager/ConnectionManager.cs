@@ -48,7 +48,6 @@ public class ConnectionManager : MonoBehaviour
         
         if (_gameConnection.Runner.IsServer)
         {
-            _gameConnection.Runner.SessionInfo.IsOpen = false;
             _gameConnection.Runner.LoadScene(SceneRef.FromIndex(_gameConnection.ActiveConnection.SceneIndex));
         }
     }
