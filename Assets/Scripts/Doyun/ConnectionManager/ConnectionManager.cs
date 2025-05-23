@@ -84,9 +84,14 @@ public class ConnectionManager : MonoBehaviour
         if (connectionData.Target == Game)
             connection.Callback.ActionOnShutdown += OnGameShutdown;
         
-        if (connectionData.Target == Lobby && _gameConnection.IsRunning)
+        if (connection.IsRunning)
         {
             await connection.Runner.Shutdown();
+        }
+        
+        if (connectionData.Target == Lobby && _gameConnection.IsRunning)
+        {
+            await _gameConnection.Runner.Shutdown();
         }
         
         connection.Runner.AddCallbacks(connection.Callback);
