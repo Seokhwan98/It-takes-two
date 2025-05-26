@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
+using Fusion.Addons.Physics;
+using Unity.VisualScripting;
 using UnityEngine;
 using static ConnectionData.ConnectionTarget;
 
@@ -73,6 +75,7 @@ public class ConnectionManager : MonoBehaviour
             var child = new GameObject(connection.ActiveConnection.ID.ToString());
             child.transform.SetParent(transform);
             connection.Runner = child.AddComponent<NetworkRunner>();
+            connection.Runner.AddComponent<RunnerSimulatePhysics3D>();
         }
 
         if (connection.Callback == default)

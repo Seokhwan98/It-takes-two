@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1268544564231422252}
   - component: {fileID: 7716978852392704833}
-  - component: {fileID: 5245860568957181071}
   - component: {fileID: 2202262506328372757}
-  - component: {fileID: 4290803494118984406}
   - component: {fileID: -7279075365848071900}
+  - component: {fileID: 7108464932033150724}
   m_Layer: 0
   m_Name: Normal Ball
   m_TagString: Untagged
@@ -56,28 +55,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.00001
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5245860568957181071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4570893564054277331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2029862099
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 4290803494118984406}
-  - {fileID: -7279075365848071900}
-  ForceRemoteRenderTimeframe: 0
 --- !u!54 &2202262506328372757
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -105,20 +84,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4290803494118984406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4570893564054277331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af42868da7f046b180ed83116280bcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localOffset: {x: 0, y: 4, z: 4}
-  _model: {fileID: 5443978788517056204}
 --- !u!114 &-7279075365848071900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +107,25 @@ MonoBehaviour:
     Position: 0.01
     Rotation: 0.01
     Scale: 0.01
+--- !u!114 &7108464932033150724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4570893564054277331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2787189376
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -7279075365848071900}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1001 &5478167839559870759
 PrefabInstance:
   m_ObjectHideFlags: 0
