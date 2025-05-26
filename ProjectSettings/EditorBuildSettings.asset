@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Seokhwan/GameScene1.unity
+    guid: 3860e1ea4e069b24a918019d9b131fbc
+  - enabled: 1
     path: Assets/Scenes/Doyun/StartScene.unity
     guid: e9b0cf909d311334f8d19cebfceefd25
   - enabled: 1
