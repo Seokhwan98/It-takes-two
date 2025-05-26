@@ -20,13 +20,34 @@ public class PlayerMovement : NetworkBehaviour {
     public override void Spawned() {
         _cc = GetComponent<KCC>();
 
-        if (Object.HasInputAuthority) {
-            _camInstance = Instantiate(freeLookPrefab);
-            var freeLook = _camInstance.GetComponent<CinemachineCamera>();
+        if (Runner.GameMode is GameMode.Shared)
+        {
+            if (HasStateAuthority) 
+            {
+                _camInstance = Instantiate(freeLookPrefab);
+                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
             
-            freeLook.Follow = cameraPivot;
-            freeLook.LookAt = cameraPivot;
+                freeLook.Follow = cameraPivot;
+                freeLook.LookAt = cameraPivot;
+            }
         }
+        
+        else if (Runner.GameMode is GameMode.AutoHostOrClient or GameMode.Host)
+        {
+            if (HasInputAuthority)
+            {
+                _camInstance = Instantiate(freeLookPrefab);
+                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
+            
+                freeLook.Follow = cameraPivot;
+                freeLook.LookAt = cameraPivot;
+
+                freeLook.OutputChannel = (OutputChannels)(1 << Object.InputAuthority.PlayerId);
+                Debug.Log($"{Object.InputAuthority.PlayerId} {freeLook.OutputChannel}");
+            }
+        }
+
+        
     }
 
     public override void FixedUpdateNetwork()
