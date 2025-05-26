@@ -17,7 +17,7 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
     {
         Debug.Log($"{player} Joined");
         Debug.Log($"total players: {runner.ActivePlayers.Count()}");
-
+        
         ActionOnPlayerJoined?.Invoke(runner, player);
     }
 

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ConnectionData.ConnectionTarget;
 
 public class ConnectionManager : MonoBehaviour
@@ -32,7 +34,7 @@ public class ConnectionManager : MonoBehaviour
             Destroy(this);
         }
     }
-
+    
     public void LoadGameLevel()
     {
         StartCoroutine(LoadGameProcess());
@@ -79,10 +81,13 @@ public class ConnectionManager : MonoBehaviour
         {
             connection.Callback = new ConnectionCallbacks();
         }
-        
+
         if (connectionData.Target == Game)
+        {
             connection.Callback.ActionOnShutdown += OnGameShutdown;
-        
+            connection.Callback.ActionOnPlayerJoined += OnGamePlayerJoined;
+        }
+
         if (connection.IsRunning)
         {
             await connection.Runner.Shutdown();
@@ -100,6 +105,15 @@ public class ConnectionManager : MonoBehaviour
             if (runner.IsServer || runner.IsSharedModeMasterClient)
             {
                 connection.App = runner.Spawn(_app);
+            }
+            
+            if (runner.GameMode == GameMode.Client)
+            {
+                var lobby = GetLobbyConnection().Runner;
+                if (lobby != null && lobby.IsRunning)
+                {
+                    _ = lobby.Shutdown();
+                }
             }
         };
         
@@ -123,6 +137,32 @@ public class ConnectionManager : MonoBehaviour
         if (reason == ShutdownReason.DisconnectedByPluginLogic)
         {
             _ = ConnectToRunner(_defaultLobby);
+        }
+    }
+
+    private void OnGamePlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (!runner.IsServer)
+            return;
+
+        Debug.Log(SceneManager.GetActiveScene().name);
+
+        StartCoroutine(SpawnPlayerAfterSceneLoad());
+    }
+    
+    private IEnumerator SpawnPlayerAfterSceneLoad()
+    {
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "RoomScene");
+        
+        var spawner = FindObjectOfType<PlayerSpawner>();
+        
+        if (spawner != null)
+        {
+            spawner.AutoHostOrClientSpawn();
+        }
+        else
+        {
+            Debug.LogError("PlayerSpawner를 찾을 수 없습니다!");
         }
     }
 }

@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour {
-    // private NetworkBool _canMove { get; set; } = true;
+    private NetworkBool _canMove { get; set; } = true;
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
     
@@ -14,7 +14,7 @@ public class PlayerMovement : NetworkBehaviour {
     private Vector3 _dir;
     
     // private NetworkButtons _prev;
-
+    
     [Networked] private TickTimer _moveTimer { get; set; }
 
     public override void Spawned() {
@@ -33,7 +33,9 @@ public class PlayerMovement : NetworkBehaviour {
     {
         if (Object.IsProxy) return;
         
-        // UpdateMoveCD();
+        UpdateMoveCD();
+        
+        if (!_canMove) return;
 
         Vector3 camForward = _camInstance.transform.forward;
         Vector3 camRight = _camInstance.transform.right;
@@ -63,13 +65,18 @@ public class PlayerMovement : NetworkBehaviour {
         }
     }
     
-    // public void SetCanMove(float time)
-    // {
-    //     _moveTimer = TickTimer.CreateFromSeconds(Runner, time);
-    // }
-    //
-    // private void UpdateMoveCD()
-    // {
-    //     _canMove = _moveTimer.ExpiredOrNotRunning(Runner);
-    // }
+    public void DisableMovementForSeconds(float time)
+    {
+        _moveTimer = TickTimer.CreateFromSeconds(Runner, time);
+    }
+    
+    public void SetCanMove(bool canMove)
+    {
+        _canMove = canMove;
+    }
+    
+    private void UpdateMoveCD()
+    {
+        _canMove = _moveTimer.ExpiredOrNotRunning(Runner);
+    }
 }

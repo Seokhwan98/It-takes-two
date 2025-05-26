@@ -165,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65772e4994349e44af9235e540510b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _connectionData: {fileID: 11400000, guid: 4df3e805cba901449ad4a8b31bd700fe, type: 2}
 --- !u!54 &215226234
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -602,7 +601,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1959855221}
-  - component: {fileID: 1959855220}
+  - component: {fileID: 1959855222}
   - component: {fileID: 1959855219}
   m_Layer: 0
   m_Name: Spawner
@@ -628,22 +627,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1959855220}
+  - {fileID: 1959855222}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &1959855220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959855218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3a96e537bc6b0041982f58b3c8b2a68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
 --- !u!4 &1959855221
 Transform:
   m_ObjectHideFlags: 0
@@ -659,6 +644,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1959855222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959855218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa9cbbde5db42d294b6e005fee0bdb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab:
+    RawGuidValue: 1103c63957a63844baf81a0738ebf392
+  _spawnPointA: {fileID: 0}
+  _spawnPointB: {fileID: 0}
 --- !u!1 &2009843154
 GameObject:
   m_ObjectHideFlags: 0
