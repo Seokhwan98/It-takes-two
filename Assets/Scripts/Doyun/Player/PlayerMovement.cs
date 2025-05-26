@@ -36,18 +36,16 @@ public class PlayerMovement : NetworkBehaviour {
         {
             if (HasInputAuthority)
             {
-                _camInstance = Instantiate(freeLookPrefab);
-                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
-            
-                freeLook.Follow = cameraPivot;
-                freeLook.LookAt = cameraPivot;
-
-                freeLook.OutputChannel = (OutputChannels)(1 << Object.InputAuthority.PlayerId);
-                Debug.Log($"{Object.InputAuthority.PlayerId} {freeLook.OutputChannel}");
+                var MyChannel = (int)Object.InputAuthority.PlayerId;
+                var camSet = CameraHolder.Instance.GetCameraSet(MyChannel);
+                if (camSet != null)
+                {
+                    camSet.Camera.Follow = cameraPivot;
+                    camSet.Camera.LookAt = cameraPivot;
+                    _camInstance = camSet.Camera.gameObject;
+                }
             }
         }
-
-        
     }
 
     public override void FixedUpdateNetwork()
