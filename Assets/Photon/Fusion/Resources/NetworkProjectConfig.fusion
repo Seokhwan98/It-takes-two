@@ -19,12 +19,12 @@
         "ReplicationFeatures": 1,
         "InputTransferMode": 0,
         "SimulationUpdateTimeMode": 0,
-        "PlayerCount": 20,
+        "PlayerCount": 10,
         "TickRateSelection": {
-            "Client": 100,
+            "Client": 64,
             "ServerIndex": 0,
-            "ClientSendIndex": 0,
-            "ServerSendIndex": 0
+            "ClientSendIndex": 1,
+            "ServerSendIndex": 1
         },
         "MaxObjectDestroysSentPerPacket": 32
     },

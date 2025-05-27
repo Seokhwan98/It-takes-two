@@ -34,22 +34,23 @@ public class ConnectionManager : MonoBehaviour
         }
     }
     
-    public void LoadGameLevel()
+    public void LoadGameLevel(ConnectionData data)
     {
-        StartCoroutine(LoadGameProcess());
+        StartCoroutine(LoadSceneProcess(data));
     }
 
-    private IEnumerator LoadGameProcess()
+    private IEnumerator LoadSceneProcess(ConnectionData data)
     {
-        if (!_gameConnection.IsRunning) yield break;
-        if (!_gameConnection.Runner.IsServer) yield break;
+        var cc = data.Target == Lobby ? _lobbyConnection : _gameConnection;
+        if (!cc.IsRunning) yield break;
+        if (!cc.Runner.IsServer) yield break;
 
-        yield return new WaitUntil(() => _gameConnection.App);
-        _gameConnection.App.RPC_ShutdownRunner(Lobby);
+        yield return new WaitUntil(() => cc.App);
+        cc.App.RPC_ShutdownRunner(data.Target);
         
-        if (_gameConnection.Runner.IsServer)
+        if (cc.Runner.IsServer)
         {
-            _gameConnection.Runner.LoadScene(SceneRef.FromIndex(_gameConnection.ActiveConnection.SceneIndex));
+            cc.Runner.LoadScene(SceneRef.FromIndex(cc.ActiveConnection.SceneIndex));
         }
     }
 
@@ -124,7 +125,6 @@ public class ConnectionManager : MonoBehaviour
             Scene = sceneInfo, PlayerCount = connectionData.MaxClients,
             OnGameStarted = onInitialized,
             SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-
         });
 
         if (!startResult.Ok)

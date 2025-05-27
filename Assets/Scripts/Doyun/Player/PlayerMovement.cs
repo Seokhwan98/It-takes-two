@@ -17,7 +17,6 @@ public class PlayerMovement : NetworkBehaviour {
 
     public override void Spawned()
     {
-        
         _cc = GetComponent<KCC>();
 
         if (Object.HasInputAuthority) {

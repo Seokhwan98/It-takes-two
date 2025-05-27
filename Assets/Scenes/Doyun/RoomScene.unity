@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 1416219736}
   - component: {fileID: 1416219738}
   m_Layer: 0
-  m_Name: GameStarter
+  m_Name: RoomHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,6 +619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cd284cb1e834b879e3219d56b943707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 16b985f12545696418b8e2cf8f9aca65, type: 2}
 --- !u!4 &1416219737
 Transform:
   m_ObjectHideFlags: 0
@@ -1211,7 +1212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1365621334245009955}
   m_Layer: 5
-  m_Name: Character
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1493,7 +1494,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1365621334855629355}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1416219736}
+        m_TargetAssemblyTypeName: RoomHandler, Assembly-CSharp
+        m_MethodName: OnClickExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &1365621334962986345
 RectTransform:
   m_ObjectHideFlags: 0
