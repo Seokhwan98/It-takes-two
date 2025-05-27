@@ -314,6 +314,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: checkpoint_003
       objectReference: {fileID: 0}
+    - target: {fileID: 7355278425466913917, guid: 71315730e663547de8356dd5f13c8b56, type: 3}
+      propertyPath: SortKey
+      value: 1024170264
+      objectReference: {fileID: 0}
     - target: {fileID: 7595119164468162406, guid: 71315730e663547de8356dd5f13c8b56, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.22549081
@@ -368,8 +372,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 530767717}
-  - component: {fileID: 530767716}
   - component: {fileID: 530767715}
+  - component: {fileID: 530767718}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -394,22 +398,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 530767716}
+  - {fileID: 530767718}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &530767716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530767714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3a96e537bc6b0041982f58b3c8b2a68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
 --- !u!4 &530767717
 Transform:
   m_ObjectHideFlags: 0
@@ -425,6 +415,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &530767718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530767714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565afd8f28ef49029e18fa1fc1a84f0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab:
+    RawGuidValue: 1103c63957a63844baf81a0738ebf392
 --- !u!1001 &1161535528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -955,6 +959,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1990253303669286752, guid: d6cb59c1c04874cfea3816adfe9bd1ee, type: 3}
+      propertyPath: SortKey
+      value: 732485106
+      objectReference: {fileID: 0}
     - target: {fileID: 3602446384155678921, guid: d6cb59c1c04874cfea3816adfe9bd1ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.88963556

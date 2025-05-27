@@ -386,8 +386,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 792324757}
-  - component: {fileID: 792324760}
   - component: {fileID: 792324759}
+  - component: {fileID: 792324760}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 792324756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caa9cbbde5db42d294b6e005fee0bdb3, type: 3}
+  m_Script: {fileID: 11500000, guid: 215e8515c63d48019512df0cebd3a39b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
@@ -589,6 +589,70 @@ RectTransform:
   m_AnchoredPosition: {x: 480, y: 0}
   m_SizeDelta: {x: 960, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1416219735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1416219737}
+  - component: {fileID: 1416219736}
+  - component: {fileID: 1416219738}
+  m_Layer: 0
+  m_Name: GameStarter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1416219736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416219735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd284cb1e834b879e3219d56b943707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1416219737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416219735}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1416219738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416219735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2935543005
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1416219736}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &1549472461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,7 +1253,7 @@ GameObject:
   - component: {fileID: 1365621334564841372}
   - component: {fileID: 1365621334564841374}
   m_Layer: 5
-  m_Name: Button_Upgrade
+  m_Name: Button_Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1288,7 +1352,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1365621334564841372}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1416219736}
+        m_TargetAssemblyTypeName: GameStater, Assembly-CSharp
+        m_MethodName: OnClickStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &1365621334564841375
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1330,7 +1406,7 @@ GameObject:
   - component: {fileID: 1365621334855629355}
   - component: {fileID: 1365621334855629365}
   m_Layer: 5
-  m_Name: Button_Selet
+  m_Name: Button_Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1673,3 +1749,4 @@ SceneRoots:
   - {fileID: 735537982}
   - {fileID: 1736471786}
   - {fileID: 792324757}
+  - {fileID: 1416219737}

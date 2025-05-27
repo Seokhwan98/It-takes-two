@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ConnectionData.ConnectionTarget;
@@ -154,7 +153,7 @@ public class ConnectionManager : MonoBehaviour
     {
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "RoomScene");
         
-        var spawner = FindObjectOfType<PlayerSpawner>();
+        var spawner = FindObjectOfType<RoomSpawner>();
         
         if (spawner != null)
         {
