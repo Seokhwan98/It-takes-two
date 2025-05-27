@@ -76,6 +76,13 @@ public class CustomSpawner : NetworkBehaviour
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
             _spawnedCharacters.Add(player, networkPlayerObject);
+            
+            // 📌 새로 들어온 플레이어가 기존 플레이어들을 바라볼 수 있도록 설정
+            foreach (var kvp in _spawnedCharacters)
+            {
+                var playerMovement = kvp.Value.GetComponent<PlayerMovement>();
+                playerMovement?.TryBindOtherCamera();
+            }
         }
     }
 

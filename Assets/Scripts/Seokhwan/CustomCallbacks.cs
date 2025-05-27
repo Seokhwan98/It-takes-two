@@ -17,7 +17,7 @@ public class CustomCallbacks : INetworkRunnerCallbacks {
     {
         Debug.Log($"{player} Joined");
         Debug.Log($"total players: {runner.ActivePlayers.Count()}");
-
+        
         ActionOnPlayerJoined?.Invoke(runner, player);
     }
 
@@ -63,6 +63,10 @@ public class CustomCallbacks : INetworkRunnerCallbacks {
         //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
         // }
         
+        // 마우스 입력 (회전 값 추가)
+        // inputs.LookYaw = Input.GetAxis("Mouse X");
+        // inputs.LookPitch = Input.GetAxis("Mouse Y");
+        //
         input.Set(inputs);
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
