@@ -131,7 +131,7 @@ public class ConnectionManager : MonoBehaviour
             OnGameStarted = onInitialized,
             SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
         });
-
+        
         if (!startResult.Ok)
             onFailed?.Invoke(startResult.ShutdownReason);
     }
@@ -156,7 +156,7 @@ public class ConnectionManager : MonoBehaviour
     {
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "RoomScene");
         
-        var spawner = FindObjectOfType<RoomSpawner>();
+        var spawner = FindObjectOfType<RoomStarter>();
         
         if (spawner != null)
         {

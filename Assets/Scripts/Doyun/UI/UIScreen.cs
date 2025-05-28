@@ -21,6 +21,7 @@ public class UIScreen : MonoBehaviour {
     public void Defocus()
     {
         gameObject.SetActive(false);
+        InterfaceManager.Instance.MouseDisable();
     }
     
     public void Focus()
@@ -30,6 +31,7 @@ public class UIScreen : MonoBehaviour {
         
         Group.interactable = true;
         gameObject.SetActive(true);
+        InterfaceManager.Instance.MouseEnable();
         activeScreen = this;
     }
 }
