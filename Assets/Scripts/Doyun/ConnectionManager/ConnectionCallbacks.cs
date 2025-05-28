@@ -17,7 +17,7 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
     {
         Debug.Log($"{player} Joined");
         Debug.Log($"total players: {runner.ActivePlayers.Count()}");
-
+        
         ActionOnPlayerJoined?.Invoke(runner, player);
     }
 
@@ -34,6 +34,14 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         var inputs = new MyNetworkInput();
+
+        var cam = Camera.main;
+        
+        if (cam != null)
+        {
+            inputs.forward = cam.transform.forward;
+            inputs.right = cam.transform.right;
+        }
         
         if (Input.GetKey(KeyCode.W)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_FORWARD, true);
@@ -62,6 +70,8 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
         // if (Input.GetMouseButton(0)) {
         //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
         // }
+
+        // inputs.forward = transform.forward;
         
         input.Set(inputs);
     }

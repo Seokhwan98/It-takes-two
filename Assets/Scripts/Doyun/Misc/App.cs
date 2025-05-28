@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Fusion;
+using UnityEngine;
 
 public class App : NetworkBehaviour
 {
@@ -8,7 +9,7 @@ public class App : NetworkBehaviour
         DontDestroyOnLoad(this);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
     public void RPC_ShutdownRunner(ConnectionData.ConnectionTarget target)
     {
         // InterfaceManager.Instance.ClearInterface();
@@ -16,17 +17,19 @@ public class App : NetworkBehaviour
         var connection = target == ConnectionData.ConnectionTarget.Lobby
             ? ConnectionManager.Instance.GetLobbyConnection()
             : ConnectionManager.Instance.GetGameConnection();
-
-        if (connection.IsRunning)
+        var downConnection = target == ConnectionData.ConnectionTarget.Lobby
+            ? ConnectionManager.Instance.GetGameConnection()
+            : ConnectionManager.Instance.GetLobbyConnection();
+        
+        if (downConnection.IsRunning)
         {
-            var ins = ConnectionManager.Instance;
-            DelayShutdown(ins.GetLobbyConnection(), ins.GetGameConnection()).Forget();
+            DelayShutdown(connection, downConnection).Forget();
         }
     }
     
-    private async UniTaskVoid DelayShutdown(ConnectionContainer lobby, ConnectionContainer game)
+    private async UniTaskVoid DelayShutdown(ConnectionContainer cc, ConnectionContainer downCc)
     {
-        await UniTask.WaitUntil(() => game.Runner != null && game.IsRunning);
-        await lobby.Runner.Shutdown();
+        await UniTask.WaitUntil(() => cc.Runner != null && cc.IsRunning);
+        await downCc.Runner.Shutdown();
     }
 }
