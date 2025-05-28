@@ -16,9 +16,13 @@ public class CustomizationManager : MonoBehaviour
     public Dictionary<PartType, MeshPartOption> CurrentSelections;
     
     [SerializeField] private List<PartRendererEntry> partRendererEntries;
+    
+    private ICustomizationStorage storage;
 
     private void Awake()
     {
+        storage = new LocalCustomizationStorage();
+        
         InitializeRendererMap();
         LoadAllOptions();
     }
@@ -48,7 +52,7 @@ public class CustomizationManager : MonoBehaviour
         var allGroups = Resources.LoadAll<PartOptionsGroup>("CustomizationData");
         foreach (var group in allGroups)
         {
-            PartOptions[group.partType] = group.options;
+            PartOptions[group.partType] = new List<MeshPartOption>(group.options);
         }
 
         Debug.Log($"[Customization] Loaded {PartOptions.Count} parts.");
@@ -90,6 +94,45 @@ public class CustomizationManager : MonoBehaviour
             CurrentSelections[partType] = option;
         }
     }
+    
+    public void SaveCustomization()
+    {
+        var data = new CustomizationData
+        {
+            partSelections = new Dictionary<string, string>()
+        };
+
+        foreach (var kvp in CurrentSelections)
+        {
+            data.partSelections[kvp.Key.ToString()] = kvp.Value.id;
+        }
+
+        storage.Save(data);
+    }
+    
+    public void LoadCustomization()
+    {
+        var data = storage.Load();
+        foreach (var kvp in data.partSelections)
+        {
+            if (Enum.TryParse(kvp.Key, out PartType partType))
+            {
+                ApplyOption(partType, kvp.Value);
+            }
+            else
+            {
+                Debug.LogWarning($"[Customization] 알 수 없는 파츠 타입: {kvp.Key}");
+            }
+        }
+
+        Debug.Log("[Customization] 저장된 데이터 로드 완료");
+    }
+
+    public bool HasSavedData()
+    {
+        return storage.HasData(); // storage가 ICustomizationStorage
+    }
+
 
     public void ClearPart(PartType partType)
     {

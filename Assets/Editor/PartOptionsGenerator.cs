@@ -5,61 +5,74 @@ using System.IO;
 
 public class PartOptionsGenerator
 {
-    [MenuItem("Assets/Generate Part Options From Meshes", priority = 0)]
-    public static void Generate()
+    [MenuItem("Assets/Generate All Part Options From CustomizationData", priority = 0)]
+    public static void GenerateAll()
     {
-        // 선택된 폴더 경로 가져오기
-        string folderPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-        if (!AssetDatabase.IsValidFolder(folderPath))
+        // 선택한 CustomizationData 폴더 경로
+        string rootFolderPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+        if (!AssetDatabase.IsValidFolder(rootFolderPath))
         {
             Debug.LogError("폴더를 선택해주세요.");
             return;
         }
 
-        // 파츠 종류를 사용자에게 입력 받음
-        string partTypeName = Path.GetFileName(folderPath);
-        if (!System.Enum.TryParse(partTypeName, out PartType parsedType))
-        {
-            Debug.LogError($"폴더명이 PartType enum과 일치하지 않음: {partTypeName}");
-            return;
-        }
+        // 하위 폴더 순회
+        string[] subfolders = AssetDatabase.GetSubFolders(rootFolderPath);
+        int createdCount = 0;
 
-        List<MeshPartOption> options = new();
-        
-        // Empty 옵션 먼저 추가
-        options.Add(new MeshPartOption
+        foreach (string folder in subfolders)
         {
-            id = "Empty",
-            mesh = null
-        });
-
-        // 폴더 내 모든 Mesh 에셋 탐색
-        string[] guids = AssetDatabase.FindAssets("t:Mesh", new[] { folderPath });
-        foreach (string guid in guids)
-        {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
-            if (mesh == null) continue;
-
-            var option = new MeshPartOption
+            string partTypeName = Path.GetFileName(folder);
+            if (!System.Enum.TryParse(partTypeName, out PartType parsedType))
             {
-                id = Path.GetFileNameWithoutExtension(assetPath),
-                mesh = mesh,
-            };
+                Debug.LogWarning($"[건너뜀] 폴더명 '{partTypeName}'은 PartType과 일치하지 않습니다.");
+                continue;
+            }
 
-            options.Add(option);
+            List<MeshPartOption> options = new();
+
+            // Empty 추가
+            if (parsedType != PartType.Body)
+            {
+                options.Add(new MeshPartOption
+                {
+                    id = "Empty",
+                    mesh = null
+                });
+            }
+
+            // 해당 폴더 내의 Mesh 수집
+            string[] guids = AssetDatabase.FindAssets("t:Mesh", new[] { folder });
+            foreach (string guid in guids)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(assetPath);
+                if (mesh == null) continue;
+
+                var option = new MeshPartOption
+                {
+                    id = Path.GetFileNameWithoutExtension(assetPath),
+                    mesh = mesh
+                };
+
+                options.Add(option);
+            }
+
+            // ScriptableObject 생성 및 저장
+            PartOptionsGroup asset = ScriptableObject.CreateInstance<PartOptionsGroup>();
+            asset.partType = parsedType;
+            asset.options = options;
+
+            string assetFileName = $"{partTypeName}_Options.asset";
+            string assetSavePath = $"{rootFolderPath}/{assetFileName}";
+
+            AssetDatabase.CreateAsset(asset, assetSavePath);
+            EditorUtility.SetDirty(asset);
+            createdCount++;
         }
 
-        // ScriptableObject 생성
-        PartOptionsGroup asset = ScriptableObject.CreateInstance<PartOptionsGroup>();
-        asset.partType = parsedType;
-        asset.options = options;
-
-        string assetPathName = $"Assets/CustomizationData/{partTypeName}_Options.asset";
-        AssetDatabase.CreateAsset(asset, assetPathName);
         AssetDatabase.SaveAssets();
-
-        Debug.Log($"[CustomizationData] {partTypeName}_Options.asset 생성 완료. 옵션 수: {options.Count}");
-        Selection.activeObject = asset;
+        AssetDatabase.Refresh();
+        Debug.Log($"[CustomizationData] 총 {createdCount}개의 PartOptionsGroup.asset이 생성되었습니다.");
     }
 }

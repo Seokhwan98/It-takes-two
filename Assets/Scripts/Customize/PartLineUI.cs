@@ -30,6 +30,21 @@ public class PartLineUI : MonoBehaviour
         leftButton.onClick.AddListener(OnLeft);
         rightButton.onClick.AddListener(OnRight);
     }
+    
+    public void RefreshUI()
+    {
+        if (customizationManager.CurrentSelections.TryGetValue(partType, out var selectedOption))
+        {
+            currentIndex = options.FindIndex(opt => opt.id == selectedOption.id);
+            if (currentIndex == -1) currentIndex = 0;
+        }
+        else
+        {
+            currentIndex = 0;
+        }
+
+        UpdateUI();
+    }
 
     private void OnLeft()
     {
