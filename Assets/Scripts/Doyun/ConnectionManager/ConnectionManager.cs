@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
@@ -86,6 +87,7 @@ public class ConnectionManager : MonoBehaviour
         {
             connection.Callback.ActionOnShutdown += OnGameShutdown;
             connection.Callback.ActionOnPlayerJoined += OnGamePlayerJoined;
+            connection.Callback.ActionOnPlayerLeft += OnGamePlayerLeft;
         }
 
         if (connection.IsRunning)
@@ -143,9 +145,7 @@ public class ConnectionManager : MonoBehaviour
     {
         if (!runner.IsServer)
             return;
-
-        Debug.Log(SceneManager.GetActiveScene().name);
-
+        
         StartCoroutine(SpawnPlayerAfterSceneLoad());
     }
     
@@ -162,6 +162,18 @@ public class ConnectionManager : MonoBehaviour
         else
         {
             Debug.LogError("PlayerSpawner를 찾을 수 없습니다!");
+        }
+    }
+    
+    private void OnGamePlayerLeft(NetworkRunner runner, PlayerRef player)
+    {
+        if (!runner.IsServer)
+            return;
+
+        if (runner.ActivePlayers.Count() == 1)
+        {
+            Debug.Log("모든 플레이어가 나갔습니다. 게임을 종료합니다.");
+            _ = runner.Shutdown(true, ShutdownReason.DisconnectedByPluginLogic);
         }
     }
 }
