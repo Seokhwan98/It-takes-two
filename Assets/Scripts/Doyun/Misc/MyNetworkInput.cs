@@ -10,8 +10,8 @@ public struct MyNetworkInput : INetworkInput
     public const int BUTTON_END_INTERACT = 5;
     
     public NetworkButtons Buttons;
-    // public float LookYaw;
-    // public float LookPitch;
+    public float LookYaw;
+    public float LookPitch;
 
     public bool IsUp(int button) {
         return Buttons.IsSet(button) == false;

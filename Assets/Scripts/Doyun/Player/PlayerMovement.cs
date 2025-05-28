@@ -10,20 +10,22 @@ public class PlayerMovement : NetworkBehaviour {
     [SerializeField] private Transform cameraPivot;
     
     private GameObject _camInstance;
-    private GameObject _otherCamera;
     private CinemachineOrbitalFollow _myOrbitalFollow;
-    private CinemachineOrbitalFollow _otherOrbitalFollow;
     
     private KCC _cc;
     private Vector3 _dir;
+    private float speed = 20f;
+
+    private float smoothYaw;
+    private float smoothPitch;
+    private float smoothSpeed = 15f;
     
-    //
-    [Networked, OnChangedRender(nameof(OnYawChanged))] 
+    // , OnChangedRender(nameof(OnYawChanged))
+    [Networked] 
     public float NetworkYaw { get; set; }
     
-    //
-    
-    [Networked, OnChangedRender(nameof(OnPitchChanged))] 
+    // , OnChangedRender(nameof(OnPitchChanged))
+    [Networked] 
     public float NetworkPitch { get; set; }
     
     
@@ -58,14 +60,14 @@ public class PlayerMovement : NetworkBehaviour {
         
         // UpdateMoveCD();
         
-        if (HasInputAuthority)
-        {
-            if (_myOrbitalFollow != null)
-            {
-                NetworkYaw = _myOrbitalFollow.VerticalAxis.Value;
-                NetworkPitch = _myOrbitalFollow.HorizontalAxis.Value;
-            }
-        }
+        // if (HasInputAuthority)
+        // {
+        //     if (_myOrbitalFollow != null)
+        //     {
+        //         NetworkYaw = _myOrbitalFollow.VerticalAxis.Value;
+        //         NetworkPitch = _myOrbitalFollow.HorizontalAxis.Value;
+        //     }
+        // }
 
         
         if (GetInput<MyNetworkInput>(out var input))
@@ -84,6 +86,15 @@ public class PlayerMovement : NetworkBehaviour {
 
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
+
+            if (HasStateAuthority)
+            {
+                NetworkYaw -= input.LookYaw * speed;
+                NetworkPitch += input.LookPitch * speed;
+                
+                NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
+                // NetworkPitch = NetworkPitch % 360f;
+            }
             
             _cc.SetInputDirection(_dir.normalized);
 
@@ -95,23 +106,24 @@ public class PlayerMovement : NetworkBehaviour {
         }
     }
 
-    // public override void Render()
-    // {
-    //     if (!HasInputAuthority) return;
-    //     if (_otherOrbitalFollow == null) return;
-    //     _myOrbitalFollow.HorizontalAxis.Value = NetworkYaw;
-    //     _myOrbitalFollow.VerticalAxis.Value = NetworkPitch;
-    // }
+    public override void Render()
+    {
+        // if (HasInputAuthority) return;
+        if (_myOrbitalFollow == null) return;
+        smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
+        smoothPitch = Mathf.Lerp(smoothPitch, NetworkPitch, Time.deltaTime * smoothSpeed);
+
+        _myOrbitalFollow.VerticalAxis.Value = smoothYaw;
+        _myOrbitalFollow.HorizontalAxis.Value = smoothPitch;
+    }
 
     public void TryBindMyCamera()
     {
         if (HasInputAuthority)
         {
             var MyChannel = (int)Object.InputAuthority.PlayerId;
-            var otherChannel = (MyChannel == 1) ? 2 : 1;
 
             var camSet = CameraHolder.Instance.GetCameraSet(MyChannel);
-            var otherCamSet = CameraHolder.Instance.GetCameraSet(otherChannel);
 
             if (camSet != null)
             {
@@ -121,12 +133,11 @@ public class PlayerMovement : NetworkBehaviour {
                 _camInstance = camSet.Camera.gameObject;
 
                 _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
-                _otherOrbitalFollow = otherCamSet.Camera.gameObject.GetComponent<CinemachineOrbitalFollow>();
 
                 var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
                 {
-                    axisController.enabled = true;
+                    axisController.enabled = false;
                 }
             }
         }
@@ -137,9 +148,7 @@ public class PlayerMovement : NetworkBehaviour {
         if(!HasInputAuthority)
         {
             var MyChannel = (int)Object.InputAuthority.PlayerId == 1 ? 1 : 2;
-            var otherChannel = (MyChannel == 1) ? 2 : 1;
             var camSet = CameraHolder.Instance.GetCameraSet(MyChannel);
-            var otherCamSet = CameraHolder.Instance.GetCameraSet(otherChannel);
             if (camSet != null)
             {
                 camSet.Camera.Follow = cameraPivot;
@@ -148,7 +157,6 @@ public class PlayerMovement : NetworkBehaviour {
                 _camInstance = camSet.Camera.gameObject;
                     
                 _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
-                _otherOrbitalFollow = otherCamSet.Camera.gameObject.GetComponent<CinemachineOrbitalFollow>();
                     
                 var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
@@ -157,20 +165,6 @@ public class PlayerMovement : NetworkBehaviour {
                 }
             }
         }
-    }
-    
-    private void OnYawChanged()
-    {
-        if (HasInputAuthority) return;
-        if (_otherOrbitalFollow == null) return;
-        _myOrbitalFollow.VerticalAxis.Value = NetworkYaw;
-    }
-    
-    private void OnPitchChanged()
-    {
-        if (HasInputAuthority) return;
-        if (_otherOrbitalFollow == null) return;
-        _myOrbitalFollow.HorizontalAxis.Value = NetworkPitch;
     }
     
     // public void SetCanMove(float time)

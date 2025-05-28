@@ -34,6 +34,9 @@ public class CustomCallbacks : INetworkRunnerCallbacks {
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         var inputs = new MyNetworkInput();
+
+		inputs.LookYaw = InputBuffer.Instance.LookYaw;
+		inputs.LookPitch = InputBuffer.Instance.LookPitch;
         
         if (Input.GetKey(KeyCode.W)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_FORWARD, true);
