@@ -818,8 +818,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1959855221}
-  - component: {fileID: 1959855220}
   - component: {fileID: 1959855219}
+  - component: {fileID: 1959855222}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -841,25 +841,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1915622653
   ObjectInterest: 1
-  Flags: 262145
+  Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1959855220}
+  - {fileID: 1959855222}
   ForceRemoteRenderTimeframe: 0
---- !u!114 &1959855220
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1959855218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3a96e537bc6b0041982f58b3c8b2a68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
 --- !u!4 &1959855221
 Transform:
   m_ObjectHideFlags: 0
@@ -875,6 +861,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1959855222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959855218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fe25542dfd48e0b9ea0c37ceab5a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab:
+    RawGuidValue: 1103c63957a63844baf81a0738ebf392
 --- !u!1 &2009843154
 GameObject:
   m_ObjectHideFlags: 0

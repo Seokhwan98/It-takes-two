@@ -6,6 +6,7 @@ public class InterfaceManager : MonoBehaviour
     public static InterfaceManager Instance { get; private set; }
     
     public GateUI GateUI;
+    public GameObject EscUI;
 
     private void Awake()
     {

@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Fusion;
 using Fusion.Addons.Physics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ConnectionData.ConnectionTarget;
 
 public class ConnectionManager : MonoBehaviour
@@ -34,23 +36,24 @@ public class ConnectionManager : MonoBehaviour
             Destroy(this);
         }
     }
-
-    public void LoadGameLevel()
+    
+    public void LoadGameLevel(ConnectionData data)
     {
-        StartCoroutine(LoadGameProcess());
+        StartCoroutine(LoadSceneProcess(data));
     }
 
-    private IEnumerator LoadGameProcess()
+    private IEnumerator LoadSceneProcess(ConnectionData data)
     {
-        if (!_gameConnection.IsRunning) yield break;
-        if (!_gameConnection.Runner.IsServer) yield break;
+        var cc = data.Target == Lobby ? _lobbyConnection : _gameConnection;
+        if (!cc.IsRunning) yield break;
+        if (!cc.Runner.IsServer) yield break;
 
-        yield return new WaitUntil(() => _gameConnection.App);
-        _gameConnection.App.RPC_ShutdownRunner(Lobby);
+        yield return new WaitUntil(() => cc.App);
+        cc.App.RPC_ShutdownRunner(data.Target);
         
-        if (_gameConnection.Runner.IsServer)
+        if (cc.Runner.IsServer)
         {
-            _gameConnection.Runner.LoadScene(SceneRef.FromIndex(_gameConnection.ActiveConnection.SceneIndex));
+            cc.Runner.LoadScene(SceneRef.FromIndex(cc.ActiveConnection.SceneIndex));
         }
     }
 
@@ -82,10 +85,14 @@ public class ConnectionManager : MonoBehaviour
         {
             connection.Callback = new ConnectionCallbacks();
         }
-        
+
         if (connectionData.Target == Game)
+        {
             connection.Callback.ActionOnShutdown += OnGameShutdown;
-        
+            connection.Callback.ActionOnPlayerJoined += OnGamePlayerJoined;
+            connection.Callback.ActionOnPlayerLeft += OnGamePlayerLeft;
+        }
+
         if (connection.IsRunning)
         {
             await connection.Runner.Shutdown();
@@ -104,6 +111,15 @@ public class ConnectionManager : MonoBehaviour
             {
                 connection.App = runner.Spawn(_app);
             }
+            
+            if (runner.GameMode == GameMode.Client)
+            {
+                var lobby = GetLobbyConnection().Runner;
+                if (lobby != null && lobby.IsRunning)
+                {
+                    _ = lobby.Shutdown();
+                }
+            }
         };
         
         var startResult = await connection.Runner.StartGame(new StartGameArgs()
@@ -114,7 +130,6 @@ public class ConnectionManager : MonoBehaviour
             Scene = sceneInfo, PlayerCount = connectionData.MaxClients,
             OnGameStarted = onInitialized,
             SceneManager = connection.Runner.gameObject.AddComponent<NetworkSceneManagerDefault>(),
-
         });
 
         if (!startResult.Ok)
@@ -126,6 +141,42 @@ public class ConnectionManager : MonoBehaviour
         if (reason == ShutdownReason.DisconnectedByPluginLogic)
         {
             _ = ConnectToRunner(_defaultLobby);
+        }
+    }
+
+    private void OnGamePlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (!runner.IsServer)
+            return;
+        
+        StartCoroutine(SpawnPlayerAfterSceneLoad());
+    }
+    
+    private IEnumerator SpawnPlayerAfterSceneLoad()
+    {
+        yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "RoomScene");
+        
+        var spawner = FindObjectOfType<RoomSpawner>();
+        
+        if (spawner != null)
+        {
+            spawner.AutoHostOrClientSpawn();
+        }
+        else
+        {
+            Debug.LogError("PlayerSpawner를 찾을 수 없습니다!");
+        }
+    }
+    
+    private void OnGamePlayerLeft(NetworkRunner runner, PlayerRef player)
+    {
+        if (!runner.IsServer)
+            return;
+
+        if (runner.ActivePlayers.Count() == 1)
+        {
+            Debug.Log("모든 플레이어가 나갔습니다. 게임을 종료합니다.");
+            _ = runner.Shutdown(true, ShutdownReason.DisconnectedByPluginLogic);
         }
     }
 }

@@ -1,8 +1,7 @@
 using UnityEngine;
 using Fusion;
 
-public class SharedLobbySpawner : NetworkBehaviour {
-    
+public class LobbySpawner : NetworkBehaviour {
     [SerializeField] private NetworkPrefabRef _playerPrefab;
 
     public override void Spawned()

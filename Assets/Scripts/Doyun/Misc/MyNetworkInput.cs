@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEngine;
 
 public struct MyNetworkInput : INetworkInput
 {
@@ -10,6 +11,9 @@ public struct MyNetworkInput : INetworkInput
     public const int BUTTON_END_INTERACT = 5;
     
     public NetworkButtons Buttons;
+
+    public Vector3 forward;
+    public Vector3 right;
 
     public bool IsUp(int button) {
         return Buttons.IsSet(button) == false;

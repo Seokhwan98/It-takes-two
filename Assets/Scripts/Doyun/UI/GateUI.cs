@@ -9,7 +9,7 @@ public class GateUI : UIScreen
         await ConnectionManager.Instance.ConnectToRunner(_connectionData);
             
         if (ConnectionManager.Instance.IsGameHost())
-            ConnectionManager.Instance.LoadGameLevel();
+            ConnectionManager.Instance.LoadGameLevel(_connectionData);
         
         Defocus();
     }
