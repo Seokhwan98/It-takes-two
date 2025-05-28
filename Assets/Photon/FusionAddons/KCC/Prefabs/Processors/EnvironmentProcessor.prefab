@@ -65,9 +65,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KinematicSpeed: 8
   JumpMultiplier: 2
-  Gravity: {x: 0, y: -40, z: 0}
+  Gravity: {x: -10, y: -20, z: 0}
   RelativePriority: 0
-  MaxGroundAngle: 60
+  MaxGroundAngle: 359
   DynamicGroundFriction: 20
   KinematicGroundAcceleration: 50
   KinematicGroundFriction: 35

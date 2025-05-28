@@ -7,6 +7,8 @@ public class PlayerMovement : NetworkBehaviour {
     // private NetworkBool _canMove { get; set; } = true;
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
+
+    public Transform Anchor;
     
     private GameObject _camInstance;
     
@@ -28,7 +30,7 @@ public class PlayerMovement : NetworkBehaviour {
             freeLook.LookAt = cameraPivot;
         }
     }
-
+    
     public override void FixedUpdateNetwork()
     {
         if (Object.IsProxy) return;
@@ -53,13 +55,21 @@ public class PlayerMovement : NetworkBehaviour {
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
             
             _cc.SetInputDirection(_dir.normalized);
+            
+            // _cc.SetLookRotation(pitch: gRot.eulerAngles.x, yaw: gRot.eulerAngles.y);
 
             if (_dir.sqrMagnitude > 0.001f)
             {
-                Quaternion rot = Quaternion.LookRotation(_dir);
-                _cc.SetLookRotation(rot);
+                //Quaternion rot = Quaternion.LookRotation(_dir);
+                //_cc.SetLookRotation(rot);
+                Debug.Log($"Nice : {_cc.Data.Gravity}");
+                // Quaternion gRot = Quaternion.FromToRotation(Vector3.down, _cc.Data.Gravity);
+                // _cc.SetLookRotation(rot * gRot);
             }
             // _prev = input.Buttons;
+
+            // Anchor.rotation = Quaternion.FromToRotation(Vector3.down, _cc.Data.Gravity);
+            Debug.Log(_cc.Data.Gravity);
         }
     }
     
