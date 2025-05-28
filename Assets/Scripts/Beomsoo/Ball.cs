@@ -6,6 +6,11 @@ public class Ball : Grabbable
     
     private Vector3 _lastPosition;
     private bool _roll;
+
+    public void Awake()
+    {
+        _rb = GetComponent<Rigidbody>();
+    }
     
     public override void Interact(GrabInteractor interactor)
     {
@@ -52,6 +57,6 @@ public class Ball : Grabbable
         Vector3 roundAxis = Vector3.Cross(Vector3.up, velocity);
         
         float angularSpeed = 360f / _model.lossyScale.x * velocity.magnitude;
-        _model.RotateAround(_model.position, roundAxis, angularSpeed * Runner.DeltaTime);
+        transform.RotateAround(_model.position, roundAxis, angularSpeed * Runner.DeltaTime);
     }
 }
