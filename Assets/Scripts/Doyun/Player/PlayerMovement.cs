@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using Fusion.Addons.KCC;
 using Unity.Cinemachine;
@@ -5,6 +6,7 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour {
     private NetworkBool _canMove { get; set; } = true;
+    private NetworkBool _canJump { get; set; } = true;
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
     
@@ -29,15 +31,21 @@ public class PlayerMovement : NetworkBehaviour {
     public PlayerData PlayerData => _playerData;
     
     [Networked] private TickTimer _moveTimer { get; set; }
+    [Networked] private TickTimer _jumpTimer { get; set; }
+    
+    private Action _playJumpTimer; 
 
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
         
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        
         int playerId = Runner.LocalPlayer.PlayerId;
         _playerData = new PlayerData(/*playerId*/1);
-        
-        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+        _playJumpTimer = () => _jumpTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
+        _playerData.JumpTrigger.OnShot += _playJumpTimer;
         
         if (Runner.GameMode is GameMode.Shared)
         {
@@ -57,6 +65,11 @@ public class PlayerMovement : NetworkBehaviour {
             if(HasInputAuthority)  TryBindMyCamera();
             else TryBindOtherCamera();
         }
+    }
+
+    public override void Despawned(NetworkRunner runner, bool hasState)
+    {
+        _playerData.JumpTrigger.OnShot -= _playJumpTimer;
     }
 
     public override void FixedUpdateNetwork()
@@ -99,23 +112,25 @@ public class PlayerMovement : NetworkBehaviour {
                 _cc.SetLookRotation(rot);
             }
 
-            if (input.IsDown(MyNetworkInput.BUTTON_RUN))
+            _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
+            
+            Debug.Log(_canJump);
+            if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
             {
-                _playerData.Running = true;
-            }
-            else
-            {
-                _playerData.Running = false;
+                _playerData.JumpTrigger.Ready();
             }
             
-            if (input.IsDown(MyNetworkInput.BUTTON_JUMP))
+            if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
             {
-                _playerData.TriggerJump = true;
+                _playerData.SmallerTrigger.Ready();
+            }
+            else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
+            {
+                _playerData.BiggerTrigger.Ready();
             }
         }
     }
-    
-    public override void Render()
+        public override void Render()
     {
         if (_myOrbitalFollow == null) return;
         smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
@@ -188,5 +203,10 @@ public class PlayerMovement : NetworkBehaviour {
     private void UpdateMoveCD()
     {
         _canMove = _moveTimer.ExpiredOrNotRunning(Runner);
+    }
+    
+    private void UpdateJumpCD()
+    {
+        _canJump = _jumpTimer.ExpiredOrNotRunning(Runner);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Fusion.Addons.KCC;
 using UnityEngine;
 
@@ -10,33 +11,34 @@ public class NormalJumpProcessor : KCCProcessor, ISetDynamicVelocity
     
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
     {
-        var _playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
+        var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
         
-        // Debug.Log(_playerData.TriggerJump);
-        if (!_playerData.TriggerJump) return;
+        Action applyJump = () => ApplyJump(data);
         
-        Debug.Log("Normal");
+        playerData.JumpTrigger.OnShot += applyJump;
         
         if (data.IsGrounded)
         {
-            ApplyJump(data, _playerData);
+            Debug.Log("Normal");
+            playerData.JumpTrigger.TryShot();
             SuppressOtherJumpProcessors(kcc);
         }
         
-        SuppressOtherProcessors(kcc);
+        playerData.JumpTrigger.OnShot -= applyJump;
+        
+        SuppressOtherSameTypeProcessors(kcc);
     }
 
-    private void ApplyJump(KCCData data, PlayerData _playerData)
+    private void ApplyJump(KCCData data)
     {
         data.JumpImpulse = _jumpImpulse;
-        _playerData.TriggerJump = false;
     }
-
-    private void SuppressOtherProcessors(KCC kcc)
+    
+    private void SuppressOtherSameTypeProcessors(KCC kcc)
     {
         kcc.SuppressProcessors<NormalJumpProcessor>();
     }
-    
+
     private void SuppressOtherJumpProcessors(KCC kcc)
     {
         kcc.SuppressProcessors<AirJumpProcessor>();

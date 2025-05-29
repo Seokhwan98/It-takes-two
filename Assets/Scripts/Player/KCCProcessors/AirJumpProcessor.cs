@@ -1,3 +1,4 @@
+using System;
 using Fusion.Addons.KCC;
 using UnityEngine;
 
@@ -5,45 +6,45 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
 {
     [SerializeField] private Vector3 _jumpImpulse = 10f * Vector3.up;
     
-    private PlayerData _playerData;
-    
     private readonly float DefaultPriority = 2000;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
     {
-        _playerData ??= kcc.GetComponent<PlayerMovement>().PlayerData;
-        
-        if (!_playerData.TriggerJump) return;
+        var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
 
-        Debug.Log("Air");
+        Action applyAirJump = () => ApplyAirJump(data, playerData);
         
-        if (_playerData.AirJump > 0)
+        playerData.JumpTrigger.OnShot += applyAirJump;
+        
+        if (playerData.AirJump > 0)
         {
-            ApplyAirJump(data);
+            Debug.Log("Air");
+            playerData.JumpTrigger.TryShot();
             SuppressOtherJumpProcessors(kcc);
         }
         
-        SuppressOtherProcessors(kcc);
-        _playerData.TriggerJump = false;
+        playerData.JumpTrigger.OnShot -= applyAirJump;
+
+        SuppressOtherSameTypeProcessors(kcc);
     }
 
-    private void ApplyAirJump(KCCData data)
+    private void ApplyAirJump(KCCData data, PlayerData playerData)
     {
         data.DynamicVelocity = Vector3.zero;
         data.JumpImpulse = _jumpImpulse;
-        _playerData.ApplyAirJump();
-        _playerData.TriggerJump = false;
-    }
-
-    private void SuppressOtherProcessors(KCC kcc)
-    {
-        kcc.SuppressProcessors<AirJumpProcessor>();
+        playerData.ApplyAirJump();
     }
     
+    private void SuppressOtherSameTypeProcessors(KCC kcc)
+    {
+        kcc.SuppressProcessors<WallJumpProcessor>();
+        
+    }
+
     private void SuppressOtherJumpProcessors(KCC kcc)
     {
         kcc.SuppressProcessors<NormalJumpProcessor>();
-        kcc.SuppressProcessors<WallJumpProcessor>();
+        kcc.SuppressProcessors<AirJumpProcessor>();
     }
 }

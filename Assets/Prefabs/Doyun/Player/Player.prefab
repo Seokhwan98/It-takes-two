@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grabPoint: {fileID: 3463485910896410541}
-  _distance: 2
+  _distance: 0.5
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &4065558687241209263
 MonoBehaviour:

@@ -73,6 +73,16 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
         {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_JUMP, true);
         }
+        
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Mouse0))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_LEFTCLICK, true);
+        }
+        
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Mouse1))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHTCLICK, true);
+        }
 
         // inputs.forward = transform.forward;
         
