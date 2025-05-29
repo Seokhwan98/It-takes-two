@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8469500152695076564}
   - component: {fileID: 49755165060025894}
   - component: {fileID: 4065558687241209263}
+  - component: {fileID: 8125606362699647856}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
   - {fileID: 8469500152695076564}
   - {fileID: 49755165060025894}
   - {fileID: 4065558687241209263}
+  - {fileID: 8125606362699647856}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &1367043984268377578
 Rigidbody:
@@ -110,7 +112,7 @@ MonoBehaviour:
     ColliderLayer: 0
     CollisionLayerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 65
     Features: -1
     InputAuthorityBehavior: 0
     StateAuthorityBehavior: 0
@@ -127,6 +129,8 @@ MonoBehaviour:
     - {fileID: 2543976751638466746, guid: 7e596d896f40e4647859b55760312af9, type: 3}
     - {fileID: 6229294081875787251, guid: 6257a766e8b5b44eea3fce350a107b12, type: 3}
     - {fileID: 8019625208958451984, guid: 27fc4fc1b3cd34a2ab7b22e8a71afa88, type: 3}
+    - {fileID: 2418592971245403583, guid: c761e89a982d246b9b1e24a9b59e2b6d, type: 3}
+    - {fileID: 5028345711319416416, guid: e50a0f90ba5484b90a009b45a0f07786, type: 3}
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75
     AntiJitterDistance: {x: 0.025, y: 0.01}
@@ -162,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grabPoint: {fileID: 3463485910896410541}
-  _distance: 0.5
+  _distance: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &4065558687241209263
 MonoBehaviour:
@@ -176,6 +180,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00198badb3ea8443ac24e8a1e3d5f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8125606362699647856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893172310950985558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebd539c4cc2a945338fa6ade04b7b65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _model: {fileID: 6663805192870114942}
+  _grabPoint: {fileID: 3463485910896410541}
 --- !u!1 &5542980068623808342
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +219,7 @@ Transform:
   m_GameObject: {fileID: 5542980068623808342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.7}
+  m_LocalPosition: {x: 0, y: 2, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

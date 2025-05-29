@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
 {
-    [SerializeField] private Vector3 _jumpImpulse = 10f * Vector3.up;
+    [SerializeField] private Vector3 _baseJumpImpulse = 10f * Vector3.up;
     
     private readonly float DefaultPriority = 2000;
     public override float GetPriority(KCC kcc) => DefaultPriority;
@@ -31,8 +31,9 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
 
     private void ApplyAirJump(KCCData data, PlayerData playerData)
     {
+        Vector3 jumpImpulse = JumpImpulseHelper.GetJumpImpulse(_baseJumpImpulse, playerData.PlayerScale);
         data.DynamicVelocity = Vector3.zero;
-        data.JumpImpulse = _jumpImpulse;
+        data.JumpImpulse = jumpImpulse;
         playerData.ApplyAirJump();
     }
     

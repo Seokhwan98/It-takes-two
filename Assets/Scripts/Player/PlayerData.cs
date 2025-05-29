@@ -1,4 +1,5 @@
 using System;
+using Fusion.Addons.KCC;
 using UnityEngine;
 
 public class PlayerData
@@ -7,9 +8,11 @@ public class PlayerData
     public int PlayerID { get; private set; }
     public bool Running { get; set; }
     public Grabbable Grabbable { get; set; }
+    public bool GrabbableBlocked { get; set; }
     public bool Wall { get; set; }
     public int AirJump { get; private set; }
     public EPlayerScale PlayerScale { get; private set; }
+    public Vector3 ExternalDelta { get; set; }
 
     public readonly int AirJumpPlayerID = 1;
     public readonly int ScalePlayerID = 2;
@@ -23,7 +26,6 @@ public class PlayerData
     {
         PlayerID = playerID;
         Running = false;
-        Grabbable = null;
         Wall = false;
         AirJump = playerID == AirJumpPlayerID ? 1 : 0;
         PlayerScale = EPlayerScale.Normal;
@@ -52,25 +54,29 @@ public class PlayerData
         AirJump = 1;
     }
 
-    public void Smaller()
+    public bool TrySmaller()
     {
-        if (PlayerID != ScalePlayerID) return;
+        if (PlayerID != ScalePlayerID || PlayerScale == EPlayerScale.Small) return false;
         
         PlayerScale = PlayerScale switch
         {
             EPlayerScale.Big => EPlayerScale.Normal,
             _ => EPlayerScale.Small
         };
+
+        return true;
     }
 
-    public void Bigger()
+    public bool TryBigger()
     {
-        if (PlayerID != ScalePlayerID) return;
+        if (PlayerID != ScalePlayerID || PlayerScale == EPlayerScale.Big) return false;
         
         PlayerScale = PlayerScale switch
         {
             EPlayerScale.Small => EPlayerScale.Normal,
             _ => EPlayerScale.Big
         };
+
+        return true;
     }
 }

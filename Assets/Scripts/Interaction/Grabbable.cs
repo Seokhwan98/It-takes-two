@@ -1,17 +1,20 @@
 using Fusion;
 using UnityEngine;
 
-public class Grabbable : NetworkBehaviour, IInteraction
+public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
 {
     protected Rigidbody _rb;
 
     protected GrabInteractor currentInteractor = null;
     [SerializeField] protected Vector3 localOffset = Vector3.zero;
+    [field: SerializeField] public float SpeedMultiplier { get; private set; } = 0.4f;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
+    
+    public virtual bool IsCollide(Vector3 direction) => false;
 
     public override void FixedUpdateNetwork()
     {
@@ -21,17 +24,27 @@ public class Grabbable : NetworkBehaviour, IInteraction
         }
     }
 
+    public virtual bool IsInteractable(GrabInteractor interactor) => true;
+    
+    public virtual bool TryInteract(GrabInteractor interactor)
+    {
+        if (HasStateAuthority && IsInteractable(interactor))
+        {
+            Interact(interactor);
+            return true;
+        }
+
+        return false;
+    }
+
     public virtual void Interact(GrabInteractor interactor)
     {
-        if (HasStateAuthority)
+        this.currentInteractor = interactor;
+        if (_rb != null)
         {
-            this.currentInteractor = interactor;
-            if (_rb != null)
-            {
-                _rb.isKinematic = true;
-            }
-            UpdateGrabPosition();
+            _rb.isKinematic = true;
         }
+        UpdateGrabPosition();
     }
 
     public virtual void FinishInteract(GrabInteractor interactor)
