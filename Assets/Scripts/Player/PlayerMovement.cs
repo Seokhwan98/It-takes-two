@@ -13,6 +13,10 @@ public class PlayerMovement : NetworkBehaviour {
     private GameObject _camInstance;
     private CinemachineOrbitalFollow _myOrbitalFollow;
     
+    private Animator _animator;
+    private bool _wasGrounded = true;
+    private bool _wasWall = false;
+    
     private KCC _cc;
     private Vector3 _dir;
     private float camSpeed = 20f;
@@ -38,6 +42,7 @@ public class PlayerMovement : NetworkBehaviour {
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
+        _animator = GetComponent<Animator>();
         
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         
@@ -103,7 +108,7 @@ public class PlayerMovement : NetworkBehaviour {
                 
                 NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
             }
-            
+
             _cc.SetInputDirection(_dir.normalized);
 
             if (_dir.sqrMagnitude > 0.001f)
@@ -111,7 +116,7 @@ public class PlayerMovement : NetworkBehaviour {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
             }
-
+            
             _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
             
             Debug.Log(_canJump);
@@ -130,14 +135,41 @@ public class PlayerMovement : NetworkBehaviour {
             }
         }
     }
-        public override void Render()
+    
+    public override void Render()
     {
+        UpdateAnimator();
+        
         if (_myOrbitalFollow == null) return;
         smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
         smoothPitch = Mathf.Lerp(smoothPitch, NetworkPitch, Time.deltaTime * smoothSpeed);
 
         _myOrbitalFollow.VerticalAxis.Value = smoothYaw;
         _myOrbitalFollow.HorizontalAxis.Value = smoothPitch;
+    }
+    
+    private void UpdateAnimator()
+    {
+        Vector3 moveSpeed = _cc.Data.RealVelocity;
+        moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
+        float speed = moveSpeed.magnitude;
+        _animator.SetFloat("speed", speed);
+
+        bool isGrounded = _cc.Data.IsGrounded;
+        _animator.SetBool("isGrounded", isGrounded);
+        
+        bool isWall = _playerData.Wall;
+        _animator.SetBool("isWall", isWall);
+        
+        if ((!isGrounded && _wasGrounded) || (!isWall && _wasWall))
+        {
+            _animator.SetTrigger("jump");
+        }
+        _wasGrounded = isGrounded;
+        _wasWall = isWall;
+        
+        bool isGrabbing = _playerData.Grabbable != null;
+        _animator.SetBool("isGrabbing", isGrabbing);
     }
     
     public void TryBindMyCamera()
