@@ -9,9 +9,21 @@ public class PlayerMovement : NetworkBehaviour {
     [SerializeField] private Transform cameraPivot;
     
     private GameObject _camInstance;
+    private CinemachineOrbitalFollow _myOrbitalFollow;
     
     private KCC _cc;
     private Vector3 _dir;
+    private float camSpeed = 20f;
+    
+    private float smoothYaw;
+    private float smoothPitch;
+    private float smoothSpeed = 15f;
+    
+    [Networked] 
+    public float NetworkYaw { get; set; }
+    
+    [Networked] 
+    public float NetworkPitch { get; set; }
     
     private PlayerData _playerData;
     public PlayerData PlayerData => _playerData;
@@ -21,17 +33,30 @@ public class PlayerMovement : NetworkBehaviour {
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
-
-        if (Object.HasInputAuthority) {
-            _camInstance = Instantiate(freeLookPrefab);
-            var freeLook = _camInstance.GetComponent<CinemachineCamera>();
-            
-            freeLook.Follow = cameraPivot;
-            freeLook.LookAt = cameraPivot;
-        }
         
         int playerId = Runner.LocalPlayer.PlayerId;
         _playerData = new PlayerData(/*playerId*/1);
+        
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        
+        if (Runner.GameMode is GameMode.Shared)
+        {
+            if (HasStateAuthority) 
+            {
+                _camInstance = Instantiate(freeLookPrefab);
+                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
+            
+                freeLook.Follow = cameraPivot;
+                freeLook.LookAt = cameraPivot;
+            }
+        }
+        
+        else if (Runner.GameMode is GameMode.Client or GameMode.Host)
+        {
+            if (currentScene == "RoomScene") return;
+            if(HasInputAuthority)  TryBindMyCamera();
+            else TryBindOtherCamera();
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -44,8 +69,8 @@ public class PlayerMovement : NetworkBehaviour {
         
         if (GetInput<MyNetworkInput>(out var input))
         {
-            Vector3 camForward = input.forward;
-            Vector3 camRight = input.right;
+            Vector3 camForward = _camInstance.transform.forward;
+            Vector3 camRight = _camInstance.transform.right;
             camForward.y = 0;
             camRight.y = 0;
             camForward.Normalize();
@@ -57,6 +82,14 @@ public class PlayerMovement : NetworkBehaviour {
             else if (input.IsDown(MyNetworkInput.BUTTON_BACKWARD)) _dir -= camForward;
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
+            
+            if (HasStateAuthority)
+            {
+                NetworkYaw -= input.LookYaw * camSpeed;
+                NetworkPitch += input.LookPitch * camSpeed;
+                
+                NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
+            }
             
             _cc.SetInputDirection(_dir.normalized);
 
@@ -78,6 +111,66 @@ public class PlayerMovement : NetworkBehaviour {
             if (input.IsDown(MyNetworkInput.BUTTON_JUMP))
             {
                 _playerData.TriggerJump = true;
+            }
+        }
+    }
+    
+    public override void Render()
+    {
+        if (_myOrbitalFollow == null) return;
+        smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
+        smoothPitch = Mathf.Lerp(smoothPitch, NetworkPitch, Time.deltaTime * smoothSpeed);
+
+        _myOrbitalFollow.VerticalAxis.Value = smoothYaw;
+        _myOrbitalFollow.HorizontalAxis.Value = smoothPitch;
+    }
+    
+    public void TryBindMyCamera()
+    {
+        if (HasInputAuthority)
+        {
+            var MyChannel = (int)Object.InputAuthority.PlayerId;
+
+            var camSet = CameraHolder.Instance.GetCameraSet(MyChannel);
+
+            if (camSet != null)
+            {
+                camSet.Camera.Follow = cameraPivot;
+                camSet.Camera.LookAt = cameraPivot;
+
+                _camInstance = camSet.Camera.gameObject;
+
+                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+
+                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                if (axisController != null)
+                {
+                    axisController.enabled = false;
+                }
+            }
+        }
+    }
+    
+    public void TryBindOtherCamera()
+    {
+        if(!HasInputAuthority)
+        {
+            var MyChannel = (int)Object.InputAuthority.PlayerId == 1 ? 1 : 2;
+            var camSet = CameraHolder.Instance.GetCameraSet(MyChannel);
+            if (camSet != null)
+            {
+                camSet.Camera.Follow = cameraPivot;
+                camSet.Camera.LookAt = cameraPivot;
+                    
+                _camInstance = camSet.Camera.gameObject;
+                    
+                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+                    
+                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                if (axisController != null)
+                {
+                    axisController.enabled = false;
+                }
             }
         }
     }

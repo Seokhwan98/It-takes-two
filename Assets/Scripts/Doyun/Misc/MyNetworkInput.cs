@@ -15,8 +15,8 @@ public struct MyNetworkInput : INetworkInput
     
     public NetworkButtons Buttons;
 
-    public Vector3 forward;
-    public Vector3 right;
+    public float LookYaw;
+    public float LookPitch;
 
     public bool IsUp(int button) {
         return Buttons.IsSet(button) == false;

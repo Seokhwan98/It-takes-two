@@ -5,30 +5,28 @@ public class NormalJumpProcessor : KCCProcessor, ISetDynamicVelocity
 {
     [SerializeField] private Vector3 _jumpImpulse = 10f * Vector3.up;
     
-    private PlayerData _playerData;
-    
     private readonly float DefaultPriority = 2003;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
     {
-        _playerData ??= kcc.GetComponent<PlayerMovement>().PlayerData;
+        var _playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
         
-        Debug.Log(_playerData.TriggerJump);
+        // Debug.Log(_playerData.TriggerJump);
         if (!_playerData.TriggerJump) return;
         
         Debug.Log("Normal");
         
         if (data.IsGrounded)
         {
-            ApplyJump(data);
+            ApplyJump(data, _playerData);
             SuppressOtherJumpProcessors(kcc);
         }
         
         SuppressOtherProcessors(kcc);
     }
 
-    private void ApplyJump(KCCData data)
+    private void ApplyJump(KCCData data, PlayerData _playerData)
     {
         data.JumpImpulse = _jumpImpulse;
         _playerData.TriggerJump = false;

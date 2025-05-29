@@ -5,7 +5,7 @@ using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
 
-public class ConnectionCallbacks : INetworkRunnerCallbacks {
+public class CustomCallbacks : INetworkRunnerCallbacks {
     public Action<NetworkRunner, PlayerRef> ActionOnPlayerJoined;
     public Action<NetworkRunner, PlayerRef> ActionOnPlayerLeft;
     public Action<NetworkRunner, ShutdownReason> ActionOnShutdown;
@@ -35,8 +35,8 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
     {
         var inputs = new MyNetworkInput();
 
-        inputs.LookYaw = InputTracker.Instance.LookYaw;
-        inputs.LookPitch = InputTracker.Instance.LookPitch;
+		// inputs.LookYaw = InputBuffer.Instance.LookYaw;
+		// inputs.LookPitch = InputBuffer.Instance.LookPitch;
         
         if (Input.GetKey(KeyCode.W)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_FORWARD, true);
@@ -54,31 +54,23 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHT, true);
         }
         
-        if (InputTracker.Instance.GetKeyDown(KeyCode.E)) {
-            Debug.Log("E");
+        if (Input.GetKey(KeyCode.E)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_INTERACT, true);
         }
         
-        if (InputTracker.Instance.GetKeyDown(KeyCode.Q)) {
-            Debug.Log("Q");
+        if (Input.GetKey(KeyCode.Q)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_END_INTERACT, true);
         }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            inputs.Buttons.Set(MyNetworkInput.BUTTON_RUN, true);
-        }
         
-        if (InputTracker.Instance.GetKeyDown(KeyCode.Space))
-        {
-            inputs.Buttons.Set(MyNetworkInput.BUTTON_JUMP, true);
-        }
-
-        // inputs.forward = transform.forward;
+        // if (Input.GetMouseButton(0)) {
+        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
+        // }
         
+        // 마우스 입력 (회전 값 추가)
+        // inputs.LookYaw = Input.GetAxis("Mouse X");
+        // inputs.LookPitch = Input.GetAxis("Mouse Y");
+        //
         input.Set(inputs);
-
-        InputTracker.Instance.Clear();
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
     public void OnConnectedToServer(NetworkRunner runner) {}

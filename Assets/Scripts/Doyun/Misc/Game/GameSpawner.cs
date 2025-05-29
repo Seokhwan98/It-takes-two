@@ -20,6 +20,12 @@ public class GameSpawner : NetworkBehaviour {
             var netObj = Runner.Spawn(_playerPrefab, pos, Quaternion.identity, playerRef);
             Runner.SetPlayerObject(playerRef, netObj);
             _playerAvatars[playerRef] = netObj;
+            
+            foreach (var kvp in _playerAvatars)
+            {
+                var playerMovement = kvp.Value.GetComponent<PlayerMovement>();
+                playerMovement?.TryBindOtherCamera();
+            }
         }
     }
 }

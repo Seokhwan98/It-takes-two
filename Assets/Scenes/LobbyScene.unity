@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 215226233}
   - component: {fileID: 215226234}
   m_Layer: 0
-  m_Name: Portal
+  m_Name: Portal1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65772e4994349e44af9235e540510b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _connectionData: {fileID: 0}
+  _connectionData: {fileID: 11400000, guid: 4df3e805cba901449ad4a8b31bd700fe, type: 2}
 --- !u!54 &215226234
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -644,7 +644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65772e4994349e44af9235e540510b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _connectionData: {fileID: 0}
+  _connectionData: {fileID: 11400000, guid: 4df3e805cba901449ad4a8b31bd700fe, type: 2}
 --- !u!4 &941912210
 Transform:
   m_ObjectHideFlags: 0
@@ -1145,7 +1145,7 @@ GameObject:
   - component: {fileID: 1440255180}
   - component: {fileID: 1440255179}
   m_Layer: 0
-  m_Name: Portal
+  m_Name: Portal2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65772e4994349e44af9235e540510b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _connectionData: {fileID: 0}
+  _connectionData: {fileID: 11400000, guid: b85df6a44fe038444af2ad36d5a874b2, type: 2}
 --- !u!4 &1440255181
 Transform:
   m_ObjectHideFlags: 0

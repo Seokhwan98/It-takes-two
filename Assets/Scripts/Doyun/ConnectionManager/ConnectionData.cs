@@ -4,7 +4,7 @@ using UnityEngine;
 public class ConnectionData : ScriptableObject
 {
     public enum ConnectionTarget { Lobby, Game, }
-    public enum ConnectionID { MainLobby, FirstGame, }
+    public enum ConnectionID { MainLobby, FirstGame, SecondGame }
     
     public string Name;
     [Space]

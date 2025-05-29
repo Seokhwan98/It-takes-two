@@ -15,8 +15,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Doyun/RoomScene.unity
     guid: 1153041a01c32ba4898bfbf586bbce27
   - enabled: 1
-    path: Assets/Scenes/Doyun/GameScene.unity
+    path: Assets/Scenes/Doyun/GameScene1.unity
     guid: 234e8b3eab272944a90bb50aca8b9b74
+  - enabled: 1
+    path: Assets/Scenes/Doyun/GameScene2.unity
+    guid: a590765cbf8227b489174fca250fb7da
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

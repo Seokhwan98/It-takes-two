@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Fusion;
 using UnityEngine;
 
@@ -8,7 +10,15 @@ public class RoomHandler : NetworkBehaviour
     public void OnClickStart()
     {
         Runner.SessionInfo.IsOpen = false;
-        Runner.LoadScene(SceneRef.FromIndex(3));
+        
+        int targetSceneIndex = Runner.name switch
+        {
+            "FirstGame" => 3,
+            "SecondGame" => 4,
+            _ => throw new InvalidOperationException($"Unknown session name: {Runner.SessionInfo.Name}")
+        };
+        
+        Runner.LoadScene(SceneRef.FromIndex(targetSceneIndex));
     }
 
     public void OnClickExit()
