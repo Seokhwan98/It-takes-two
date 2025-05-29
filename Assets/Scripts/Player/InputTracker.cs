@@ -10,6 +10,8 @@ public class InputTracker : MonoBehaviour
     public static InputTracker Instance;
 
     private List<KeyCode> _keys = new();
+    public float LookYaw { get; private set; }
+    public float LookPitch { get; private set; }
     
     private void Awake()
     {
@@ -44,6 +46,9 @@ public class InputTracker : MonoBehaviour
     
     public void Update()
     {
+        LookYaw = Input.GetAxis("Mouse Y");
+        LookPitch = Input.GetAxis("Mouse X");
+        
         foreach (var key in _keys)
         {
             if (Input.GetKeyDown(key))

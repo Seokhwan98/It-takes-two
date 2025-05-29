@@ -41,7 +41,7 @@ public class CustomUIManager : MonoBehaviour
     {
         if (CustomizationManager.Instance.HasSavedData())
         {
-            popupUI.Show("Already have data.\nOverwrite?", () =>
+            popupUI.Show("Already have data\nWant to Overwrite?", () =>
             {
                 CustomizationManager.Instance.SaveCustomization();
             });
@@ -56,7 +56,7 @@ public class CustomUIManager : MonoBehaviour
     {
         if (CustomizationManager.Instance.HasSavedData())
         {
-            popupUI.Show("Reset customization?\nLoad saved data?", () =>
+            popupUI.Show("Load saved data?\nIt will Reset Data", () =>
             {
                 CustomizationManager.Instance.LoadCustomization();
                 foreach (var line in partLines)
