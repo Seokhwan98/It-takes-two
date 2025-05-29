@@ -1897,7 +1897,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousScreen: {fileID: 0}
   isModal: 0
-  _connectionData: {fileID: 11400000, guid: 4df3e805cba901449ad4a8b31bd700fe, type: 2}
 --- !u!225 &1201161256
 CanvasGroup:
   m_ObjectHideFlags: 0
