@@ -8,7 +8,6 @@ public class ChatUI : UIScreen
     public TMP_InputField inputField;
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject messagePrefab;
-    [SerializeField] private ChatManager _chatManager;
     
     private Coroutine _defocusCoroutine;
 
@@ -40,15 +39,7 @@ public class ChatUI : UIScreen
         }
         
         Canvas.ForceUpdateCanvases();
-        var sv = content.GetComponentInParent<ScrollRect>();
-        sv.verticalNormalizedPosition = 0f;
-
-        
-        if (_defocusCoroutine != null)
-        {
-            StopCoroutine(_defocusCoroutine);
-        }
-        _defocusCoroutine = StartCoroutine(DefocusProcess());
+        Focus();
     }
 
     
