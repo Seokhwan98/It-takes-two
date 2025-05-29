@@ -18,7 +18,7 @@ public class InterfaceManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
