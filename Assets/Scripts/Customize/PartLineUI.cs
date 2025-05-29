@@ -14,13 +14,11 @@ public class PartLineUI : MonoBehaviour
 
     private List<MeshPartOption> options;
     private int currentIndex = 0;
-    private CustomizationManager customizationManager;
 
-    public void Init(PartType type, List<MeshPartOption> options, CustomizationManager manager)
+    public void Init(PartType type, List<MeshPartOption> options)
     {
         partType = type;
         partNameText.text = type.ToString();
-        customizationManager = manager;
 
         this.options = options;
         currentIndex = 0;
@@ -33,7 +31,7 @@ public class PartLineUI : MonoBehaviour
     
     public void RefreshUI()
     {
-        if (customizationManager.CurrentSelections.TryGetValue(partType, out var selectedOption))
+        if (CustomizationManager.Instance.CurrentSelections.TryGetValue(partType, out var selectedOption))
         {
             currentIndex = options.FindIndex(opt => opt.id == selectedOption.id);
             if (currentIndex == -1) currentIndex = 0;
@@ -62,7 +60,7 @@ public class PartLineUI : MonoBehaviour
 
     private void Apply()
     {
-        customizationManager.ApplyOption(partType, options[currentIndex].id);
+        CustomizationManager.Instance.ApplyOption(partType, options[currentIndex].id);
         UpdateUI();
     }
 

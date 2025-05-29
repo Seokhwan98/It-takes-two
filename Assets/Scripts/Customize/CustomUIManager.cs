@@ -5,12 +5,11 @@ using UnityEngine.UI;
 
 public class CustomUIManager : MonoBehaviour
 {
-    [SerializeField] private CustomizationManager customizationManager;
-    
-    [Header("각 PartType별 UI 라인 직접 연결")]
     [SerializeField] private List<PartLineUI> partLines;
     [SerializeField] private Button saveButton;
     [SerializeField] private Button loadButton;
+
+    [SerializeField] private SaveLoadPopupUI popupUI;
 
     private void Start()
     {
@@ -19,18 +18,18 @@ public class CustomUIManager : MonoBehaviour
             if (line == null) continue;
 
             var partType = line.partType;
-            if (!customizationManager.PartOptions.TryGetValue(partType, out var options))
+            if (!CustomizationManager.Instance.PartOptions.TryGetValue(partType, out var options))
             {
                 Debug.LogWarning($"[CustomizationUI] 옵션 없음: {partType}");
                 continue;
             }
 
-            line.Init(partType, options, customizationManager);
+            line.Init(partType, options);
         }
         
-        if (customizationManager.HasSavedData())
+        if (CustomizationManager.Instance.HasSavedData())
         {
-            customizationManager.LoadCustomization();
+            CustomizationManager.Instance.LoadCustomization();
             foreach (var line in partLines)
             {
                 line.RefreshUI();
@@ -40,17 +39,37 @@ public class CustomUIManager : MonoBehaviour
     
     public void OnSaveClicked()
     {
-        customizationManager.SaveCustomization();
+        if (CustomizationManager.Instance.HasSavedData())
+        {
+            popupUI.Show("Already have data.\nOverwrite?", () =>
+            {
+                CustomizationManager.Instance.SaveCustomization();
+            });
+        }
+        else
+        {
+            CustomizationManager.Instance.SaveCustomization();
+        }
     }
 
     public void OnLoadClicked()
     {
-        customizationManager.LoadCustomization();
-        foreach (var line in partLines)
+        if (CustomizationManager.Instance.HasSavedData())
         {
-            line.RefreshUI();
-        }
+            popupUI.Show("Reset customization?\nLoad saved data?", () =>
+            {
+                CustomizationManager.Instance.LoadCustomization();
+                foreach (var line in partLines)
+                {
+                    line.RefreshUI();
+                }
 
-        Debug.Log("[CustomizationUI] 저장된 커스터마이징 로드 및 UI 반영 완료");
+                Debug.Log("[CustomizationUI] 저장된 커스터마이징 로드 및 UI 반영 완료");
+            });
+        }
+        else
+        {
+            Debug.LogWarning("[CustomizationUI] 저장된 데이터가 없습니다.");
+        }
     }
 }

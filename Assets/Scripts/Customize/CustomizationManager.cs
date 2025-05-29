@@ -11,6 +11,8 @@ public class PartRendererEntry
 
 public class CustomizationManager : MonoBehaviour
 {
+    public static CustomizationManager Instance { get; private set; }
+    
     public Dictionary<PartType, List<MeshPartOption>> PartOptions { get; private set; }
     public Dictionary<PartType, SkinnedMeshRenderer> PartRenderers;
     public Dictionary<PartType, MeshPartOption> CurrentSelections;
@@ -21,6 +23,16 @@ public class CustomizationManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
         storage = new LocalCustomizationStorage();
         
         InitializeRendererMap();
@@ -29,6 +41,7 @@ public class CustomizationManager : MonoBehaviour
 
     private void Start()
     {
+        if (HasSavedData()) return;
         ApplyDefaultAll();
     }
 
@@ -117,6 +130,7 @@ public class CustomizationManager : MonoBehaviour
         {
             if (Enum.TryParse(kvp.Key, out PartType partType))
             {
+                Debug.Log($"[Load] {partType}, {kvp.Value}");
                 ApplyOption(partType, kvp.Value);
             }
             else
@@ -130,7 +144,7 @@ public class CustomizationManager : MonoBehaviour
 
     public bool HasSavedData()
     {
-        return storage.HasData(); // storage가 ICustomizationStorage
+        return storage.HasData();
     }
 
 
