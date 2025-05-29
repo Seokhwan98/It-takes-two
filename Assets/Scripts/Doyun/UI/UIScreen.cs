@@ -21,15 +21,18 @@ public class UIScreen : MonoBehaviour {
     public void Defocus()
     {
         gameObject.SetActive(false);
+        InterfaceManager.Instance.MouseDisable();
+        activeScreen = null;
     }
     
-    public void Focus()
+    public virtual void Focus()
     {
         if (activeScreen == this && activeScreen.gameObject.activeInHierarchy)
             return;
         
         Group.interactable = true;
         gameObject.SetActive(true);
+        InterfaceManager.Instance.MouseEnable();
         activeScreen = this;
     }
 }

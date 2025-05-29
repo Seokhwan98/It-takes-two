@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class GameSpawner : NetworkBehaviour {
+public class GameStarter : NetworkBehaviour {
     [SerializeField] private NetworkPrefabRef _playerPrefab;
 
     private Dictionary<PlayerRef, NetworkObject> _playerAvatars;
 
     public override void Spawned()
     {
+        InterfaceManager.Instance.MouseDisable();
+        
         if (Object.HasStateAuthority == false) return;
         _playerAvatars = new Dictionary<PlayerRef, NetworkObject>();
     
