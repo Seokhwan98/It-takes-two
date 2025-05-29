@@ -22,9 +22,10 @@ public class UIScreen : MonoBehaviour {
     {
         gameObject.SetActive(false);
         InterfaceManager.Instance.MouseDisable();
+        activeScreen = null;
     }
     
-    public void Focus()
+    public virtual void Focus()
     {
         if (activeScreen == this && activeScreen.gameObject.activeInHierarchy)
             return;
