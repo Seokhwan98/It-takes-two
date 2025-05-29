@@ -156,7 +156,7 @@ public class ConnectionManager : MonoBehaviour
     {
         yield return new WaitUntil(() => SceneManager.GetActiveScene().name == "RoomScene");
         
-        var spawner = FindAnyObjectByType<RoomSpawner>();
+        var spawner = FindAnyObjectByType<RoomStarter>();
         
         if (spawner != null)
         {

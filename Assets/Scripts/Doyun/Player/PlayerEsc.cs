@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerEsc : NetworkBehaviour
 {
     private GameObject _escUI;
+    
     private EscUI _escUIComponent => _escUI.GetComponent<EscUI>();
 
     private void Awake()
