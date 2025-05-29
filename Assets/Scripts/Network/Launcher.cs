@@ -6,6 +6,7 @@ public class Launcher : MonoBehaviour
 {
     [SerializeField] private GameObject _startButton;
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text _dot;
     [SerializeField] private ConnectionData _initialConnection;
 
     public void Launch()
@@ -14,7 +15,8 @@ public class Launcher : MonoBehaviour
 
             _text.text = "Connecting to Lobby";
             _text.gameObject.SetActive(true);
-
+            _dot.gameObject.SetActive(true);
+            
             _ = ConnectionManager.Instance.ConnectToRunner(_initialConnection, onFailed: OnConnectionFailed);
     }
 
