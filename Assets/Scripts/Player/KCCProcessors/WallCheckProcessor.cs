@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Fusion.Addons.KCC;
 using UnityEngine;
 
@@ -9,31 +7,31 @@ public class WallCheckProcessor : KCCProcessor, ISetDynamicVelocity
     [SerializeField] private float _castDistance = 1f;
     [SerializeField] private LayerMask _wallLayer;
     
-    private PlayerData _playerData;
-    
     private readonly float DefaultPriority = 2002;
     public override float GetPriority(KCC kcc) => DefaultPriority;
 
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
     {
-        _playerData ??= kcc.GetComponent<PlayerMovement>().PlayerData;
+        var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
+
+        if (data.IsGrounded) return;
 
         bool result = Physics.SphereCast(
             kcc.transform.position + Vector3.up,
             0.2f,
             kcc.transform.forward,
             out RaycastHit hit,
-            0.5f,
+            _castDistance,
             _wallLayer
         );
 
-        if (result && Vector3.Angle(Vector3.up, hit.normal) > data.MaxGroundAngle)
+        if (result && data.DynamicVelocity.y < 0.001f && Vector3.Angle(Vector3.up, hit.normal) > data.MaxGroundAngle)
         {
-            _playerData.WallJump = true;
+            playerData.Wall = true;
         }
         else
         {
-            _playerData.WallJump = false;
+            playerData.Wall = false;
         }
 }
 
