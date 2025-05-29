@@ -13,6 +13,9 @@ public class PlayerMovement : NetworkBehaviour {
     private KCC _cc;
     private Vector3 _dir;
     
+    private PlayerData _playerData;
+    public PlayerData PlayerData => _playerData;
+    
     [Networked] private TickTimer _moveTimer { get; set; }
 
     public override void Spawned()
@@ -26,6 +29,9 @@ public class PlayerMovement : NetworkBehaviour {
             freeLook.Follow = cameraPivot;
             freeLook.LookAt = cameraPivot;
         }
+        
+        int playerId = Runner.LocalPlayer.PlayerId;
+        _playerData = new PlayerData(/*playerId*/1);
     }
 
     public override void FixedUpdateNetwork()
@@ -58,6 +64,20 @@ public class PlayerMovement : NetworkBehaviour {
             {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
+            }
+
+            if (input.IsDown(MyNetworkInput.BUTTON_RUN))
+            {
+                _playerData.Running = true;
+            }
+            else
+            {
+                _playerData.Running = false;
+            }
+            
+            if (input.IsDown(MyNetworkInput.BUTTON_JUMP))
+            {
+                _playerData.TriggerJump = true;
             }
         }
     }
