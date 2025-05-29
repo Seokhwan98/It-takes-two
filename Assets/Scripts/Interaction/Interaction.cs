@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public interface IInteraction
+public interface IInteraction<T> where T : Interactor
 {
-    public void Interact(Interactor interactor) {  }
-    public void FinishInteract(Interactor interactor) {  }
+    public bool IsInteractable(T interactor);
+    public bool TryInteract(T interactor);
+    public void Interact(T interactor);
+    public void FinishInteract(T interactor);
 }

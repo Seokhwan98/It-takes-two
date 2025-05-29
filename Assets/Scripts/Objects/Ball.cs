@@ -1,8 +1,12 @@
+using System.Numerics;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public class Ball : Grabbable
 {
     [SerializeField] private Transform _model;
+    [SerializeField] private float _castRadius;
+    [SerializeField] private float _castDistance;
     
     private Vector3 _lastPosition;
     private bool _roll;
@@ -11,14 +15,46 @@ public class Ball : Grabbable
     {
         _rb = GetComponent<Rigidbody>();
     }
+
+    public override bool IsCollide(Vector3 direction)
+    {
+        var hits = Physics.SphereCastAll(transform.position, _castRadius, direction, _castDistance);
+        
+        float minAngle = 180f;
+        foreach (var hit in hits)
+        {
+            if (hit.collider.gameObject == this.gameObject) continue;
+            minAngle = Mathf.Min(minAngle, Vector3.Angle(Vector3.up, hit.normal));
+        }
+
+        Debug.Log(minAngle);
+        return minAngle < 120f;
+    }
+    
+    public override bool IsInteractable(GrabInteractor interactor)
+    {
+        var playerMovement = interactor.GetComponent<PlayerMovement>();
+        var playerData = playerMovement.PlayerData;
+        return playerData.PlayerScale == EPlayerScale.Big;
+    }
+    
+    public override bool TryInteract(GrabInteractor interactor)
+    {
+        Debug.Log(HasStateAuthority);
+        Debug.Log(IsInteractable(interactor));
+        if (HasStateAuthority && IsInteractable(interactor))
+        {
+            Interact(interactor);
+            return true;
+        }
+
+        return false;
+    }
     
     public override void Interact(GrabInteractor interactor)
     {
-        if (HasStateAuthority)
-        {
-            base.Interact(interactor);
-            _lastPosition = transform.position;
-        }
+        base.Interact(interactor);
+        _lastPosition = transform.position;
     }
     
     public override void FinishInteract(GrabInteractor interactor)

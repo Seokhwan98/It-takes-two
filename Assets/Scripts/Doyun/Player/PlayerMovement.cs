@@ -21,12 +21,15 @@ public class PlayerMovement : NetworkBehaviour {
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
     
-    private Action _playJumpTimer; 
+    private Action _playJumpTimer;
+
+    private void Awake()
+    {
+        _cc = GetComponent<KCC>();
+    }
 
     public override void Spawned()
     {
-        _cc = GetComponent<KCC>();
-
         if (Object.HasInputAuthority) {
             _camInstance = Instantiate(freeLookPrefab);
             var freeLook = _camInstance.GetComponent<CinemachineCamera>();
@@ -36,7 +39,7 @@ public class PlayerMovement : NetworkBehaviour {
         }
         
         int playerId = Runner.LocalPlayer.PlayerId;
-        _playerData = new PlayerData(/*playerId*/1);
+        _playerData = new PlayerData(/*playerId*/2);
 
         _playJumpTimer = () => _jumpTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         _playerData.JumpTrigger.OnShot += _playJumpTimer;
@@ -65,6 +68,7 @@ public class PlayerMovement : NetworkBehaviour {
             camForward.y = 0;
             camRight.y = 0;
             camForward.Normalize();
+            
             camRight.Normalize();
             
             _dir = Vector3.zero;
@@ -74,29 +78,39 @@ public class PlayerMovement : NetworkBehaviour {
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
             
+            Debug.Log(_playerData.Grabbable?.IsCollide(_dir.normalized));
+            if (_playerData.Grabbable && _playerData.Grabbable.IsCollide(_dir.normalized))
+            {
+                _dir = Vector3.zero;
+            }
+            
             _cc.SetInputDirection(_dir.normalized);
 
-            if (_dir.sqrMagnitude > 0.001f)
+            if (_playerData.Grabbable == null && _dir.sqrMagnitude > 0.001f)
             {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
             }
 
             _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
+
+            if (_playerData.Grabbable == null)
+            {
+                if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
+                {
+                    _playerData.JumpTrigger.Ready();
+                }
             
-            Debug.Log(_canJump);
-            if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
-            {
-                _playerData.JumpTrigger.Ready();
-            }
-            
-            if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
-            {
-                _playerData.SmallerTrigger.Ready();
-            }
-            else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
-            {
-                _playerData.BiggerTrigger.Ready();
+                if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
+                {
+                    _playerData.SmallerTrigger.Ready();
+                    _cc.ExecuteStage<ISetScale>();
+                }
+                else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
+                {
+                    _playerData.BiggerTrigger.Ready();
+                    _cc.ExecuteStage<ISetScale>();
+                }
             }
         }
     }

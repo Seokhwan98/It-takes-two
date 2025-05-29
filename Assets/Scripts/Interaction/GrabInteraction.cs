@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Fusion;
 using UnityEngine;
 
@@ -7,9 +8,19 @@ public class GrabInteractor : Interactor
     [SerializeField] private Transform _grabPoint;
     [SerializeField] private float _distance = 2f;
     [SerializeField] private Color _gizmoColor = Color.red;
-    private Grabbable _grabbable;
+    
+    private PlayerData _playerData;
     
     public Transform GrabPoint => _grabPoint;
+
+    private IEnumerator Start()
+    {
+        var playerMovement = GetComponent<PlayerMovement>();
+        if (playerMovement == null) yield break;
+        
+        yield return new WaitUntil(() => playerMovement.PlayerData != null);
+        _playerData = playerMovement.PlayerData;
+    }
     
     public override void FixedUpdateNetwork()
     {
@@ -18,25 +29,29 @@ public class GrabInteractor : Interactor
             // Grab
             if (data.IsDown(MyNetworkInput.BUTTON_INTERACT))
             {
-                if (_grabbable != null) return;
+                if (_playerData.Grabbable != null) return;
                 
                 if (Physics.Raycast(_grabPoint.position, _grabPoint.forward, out RaycastHit hit, _distance))
                 {
                     var grabbable = hit.collider.GetComponent<Grabbable>();
                     if (grabbable)
                     {
-                        grabbable.Interact(this);
-                        _grabbable = grabbable;
+                        Debug.Log(grabbable.gameObject.name);
+                        bool result = grabbable.TryInteract(this);
+                        if (result)
+                        {
+                            _playerData.Grabbable = grabbable;
+                        }
                     }
                 }
             }
             
             if (data.IsDown(MyNetworkInput.BUTTON_END_INTERACT))
             {
-                if (_grabbable == null) return;
+                if (_playerData.Grabbable == null) return;
                 
-                _grabbable.FinishInteract(this);
-                _grabbable = null;
+                _playerData.Grabbable.FinishInteract(this);
+                _playerData.Grabbable = null;
             }
         }
     }

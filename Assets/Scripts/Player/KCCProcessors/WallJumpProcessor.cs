@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WallJumpProcessor : KCCProcessor, ISetDynamicVelocity
 {
-    [SerializeField] private Vector3 _jumpImpulse = 10f * Vector3.up;
+    [SerializeField] private Vector3 _baseJumpImpulse = 10f * Vector3.up;
     
     private readonly float DefaultPriority = 2001;
     public override float GetPriority(KCC kcc) => DefaultPriority;
@@ -34,10 +34,12 @@ public class WallJumpProcessor : KCCProcessor, ISetDynamicVelocity
 
     private void ApplyWallJump(KCC kcc, KCCData data, PlayerData playerData)
     {
+        Vector3 jumpImpulse = JumpImpulseHelper.GetJumpImpulse(_baseJumpImpulse, playerData.PlayerScale);
+        
         Debug.Log("Wall");
         playerData.Wall = false;
         data.DynamicVelocity = Vector3.zero;
-        data.JumpImpulse = kcc.transform.rotation * _jumpImpulse;
+        data.JumpImpulse = kcc.transform.rotation * jumpImpulse;
     }
 
     private void SuppressOtherSameTypeProcessors(KCC kcc)
