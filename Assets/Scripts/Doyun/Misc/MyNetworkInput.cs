@@ -9,6 +9,11 @@ public struct MyNetworkInput : INetworkInput
     public const int BUTTON_RIGHT = 3;
     public const int BUTTON_INTERACT = 4;
     public const int BUTTON_END_INTERACT = 5;
+    public const int BUTTON_JUMP = 6;
+    public const int BUTTON_RUN = 7;
+    public const int BUTTON_LEFTCLICK = 8;
+    public const int BUTTON_RIGHTCLICK = 9;
+    
     
     public NetworkButtons Buttons;
 

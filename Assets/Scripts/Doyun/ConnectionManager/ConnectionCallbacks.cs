@@ -59,21 +59,39 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHT, true);
         }
         
-        if (Input.GetKey(KeyCode.E)) {
+        if (InputTracker.Instance.GetKeyDown(KeyCode.E)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_INTERACT, true);
         }
         
-        if (Input.GetKey(KeyCode.Q)) {
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Q)) {
             inputs.Buttons.Set(MyNetworkInput.BUTTON_END_INTERACT, true);
         }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_RUN, true);
+        }
         
-        // if (Input.GetMouseButton(0)) {
-        //     inputs.Buttons.Set(MyNetworkInput.BUTTON_FIRE, true);
-        // }
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Space))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_JUMP, true);
+        }
+        
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Mouse0))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_LEFTCLICK, true);
+        }
+        
+        if (InputTracker.Instance.GetKeyDown(KeyCode.Mouse1))
+        {
+            inputs.Buttons.Set(MyNetworkInput.BUTTON_RIGHTCLICK, true);
+        }
 
         // inputs.forward = transform.forward;
         
         input.Set(inputs);
+
+        InputTracker.Instance.Clear();
     }
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) {}
     public void OnConnectedToServer(NetworkRunner runner) {}

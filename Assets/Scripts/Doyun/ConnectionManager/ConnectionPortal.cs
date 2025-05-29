@@ -3,6 +3,7 @@ using Fusion;
 
 public class ConnectionPortal : MonoBehaviour
 {
+    [SerializeField] private ConnectionData _connectionData;
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponentInParent<NetworkObject>().HasInputAuthority)

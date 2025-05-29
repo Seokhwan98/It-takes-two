@@ -164,7 +164,8 @@ namespace Fusion.Addons.KCC
 			}
 
 			float   checkRadius   = kcc.Settings.Radius - kcc.Settings.Extent;
-			Vector3 checkPosition = targetPosition + new Vector3(0.0f, _stepHeight, 0.0f);
+			Quaternion rotation = Quaternion.FromToRotation(Vector3.down, data.Gravity);
+			Vector3 checkPosition = targetPosition + rotation * new Vector3(0.0f, _stepHeight, 0.0f);
 
 			// 1. Upward collision check.
 			if (kcc.CapsuleOverlap(_overlapInfo, checkPosition, checkRadius, kcc.Settings.Height, QueryTriggerInteraction.Ignore) == true)
@@ -197,12 +198,12 @@ namespace Fusion.Addons.KCC
 			if (kcc.SphereCast(_shapeCastInfo, checkPosition + new Vector3(0.0f, kcc.Settings.Radius, 0.0f), checkRadius, Vector3.down, maxStepHeight + kcc.Settings.Radius, QueryTriggerInteraction.Ignore, false) == true)
 			{
 				Vector3 highestPoint = new Vector3(0.0f, float.MinValue, 0.0f);
-
+			
 				for (int i = 0, count = _shapeCastInfo.ColliderHitCount; i < count; ++i)
 				{
 					RaycastHit raycastHit      = _shapeCastInfo.ColliderHits[i].RaycastHit;
 					Vector3    raycastHitPoint = raycastHit.point;
-
+			
 					if (raycastHitPoint.y > targetPosition.y && raycastHitPoint.y > highestPoint.y)
 					{
 						highestPoint       = raycastHitPoint;
@@ -210,13 +211,13 @@ namespace Fusion.Addons.KCC
 						highestPointFound  = true;
 					}
 				}
-
+			
 				if (highestPointFound == true)
 				{
 					maxStepHeight = Mathf.Clamp(highestPoint.y - targetPosition.y, 0.0f, _stepHeight);
 				}
 			}
-
+			
 			// For initial attempt, do not try to step up on non-ground surfaces.
 			if (_requireGroundTarget == true && data.IsSteppingUp == false && data.WasSteppingUp == false)
 			{
@@ -224,7 +225,7 @@ namespace Fusion.Addons.KCC
 				{
 					float minGroundDot      = Mathf.Cos(Mathf.Clamp(data.MaxGroundAngle, 0.0f, 90.0f) * Mathf.Deg2Rad);
 					float highestPointUpDot = Vector3.Dot(highestPointNormal, Vector3.up);
-
+			
 					if (highestPointUpDot < minGroundDot)
 					{
 						ProcessStepUpResult(kcc, data, false);
@@ -232,29 +233,29 @@ namespace Fusion.Addons.KCC
 					}
 				}
 			}
-
+			
 			// Project unapplied movement as step-up movement.
 			float desiredDistance   = Vector3.Distance(basePosition, desiredPosition);
 			float traveledDistance  = Vector3.Distance(basePosition, targetPosition);
 			float remainingDistance = Mathf.Clamp((desiredDistance - traveledDistance) * _stepSpeed, 0.0f, maxStepHeight);
-
+			
 			remainingDistance *= Mathf.Clamp01(Vector3.Dot(desiredDirection, -correctionDirection));
-
+			
 			data.TargetPosition = targetPosition + new Vector3(0.0f, remainingDistance, 0.0f);
-
+			
 			// KCC remains grounded state while stepping up.
 			data.IsGrounded     = true;
 			data.GroundNormal   = Vector3.up;
 			data.GroundDistance = kcc.Settings.Extent;
 			data.GroundPosition = data.TargetPosition;
 			data.GroundTangent  = data.TransformDirection;
-
+			
 			if (_forceUpdateHits == true)
 			{
 				// New position is set, refresh collision hits after the stage.
 				stage.RequestUpdateHits(true);
 			}
-
+			
 			ProcessStepUpResult(kcc, data, true);
 		}
 
