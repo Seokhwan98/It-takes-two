@@ -27,18 +27,6 @@ public class PlayerScaler : NetworkBehaviour
         _baseHeight = _kcc.Collider.height;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetScale(0.5f * Vector3.one);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetScale(2f * Vector3.one);
-        }
-    }
-
     public void SetScale(Vector3 newScale)
     {
         if (HasStateAuthority)
