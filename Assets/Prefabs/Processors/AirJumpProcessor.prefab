@@ -63,4 +63,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5e83dfc51d44cf89d9813fa75eb199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseJumpImpulse: {x: 0, y: 7, z: 0}
+  _baseJumpImpulse: {x: 0, y: 4, z: 0}

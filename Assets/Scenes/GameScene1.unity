@@ -5440,7 +5440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
+    RawGuidValue: 114631f83c27b854db2ff21f6235f2ff
 --- !u!1 &543529003
 GameObject:
   m_ObjectHideFlags: 0
@@ -8139,6 +8139,10 @@ PrefabInstance:
     - target: {fileID: 3750784069909066592, guid: bd596f00dc06f446f95cf57b9f689c66, type: 3}
       propertyPath: SortKey
       value: 3729145849
+      objectReference: {fileID: 0}
+    - target: {fileID: 4025552760222835005, guid: bd596f00dc06f446f95cf57b9f689c66, type: 3}
+      propertyPath: SortKey
+      value: 803902742
       objectReference: {fileID: 0}
     - target: {fileID: 4570893564054277331, guid: bd596f00dc06f446f95cf57b9f689c66, type: 3}
       propertyPath: m_Name

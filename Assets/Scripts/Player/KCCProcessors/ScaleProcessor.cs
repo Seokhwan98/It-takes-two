@@ -15,6 +15,7 @@ public class ScaleProcessor : KCCProcessor, ISetScale
         bool needChange = false;
         if (playerData.BiggerTrigger.TryShot())
         {
+            Debug.Log("AAAAAAAA");
             needChange |= playerData.TryBigger();
         }
         else if (playerData.SmallerTrigger.TryShot())

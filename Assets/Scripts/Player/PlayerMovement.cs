@@ -47,7 +47,7 @@ public class PlayerMovement : NetworkBehaviour {
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         
         int playerId = Runner.LocalPlayer.PlayerId;
-        _playerData = new PlayerData(/*playerId*/1);
+        _playerData = new PlayerData(Runner.LocalPlayer.PlayerId);
 
         _playJumpTimer = () => _jumpTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         _playerData.JumpTrigger.OnShot += _playJumpTimer;
@@ -81,7 +81,10 @@ public class PlayerMovement : NetworkBehaviour {
     {
         if (!Object.HasStateAuthority) return;
         
+        _playerData.ReleaseAllTrigger();
+        
         UpdateMoveCD();
+        UpdateJumpCD();
         
         if (!_canMove) return;
         
@@ -128,10 +131,12 @@ public class PlayerMovement : NetworkBehaviour {
             if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
             {
                 _playerData.SmallerTrigger.Ready();
+                _cc.ExecuteStage<ISetScale>();
             }
             else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
             {
                 _playerData.BiggerTrigger.Ready();
+                _cc.ExecuteStage<ISetScale>();
             }
         }
     }

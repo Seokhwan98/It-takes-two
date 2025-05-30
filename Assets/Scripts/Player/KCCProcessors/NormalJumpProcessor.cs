@@ -19,7 +19,6 @@ public class NormalJumpProcessor : KCCProcessor, ISetDynamicVelocity
         
         if (data.IsGrounded)
         {
-            Debug.Log("Normal");
             playerData.JumpTrigger.TryShot();
             SuppressOtherJumpProcessors(kcc);
         }

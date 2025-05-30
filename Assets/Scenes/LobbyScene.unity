@@ -10416,7 +10416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
+    RawGuidValue: 114631f83c27b854db2ff21f6235f2ff
 --- !u!1 &1970581397 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6a1d25d0e49421449b5469dce3cbc9b, type: 3}

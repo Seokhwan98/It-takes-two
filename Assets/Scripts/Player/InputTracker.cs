@@ -29,7 +29,7 @@ public class InputTracker : MonoBehaviour
         }
     }
     
-    public void Start()
+    private void Start()
     {
         string[] keyNames = Enum.GetNames(typeof(KeyCode));
         foreach (var keyName in keyNames)
@@ -44,7 +44,7 @@ public class InputTracker : MonoBehaviour
         }
     }
     
-    public void Update()
+    private void Update()
     {
         LookYaw = Input.GetAxis("Mouse Y");
         LookPitch = Input.GetAxis("Mouse X");
