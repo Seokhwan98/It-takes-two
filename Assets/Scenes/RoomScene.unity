@@ -1631,7 +1631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab:
-    RawGuidValue: 1103c63957a63844baf81a0738ebf392
+    RawGuidValue: 114631f83c27b854db2ff21f6235f2ff
   _spawnPointA: {fileID: 1549472465}
   _spawnPointB: {fileID: 964828352}
 --- !u!1 &921092104

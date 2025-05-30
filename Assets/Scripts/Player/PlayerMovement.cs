@@ -164,7 +164,8 @@ public class PlayerMovement : NetworkBehaviour {
     {
         Vector3 moveSpeed = _cc.Data.RealVelocity;
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        float speed = moveSpeed.magnitude;
+        float speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
+        
         _animator.SetFloat("speed", speed);
 
         bool isGrounded = _cc.Data.IsGrounded;

@@ -14,7 +14,11 @@ public class WallCheckProcessor : KCCProcessor, ISetDynamicVelocity
     {
         var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
 
-        if (data.IsGrounded) return;
+        if (data.IsGrounded)
+        {
+            playerData.Wall = false;
+            return;
+        }
 
         bool result = Physics.SphereCast(
             kcc.transform.position + Vector3.up,
