@@ -119,7 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateAuthorityChangeErrorCorrectionDelta: 0
   SyncScale: 0
-  SyncParent: 1
+  SyncParent: 0
   _interpolationTarget: {fileID: 0}
   UsePreciseRotation: 0
   UseRenderSleepThresholds: 1
@@ -143,6 +143,8 @@ MonoBehaviour:
   localOffset: {x: 0, y: 2, z: 4}
   <SpeedMultiplier>k__BackingField: 0.4
   _model: {fileID: 5443978788517056204}
+  _castRadius: 3.5
+  _castDistance: 0.1
 --- !u!1001 &5478167839559870759
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -112,31 +112,38 @@ public class PlayerMovement : NetworkBehaviour {
                 NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
             }
 
+            if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
+            {
+                _dir = Vector3.zero;
+            }
+                
             _cc.SetInputDirection(_dir.normalized);
 
-            if (_dir.sqrMagnitude > 0.001f)
+            if (_playerData.Grabbable == null && _dir.sqrMagnitude > 0.001f)
             {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
             }
             
             _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
+
+            if (_playerData.Grabbable == null)
+            {
+                if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
+                {
+                    _playerData.JumpTrigger.Ready();
+                }
             
-            Debug.Log(_canJump);
-            if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
-            {
-                _playerData.JumpTrigger.Ready();
-            }
-            
-            if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
-            {
-                _playerData.SmallerTrigger.Ready();
-                _cc.ExecuteStage<ISetScale>();
-            }
-            else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
-            {
-                _playerData.BiggerTrigger.Ready();
-                _cc.ExecuteStage<ISetScale>();
+                if (input.IsDown(MyNetworkInput.BUTTON_LEFTCLICK))
+                {
+                    _playerData.SmallerTrigger.Ready();
+                    _cc.ExecuteStage<ISetScale>();
+                }
+                else if (input.IsDown(MyNetworkInput.BUTTON_RIGHTCLICK))
+                {
+                    _playerData.BiggerTrigger.Ready();
+                    _cc.ExecuteStage<ISetScale>();
+                }
             }
         }
     }

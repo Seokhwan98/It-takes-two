@@ -40,10 +40,6 @@ public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
     public virtual void Interact(GrabInteractor interactor)
     {
         this.currentInteractor = interactor;
-        if (_rb != null)
-        {
-            _rb.isKinematic = true;
-        }
         UpdateGrabPosition();
     }
 
@@ -52,10 +48,6 @@ public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
         if (HasStateAuthority)
         {
             this.currentInteractor = null;
-            if (_rb != null)
-            {
-                _rb.isKinematic = false;
-            }
         }
     }
 
