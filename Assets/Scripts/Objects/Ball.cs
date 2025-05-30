@@ -40,8 +40,6 @@ public class Ball : Grabbable
     
     public override bool TryInteract(GrabInteractor interactor)
     {
-        Debug.Log(HasStateAuthority);
-        Debug.Log(IsInteractable(interactor));
         if (HasStateAuthority && IsInteractable(interactor))
         {
             Interact(interactor);
