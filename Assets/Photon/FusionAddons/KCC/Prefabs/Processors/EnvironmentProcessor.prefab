@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 264c0f9c9a7bf4a4a927334fa1712bf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KinematicSpeed: 8
+  KinematicSpeed: 5
   JumpMultiplier: 2
   Gravity: {x: 0, y: -40, z: 0}
   RelativePriority: 0

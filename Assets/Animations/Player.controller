@@ -217,7 +217,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jump idle end
-  m_Speed: 3
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4415157256808365613}
@@ -297,7 +297,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jump From Wall
-  m_Speed: 1
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -9195744716758924224}
@@ -422,7 +422,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 'Jump idle start '
-  m_Speed: 5
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -2641326931251409296}
@@ -472,7 +472,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 9100000}
   - m_Name: isGrabbing
     m_Type: 4
@@ -501,7 +501,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Jump run end
-  m_Speed: 3
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3088081412557787404}
@@ -895,7 +895,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 'Jump run start '
-  m_Speed: 3
+  m_Speed: 10
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3417872162213966471}
@@ -964,7 +964,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: 4b554625bfdf96748932aa5a681493ee, type: 2}
     m_Threshold: 1
     m_Position: {x: -1, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 1.7
     m_CycleOffset: 0
     m_DirectBlendParameter: horizontal
     m_Mirror: 0

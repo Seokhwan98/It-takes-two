@@ -46,8 +46,8 @@ public class PlayerMovement : NetworkBehaviour {
         
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         
-        int playerId = Runner.LocalPlayer.PlayerId;
-        _playerData = new PlayerData(Runner.LocalPlayer.PlayerId);
+        int playerId = Object.InputAuthority.PlayerId;
+        _playerData = new PlayerData(playerId);
 
         _playJumpTimer = () => _jumpTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         _playerData.JumpTrigger.OnShot += _playJumpTimer;
@@ -157,7 +157,8 @@ public class PlayerMovement : NetworkBehaviour {
     {
         Vector3 moveSpeed = _cc.Data.RealVelocity;
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        float speed = moveSpeed.magnitude;
+        float speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
+        
         _animator.SetFloat("speed", speed);
 
         bool isGrounded = _cc.Data.IsGrounded;
