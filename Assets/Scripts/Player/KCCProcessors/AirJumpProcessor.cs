@@ -19,7 +19,6 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
         
         if (playerData.AirJump > 0)
         {
-            Debug.Log("Air");
             playerData.JumpTrigger.TryShot();
             SuppressOtherJumpProcessors(kcc);
         }

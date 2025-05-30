@@ -36,7 +36,6 @@ public class WallJumpProcessor : KCCProcessor, ISetDynamicVelocity
     {
         Vector3 jumpImpulse = JumpImpulseHelper.GetJumpImpulse(_baseJumpImpulse, playerData.PlayerScale);
         
-        Debug.Log("Wall");
         playerData.Wall = false;
         data.DynamicVelocity = Vector3.zero;
         data.JumpImpulse = kcc.transform.rotation * jumpImpulse;
