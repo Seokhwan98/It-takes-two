@@ -8,8 +8,9 @@ public class PlayerData
     public int PlayerID { get; private set; }
     public bool Running { get; set; }
     public Grabbable Grabbable { get; set; }
-    public bool GrabbableBlocked { get; set; }
     public bool Wall { get; set; }
+
+    public Vector3 WallNormal { get; set; }
     public int AirJump { get; private set; }
     public EPlayerScale PlayerScale { get; private set; }
     public Vector3 ExternalDelta { get; set; }

@@ -63,8 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe3e7b7c9f004265b67b04991053493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallSlideMultiplier: 0.5
   _castDistance: 0.5
   _wallLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
