@@ -13,6 +13,9 @@ public class ChatUI : UIScreen
 
     public void AddMessage(string text, bool isLocal)
     {
+        var sv = content.GetComponentInParent<ScrollRect>();
+        // bool isRecent = Mathf.Approximately(sv.verticalNormalizedPosition, 0f);
+        
         var go = Instantiate(messagePrefab, content);
         var tmp = go.GetComponentInChildren<TMP_Text>();
         tmp.text = text;
@@ -40,6 +43,9 @@ public class ChatUI : UIScreen
         
         Canvas.ForceUpdateCanvases();
         Focus();
+        
+        // if (isRecent)
+        //     sv.verticalNormalizedPosition = 0f;
     }
 
     
