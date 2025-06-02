@@ -2,15 +2,24 @@ using Fusion.Addons.KCC;
 
 public class GroundActProcessor : KCCProcessor, IAfterMoveStep
 {
-    private readonly float DefaultPriority = -1500;
+    private readonly float DefaultPriority = -2500;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
     public void Execute(AfterMoveStep stage, KCC kcc, KCCData data)
     {
         var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
 
-        if (!data.IsGrounded) return;
+        if (data.IsGrounded)
+        {
+            playerData.ResetAirJump();
+        }
 
-        playerData.ResetAirJump();
+        ApplyIsGroundedAnimation(kcc, data.IsGrounded);
+    }
+    
+    private void ApplyIsGroundedAnimation(KCC kcc, bool isGrounded)
+    {
+        var animatorController = kcc.GetComponent<NetworkAnimatorController>();
+        animatorController.RPC_SetBool(Constant.IsGroundedHash, isGrounded);
     }
 }

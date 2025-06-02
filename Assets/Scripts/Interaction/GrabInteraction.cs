@@ -1,10 +1,10 @@
-using System;
 using System.Collections;
-using Fusion;
 using UnityEngine;
 
 public class GrabInteractor : Interactor
 {
+    [SerializeField] private NetworkAnimatorController _animatorController;
+    
     [SerializeField] private Transform _grabPoint;
     [SerializeField] private float _distance = 2f;
     [SerializeField] private Color _gizmoColor = Color.red;
@@ -54,6 +54,8 @@ public class GrabInteractor : Interactor
                 _playerData.Grabbable = null;
             }
         }
+        
+        _animatorController.RPC_SetBool(Constant.IsGrabbingHash, _playerData?.Grabbable != null);
     }
 
     private void OnDrawGizmosSelected()

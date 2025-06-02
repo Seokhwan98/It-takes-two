@@ -26,7 +26,6 @@ public class ConnectionManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.unityLogger.logEnabled = false;
         if (Instance == null)
         {
             Instance = this;

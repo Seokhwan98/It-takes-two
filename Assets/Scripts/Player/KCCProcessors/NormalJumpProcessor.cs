@@ -17,7 +17,7 @@ public class NormalJumpProcessor : KCCProcessor, ISetDynamicVelocity
         {
             if (playerData.JumpTrigger.TryShot())
             {
-                ApplyJump(data, playerData);
+                ApplyJump(kcc, data, playerData);
             }
             SuppressOtherJumpProcessors(kcc);
         }
@@ -25,11 +25,19 @@ public class NormalJumpProcessor : KCCProcessor, ISetDynamicVelocity
         SuppressOtherSameTypeProcessors(kcc);
     }
 
-    private void ApplyJump(KCCData data, PlayerData playerData)
+    private void ApplyJump(KCC kcc, KCCData data, PlayerData playerData)
     {
         Vector3 jumpImpulse = JumpImpulseHelper.GetJumpImpulse(_baseJumpImpulse, playerData.PlayerScale);
         data.DynamicVelocity = Vector3.zero;
         data.JumpImpulse = jumpImpulse;
+
+        ApplyJumpAnimation(kcc);
+    }
+    
+    private void ApplyJumpAnimation(KCC kcc)
+    {
+        var animatorController = kcc.GetComponent<NetworkAnimatorController>();
+        animatorController.RPC_SetTrigger(Constant.JumpHash);
     }
     
     private void SuppressOtherSameTypeProcessors(KCC kcc)

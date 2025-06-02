@@ -17,7 +17,7 @@ public class WallProcessor : KCCProcessor, ISetDynamicVelocity
         
         if (playerData.JumpTrigger.TryShot())
         {
-            ApplyWallJump(data, playerData);
+            ApplyWallJump(kcc, data, playerData);
             SuppressOtherJumpProcessors(kcc);
         }
         else
@@ -28,7 +28,7 @@ public class WallProcessor : KCCProcessor, ISetDynamicVelocity
         SuppressOtherSameTypeProcessors(kcc);
     }
 
-    private void ApplyWallJump(KCCData data, PlayerData playerData)
+    private void ApplyWallJump(KCC kcc, KCCData data, PlayerData playerData)
     {
         Quaternion rot = Quaternion.LookRotation(playerData.WallNormal, Vector3.up);
         Vector3 jumpImpulse = JumpImpulseHelper.GetJumpImpulse(_baseJumpImpulse, playerData.PlayerScale);
@@ -37,6 +37,14 @@ public class WallProcessor : KCCProcessor, ISetDynamicVelocity
         playerData.WallNormal = default;
         data.DynamicVelocity = Vector3.zero;
         data.JumpImpulse = rot * jumpImpulse;
+
+        ApplyJumpAnimation(kcc);
+    }
+    
+    private void ApplyJumpAnimation(KCC kcc)
+    {
+        var animatorController = kcc.GetComponent<NetworkAnimatorController>();
+        animatorController.RPC_SetTrigger(Constant.JumpHash);
     }
 
     private void SuppressOtherSameTypeProcessors(KCC kcc)
