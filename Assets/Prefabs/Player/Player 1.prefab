@@ -1066,7 +1066,7 @@ MonoBehaviour:
     ColliderLayer: 0
     CollisionLayerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 129
     Features: -1
     InputAuthorityBehavior: 0
     StateAuthorityBehavior: 0

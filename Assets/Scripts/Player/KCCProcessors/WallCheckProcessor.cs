@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class WallCheckProcessor : KCCProcessor, ISetDynamicVelocity
 {
-    [SerializeField] private float _wallSlideMultiplier = 0.5f;
     [SerializeField] private float _castDistance = 1f;
     [SerializeField] private LayerMask _wallLayer;
     
-    private readonly float DefaultPriority = 2002;
+    private readonly float DefaultPriority = 502;
     public override float GetPriority(KCC kcc) => DefaultPriority;
 
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
@@ -32,10 +31,12 @@ public class WallCheckProcessor : KCCProcessor, ISetDynamicVelocity
         if (result && data.DynamicVelocity.y < 0.001f && Vector3.Angle(Vector3.up, hit.normal) > data.MaxGroundAngle)
         {
             playerData.Wall = true;
+            playerData.WallNormal = hit.normal;
         }
         else
         {
             playerData.Wall = false;
+            playerData.WallNormal = default;
         }
 }
 

@@ -1,14 +1,14 @@
 using Fusion.Addons.KCC;
 using UnityEngine;
 
-public class RunProcessor : KCCProcessor, ISetKinematicVelocity
+public class RunProcessor : KCCProcessor, ISetKinematicSpeed
 {
     [SerializeField, Min(1f)] private float _runMultiplier = 2f;
 
     private readonly float DefaultPriority = default;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
-    public void Execute(ISetKinematicVelocity stage, KCC kcc, KCCData data)
+    public void Execute(ISetKinematicSpeed stage, KCC kcc, KCCData data)
     {
         var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
         
@@ -22,7 +22,7 @@ public class RunProcessor : KCCProcessor, ISetKinematicVelocity
 
     private void ApplyRun(KCCData data)
     {
-        data.KinematicVelocity *= _runMultiplier;
+        data.KinematicSpeed *= _runMultiplier;
     }
 
     private void SuppressOtherProcessors(KCC kcc)
