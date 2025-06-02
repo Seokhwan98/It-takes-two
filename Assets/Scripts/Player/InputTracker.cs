@@ -95,7 +95,7 @@ public class InputTracker : MonoBehaviour
 
         foreach (var key in _keys)
         {
-            IsKeyUp[key] = true;
+            IsKeyUp[key] = false;
         }
     }
 }
