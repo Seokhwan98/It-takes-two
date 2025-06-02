@@ -6,24 +6,21 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
 {
     [SerializeField] private Vector3 _baseJumpImpulse = 10f * Vector3.up;
     
-    private readonly float DefaultPriority = 2000;
+    private readonly float DefaultPriority = 500;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
     public void Execute(ISetDynamicVelocity stage, KCC kcc, KCCData data)
     {
         var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
-
-        Action applyAirJump = () => ApplyAirJump(data, playerData);
-        
-        playerData.JumpTrigger.OnShot += applyAirJump;
         
         if (playerData.AirJump > 0)
         {
-            playerData.JumpTrigger.TryShot();
+            if (playerData.JumpTrigger.TryShot())
+            {
+                ApplyAirJump(data, playerData);
+            }
             SuppressOtherJumpProcessors(kcc);
         }
-        
-        playerData.JumpTrigger.OnShot -= applyAirJump;
 
         SuppressOtherSameTypeProcessors(kcc);
     }
@@ -38,7 +35,7 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
     
     private void SuppressOtherSameTypeProcessors(KCC kcc)
     {
-        kcc.SuppressProcessors<WallJumpProcessor>();
+        kcc.SuppressProcessors<WallProcessor>();
         
     }
 

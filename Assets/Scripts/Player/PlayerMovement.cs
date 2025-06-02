@@ -4,70 +4,69 @@ using Fusion.Addons.KCC;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour {
+public class PlayerMovement : NetworkBehaviour
+{
     private NetworkBool _canMove { get; set; } = true;
     private NetworkBool _canJump { get; set; } = true;
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
-    
+
     private GameObject _camInstance;
     private CinemachineOrbitalFollow _myOrbitalFollow;
-    
+
     private Animator _animator;
     private bool _wasGrounded = true;
     private bool _wasWall = false;
-    
+
     private KCC _cc;
     private Vector3 _dir;
     private float camSpeed = 20f;
-    
+
     private float smoothYaw;
     private float smoothPitch;
     private float smoothSpeed = 15f;
-    
-    [Networked] 
-    public float NetworkYaw { get; set; }
-    
-    [Networked] 
-    public float NetworkPitch { get; set; }
-    
+
+    [Networked] public float NetworkYaw { get; set; }
+
+    [Networked] public float NetworkPitch { get; set; }
+
     private PlayerData _playerData;
     public PlayerData PlayerData => _playerData;
-    
+
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
-    
-    private Action _playJumpTimer; 
+
+    private Action _playJumpTimer;
 
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
         _animator = GetComponent<Animator>();
-        
+
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        
+
         int playerId = Object.InputAuthority.PlayerId;
         _playerData = new PlayerData(playerId);
 
         _playJumpTimer = () => _jumpTimer = TickTimer.CreateFromSeconds(Runner, 0.2f);
         _playerData.JumpTrigger.OnShot += _playJumpTimer;
-        
+
         if (Runner.GameMode is GameMode.Shared)
         {
-            if (HasStateAuthority) 
+            if (HasStateAuthority)
             {
                 _camInstance = Instantiate(freeLookPrefab);
                 var freeLook = _camInstance.GetComponent<CinemachineCamera>();
-            
+
                 freeLook.Follow = cameraPivot;
                 freeLook.LookAt = cameraPivot;
             }
         }
-        
+
         else if (Runner.GameMode is GameMode.Client or GameMode.Host)
         {
             if (currentScene == "RoomScene") return;
-            if(HasInputAuthority)  TryBindMyCamera();
+            if (HasInputAuthority) TryBindMyCamera();
             else TryBindOtherCamera();
         }
     }
@@ -75,6 +74,11 @@ public class PlayerMovement : NetworkBehaviour {
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         _playerData.JumpTrigger.OnShot -= _playJumpTimer;
+    }
+
+    private void Update()
+    {   
+        Debug.LogWarning($"IsGrounded => {_cc.Data.IsGrounded} | Velocity => {_cc.Data.RealVelocity}");
     }
 
     public override void FixedUpdateNetwork()
@@ -125,8 +129,11 @@ public class PlayerMovement : NetworkBehaviour {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
             }
-            
-            _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
+
+            if (_cc.Data.IsGrounded)
+            {
+                _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
+            }
 
             if (_playerData.Grabbable == null)
             {
