@@ -80,6 +80,7 @@ public class PlayerMovement : NetworkBehaviour {
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority) return;
+        if (ChatManager.Instance.isInputFocused) return;
         
         _playerData.ReleaseAllTrigger();
         
