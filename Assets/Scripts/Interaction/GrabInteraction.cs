@@ -1,4 +1,5 @@
 using System.Collections;
+using Fusion;
 using UnityEngine;
 
 public class GrabInteractor : Interactor
@@ -12,7 +13,8 @@ public class GrabInteractor : Interactor
     private PlayerMovement _playerMovement;
     
     public Transform GrabPoint => _grabPoint;
-
+    [Networked] public Grabbable Grabbable { get; set; }
+    
     private void Start()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -27,7 +29,7 @@ public class GrabInteractor : Interactor
             // Grab
             if (data.IsDown(MyNetworkInput.BUTTON_INTERACT))
             {
-                if (_playerMovement.PlayerData.Grabbable != null) return;
+                if (Grabbable != null) return;
                 
                 if (Physics.Raycast(_grabPoint.position, _grabPoint.forward, out RaycastHit hit, _distance))
                 {
@@ -37,7 +39,7 @@ public class GrabInteractor : Interactor
                         bool result = grabbable.TryInteract(this);
                         if (result)
                         {
-                            _playerMovement.PlayerData.Grabbable = grabbable;
+                            Grabbable = grabbable;
                         }
                     }
                 }
@@ -47,15 +49,15 @@ public class GrabInteractor : Interactor
             {
                 if (HasStateAuthority)
                 {
-                    if (_playerMovement.PlayerData.Grabbable == null) return;
+                    if (Grabbable == null) return;
                 
-                    _playerMovement.PlayerData.Grabbable.FinishInteract(this);
-                    _playerMovement.PlayerData.Grabbable = null;
+                    Grabbable.FinishInteract(this);
+                    Grabbable = null;
                 }
             }
         }
         
-        _animatorController.RPC_SetBool(Constant.IsGrabbingHash, _playerMovement.PlayerData?.Grabbable != null);
+        _animatorController.RPC_SetBool(Constant.IsGrabbingHash, Grabbable != null);
     }
 
     private void OnDrawGizmosSelected()

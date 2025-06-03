@@ -29,6 +29,8 @@ public class PlayerMovement : NetworkBehaviour
 
     private PlayerData _playerData;
     public PlayerData PlayerData => _playerData;
+    
+    public GrabInteractor _grabInteractor;
 
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
@@ -43,6 +45,7 @@ public class PlayerMovement : NetworkBehaviour
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
+        _grabInteractor = GetComponent<GrabInteractor>();
         _animatorController = GetComponent<NetworkAnimatorController>();
 
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -110,14 +113,14 @@ public class PlayerMovement : NetworkBehaviour
                 
             NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
 
-            if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
+            if (_grabInteractor?.Grabbable != null && _grabInteractor?.Grabbable?.IsCollide(_dir) == true)
             {
                 _dir = Vector3.zero;
             }
                 
             _cc.SetInputDirection(_dir.normalized);
 
-            if (_playerData.Grabbable == null && _dir.sqrMagnitude > 0.001f)
+            if (_grabInteractor?.Grabbable == null && _dir.sqrMagnitude > 0.001f)
             {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
@@ -128,7 +131,7 @@ public class PlayerMovement : NetworkBehaviour
                 _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
             }
 
-            if (_playerData.Grabbable == null)
+            if (_grabInteractor?.Grabbable == null)
             {
                 if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
                 {
@@ -246,20 +249,5 @@ public class PlayerMovement : NetworkBehaviour
     private void UpdateJumpCD()
     {
         _canJump = _jumpTimer.ExpiredOrNotRunning(Runner);
-    }
-    
-    private void OnDrawGizmosSelected()
-    {
-        var kcc = GetComponent<KCC>();
-        if (kcc == null) return;
-        
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(
-            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
-            new(0.5f, 1f, 0.2f));
-        Gizmos.DrawLine(
-            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
-            _cc.transform.position + Vector3.up + kcc.transform.forward * 100f
-        );
     }
 }
