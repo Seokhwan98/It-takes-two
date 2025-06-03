@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af42868da7f046b180ed83116280bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localOffset: {x: 0, y: 2, z: 4}
+  localOffset: {x: 0, y: 2, z: 5.3}
   <SpeedMultiplier>k__BackingField: 0.4
   _model: {fileID: 5443978788517056204}
   _castRadius: 3.5

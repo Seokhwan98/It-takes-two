@@ -14,9 +14,7 @@ public class PlayerMovement : NetworkBehaviour
     private GameObject _camInstance;
     private CinemachineOrbitalFollow _myOrbitalFollow;
 
-    private Animator _animator;
-    private bool _wasGrounded = true;
-    private bool _wasWall = false;
+    private NetworkAnimatorController _animatorController;
 
     private KCC _cc;
     private Vector3 _dir;
@@ -27,7 +25,6 @@ public class PlayerMovement : NetworkBehaviour
     private float smoothSpeed = 15f;
 
     [Networked] public float NetworkYaw { get; set; }
-
     [Networked] public float NetworkPitch { get; set; }
 
     private PlayerData _playerData;
@@ -35,13 +32,18 @@ public class PlayerMovement : NetworkBehaviour
 
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
+    
+    #region Animation Values
+    [Networked, OnChangedRender(nameof(UpdateSpeedAnim))] private float speed { get; set; }
+    [Networked, OnChangedRender(nameof(UpdateSpeedAnim))] private float speedY { get; set; }
+    #endregion
 
     private Action _playJumpTimer;
 
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
-        _animator = GetComponent<Animator>();
+        _animatorController = GetComponent<NetworkAnimatorController>();
 
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
@@ -76,14 +78,9 @@ public class PlayerMovement : NetworkBehaviour
         _playerData.JumpTrigger.OnShot -= _playJumpTimer;
     }
 
-    private void Update()
-    {   
-        Debug.LogWarning($"IsGrounded => {_cc.Data.IsGrounded} | Velocity => {_cc.Data.RealVelocity}");
-    }
-
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasStateAuthority) return;
+        if (IsProxy) return;
         
         _playerData.ReleaseAllTrigger();
         
@@ -108,13 +105,10 @@ public class PlayerMovement : NetworkBehaviour
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
             
-            if (HasStateAuthority)
-            {
-                NetworkYaw -= input.LookYaw * camSpeed;
-                NetworkPitch += input.LookPitch * camSpeed;
+            NetworkYaw -= input.LookYaw * camSpeed;
+            NetworkPitch += input.LookPitch * camSpeed;
                 
-                NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
-            }
+            NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
 
             if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
             {
@@ -157,7 +151,10 @@ public class PlayerMovement : NetworkBehaviour
     
     public override void Render()
     {
-        UpdateAnimator();
+        if (HasStateAuthority)
+        {
+            UpdateAnimator();    
+        }
         
         if (_myOrbitalFollow == null) return;
         smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
@@ -170,26 +167,15 @@ public class PlayerMovement : NetworkBehaviour
     private void UpdateAnimator()
     {
         Vector3 moveSpeed = _cc.Data.RealVelocity;
+        speedY = moveSpeed.y; 
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        float speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
-        
-        _animator.SetFloat("speed", speed);
+        speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
+    }
 
-        bool isGrounded = _cc.Data.IsGrounded;
-        _animator.SetBool("isGrounded", isGrounded);
-        
-        bool isWall = _playerData.Wall;
-        _animator.SetBool("isWall", isWall);
-        
-        if ((!isGrounded && _wasGrounded) || (!isWall && _wasWall))
-        {
-            _animator.SetTrigger("jump");
-        }
-        _wasGrounded = isGrounded;
-        _wasWall = isWall;
-        
-        bool isGrabbing = _playerData.Grabbable != null;
-        _animator.SetBool("isGrabbing", isGrabbing);
+    private void UpdateSpeedAnim()
+    {
+        _animatorController.Animator.SetFloat(Constant.SpeedHash, speed);
+        _animatorController.Animator.SetFloat(Constant.SpeedYHash, speedY);
     }
     
     public void TryBindMyCamera()
@@ -260,5 +246,20 @@ public class PlayerMovement : NetworkBehaviour
     private void UpdateJumpCD()
     {
         _canJump = _jumpTimer.ExpiredOrNotRunning(Runner);
+    }
+    
+    private void OnDrawGizmosSelected()
+    {
+        var kcc = GetComponent<KCC>();
+        if (kcc == null) return;
+        
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube(
+            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
+            new(0.5f, 1f, 0.2f));
+        Gizmos.DrawLine(
+            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
+            _cc.transform.position + Vector3.up + kcc.transform.forward * 100f
+        );
     }
 }

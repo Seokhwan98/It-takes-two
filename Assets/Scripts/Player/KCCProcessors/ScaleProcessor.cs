@@ -8,7 +8,9 @@ public class ScaleProcessor : KCCProcessor, ISetScale
     
     public void Execute(ISetScale stage, KCC kcc, KCCData data)
     {
-        if (!data.IsGrounded) return;
+        var fixedData = kcc.FixedData;
+        
+        if (!fixedData.IsGrounded) return;
         
         var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
         

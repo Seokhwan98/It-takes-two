@@ -18,7 +18,7 @@ public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
 
     public override void FixedUpdateNetwork()
     {
-        if (currentInteractor != null && HasStateAuthority)
+        if (currentInteractor != null)
         {
             UpdateGrabPosition();
         }
@@ -28,7 +28,7 @@ public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
     
     public virtual bool TryInteract(GrabInteractor interactor)
     {
-        if (HasStateAuthority && IsInteractable(interactor))
+        if (IsInteractable(interactor))
         {
             Interact(interactor);
             return true;
@@ -39,16 +39,13 @@ public class Grabbable : NetworkBehaviour, IInteraction<GrabInteractor>
 
     public virtual void Interact(GrabInteractor interactor)
     {
-        this.currentInteractor = interactor;
+        currentInteractor = interactor;
         UpdateGrabPosition();
     }
 
     public virtual void FinishInteract(GrabInteractor interactor)
     {
-        if (HasStateAuthority)
-        {
-            this.currentInteractor = null;
-        }
+        currentInteractor = null;
     }
 
     private void UpdateGrabPosition()
