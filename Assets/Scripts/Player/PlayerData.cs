@@ -1,5 +1,4 @@
-using System;
-using Fusion.Addons.KCC;
+using Fusion;
 using UnityEngine;
 
 public class PlayerData

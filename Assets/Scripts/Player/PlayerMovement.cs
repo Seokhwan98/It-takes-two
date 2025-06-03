@@ -80,6 +80,8 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (IsProxy) return;
+        
         _playerData.ReleaseAllTrigger();
         
         UpdateMoveCD();
@@ -87,7 +89,7 @@ public class PlayerMovement : NetworkBehaviour
         
         if (!_canMove) return;
         
-        if (GetInput<MyNetworkInput>(out var input) && Runner.IsForward)
+        if (GetInput<MyNetworkInput>(out var input))
         {
             Vector3 camForward = _camInstance.transform.forward;
             Vector3 camRight = _camInstance.transform.right;
@@ -103,13 +105,10 @@ public class PlayerMovement : NetworkBehaviour
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
             
-            if (HasStateAuthority)
-            {
-                NetworkYaw -= input.LookYaw * camSpeed;
-                NetworkPitch += input.LookPitch * camSpeed;
+            NetworkYaw -= input.LookYaw * camSpeed;
+            NetworkPitch += input.LookPitch * camSpeed;
                 
-                NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
-            }
+            NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
 
             if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
             {
@@ -247,5 +246,20 @@ public class PlayerMovement : NetworkBehaviour
     private void UpdateJumpCD()
     {
         _canJump = _jumpTimer.ExpiredOrNotRunning(Runner);
+    }
+    
+    private void OnDrawGizmosSelected()
+    {
+        var kcc = GetComponent<KCC>();
+        if (kcc == null) return;
+        
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireCube(
+            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
+            new(0.5f, 1f, 0.2f));
+        Gizmos.DrawLine(
+            kcc.transform.position + Vector3.up + kcc.transform.forward * 0.5f,
+            _cc.transform.position + Vector3.up + kcc.transform.forward * 100f
+        );
     }
 }

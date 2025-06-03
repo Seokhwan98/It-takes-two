@@ -1091,7 +1091,7 @@ MonoBehaviour:
     - {fileID: 2418592971245403583, guid: c761e89a982d246b9b1e24a9b59e2b6d, type: 3}
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75
-    AntiJitterDistance: {x: 0.025, y: 0.01}
+    AntiJitterDistance: {x: 0.25, y: 0.1}
     PredictionCorrectionSpeed: 30
     NetworkedInteractions: 8
     CompressNetworkPosition: 0

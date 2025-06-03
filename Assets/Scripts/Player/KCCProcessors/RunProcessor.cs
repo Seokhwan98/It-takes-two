@@ -14,15 +14,16 @@ public class RunProcessor : KCCProcessor, ISetKinematicSpeed
         
         if (playerData is { Running: true })
         {
-            ApplyRun(data);
+            ApplyRun(kcc);
         }
         
         SuppressOtherProcessors(kcc);
     }
 
-    private void ApplyRun(KCCData data)
+    private void ApplyRun(KCC kcc)
     {
-        data.KinematicSpeed *= _runMultiplier;
+        var fixedData = kcc.FixedData;
+        fixedData.KinematicSpeed *= _runMultiplier;
     }
 
     private void SuppressOtherProcessors(KCC kcc)
