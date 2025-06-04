@@ -179,7 +179,15 @@ public class PlayerMovement : NetworkBehaviour
         Vector3 moveSpeed = _cc.Data.RealVelocity;
         speedY = moveSpeed.y; 
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
+        
+        var environmentProcessor = _cc.GetProcessor<EnvironmentProcessor>();
+        if (!environmentProcessor) return;
+
+        float normalSpeed = environmentProcessor.KinematicSpeed;
+        var runProcessor = _cc.GetProcessor<RunProcessor>();
+        float maxMoveSpeed = normalSpeed * (runProcessor != null ? runProcessor.RunMultiplier : 1);
+        
+        speed = moveSpeed.magnitude / maxMoveSpeed;
     }
 
     private void UpdateSpeedAnim()
