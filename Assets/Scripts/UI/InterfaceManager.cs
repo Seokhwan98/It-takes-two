@@ -8,6 +8,7 @@ public class InterfaceManager : MonoBehaviour
     
     public GateUI GateUI;
     public GameObject EscUI;
+    public ClearUI ClearUI;
 
     private void Awake()
     {

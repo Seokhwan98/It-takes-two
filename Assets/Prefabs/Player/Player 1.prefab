@@ -1067,7 +1067,7 @@ MonoBehaviour:
     Radius: 0.5
     Height: 2
     Extent: 0.035
-    ColliderLayer: 0
+    ColliderLayer: 6
     CollisionLayerMask:
       serializedVersion: 2
       m_Bits: 129
@@ -1135,6 +1135,7 @@ MonoBehaviour:
   _grabPoint: {fileID: 3463485910896410541}
   _distance: 1.5
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  _Grabbable: {fileID: 0}
 --- !u!114 &8469500152695076564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,6 +1152,7 @@ MonoBehaviour:
   cameraPivot: {fileID: 7929672037946538886}
   _NetworkYaw: 0
   _NetworkPitch: 0
+  _grabInteractor: {fileID: 0}
 --- !u!114 &4065558687241209263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1192,9 +1194,9 @@ MonoBehaviour:
   Animator: {fileID: -3150959145295216065}
   ApplyTiming: 2
   SyncSettings: 79
-  StateHashes: 00000000a1f7ab0dbb6691e78fbd809892ba47dfcd98ad5aee28aefce18ff492fc8833d5083a811aca4840b8826979ab5cc238c8ec5b0da132f04cc2cecf83b6ed7f8010c7db473b29b98f4ef5741ae5c6c73fd23dc42db0d607a54d35ad18cab18ece259eeb29c1316b0e52
+  StateHashes: 00000000a1f7ab0dbb6691e78fbd809892ba47dfcd98ad5aee28aefce18ff492fc8833d5083a811aca4840b8826979ab5cc238c8ec5b0da132f04cc2cecf83b6ed7f8010c7db473b29b98f4ef5741ae5c6c73fd23dc42db0d607a54d35ad18cab18ece259eeb29c1316b0e52d5a4f652e617d365
   TriggerHashes: 000000001606b3a7
-  TotalWords: 4
+  TotalWords: 3
 --- !u!114 &4214232857091390213
 MonoBehaviour:
   m_ObjectHideFlags: 0
