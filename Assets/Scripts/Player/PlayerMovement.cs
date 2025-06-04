@@ -41,6 +41,8 @@ public class PlayerMovement : NetworkBehaviour
     #endregion
 
     private Action _playJumpTimer;
+    
+    private bool isUIActive => InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused;
 
     public override void Spawned()
     {
@@ -118,7 +120,7 @@ public class PlayerMovement : NetworkBehaviour
                 _dir = Vector3.zero;
             }
             
-            if (InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused)
+            if (isUIActive)
             {
                 _dir = Vector3.zero;
             }
@@ -136,7 +138,7 @@ public class PlayerMovement : NetworkBehaviour
                 _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
             }
 
-            if (_grabInteractor?.Grabbable == null)
+            if (_grabInteractor?.Grabbable == null && !isUIActive)
             {
                 if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
                 {
