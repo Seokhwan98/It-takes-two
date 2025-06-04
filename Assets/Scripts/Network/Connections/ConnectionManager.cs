@@ -142,6 +142,8 @@ public class ConnectionManager : MonoBehaviour
         {
             _ = ConnectToRunner(_defaultLobby);
         }
+
+        InterfaceManager.Instance.ClearInterface();
     }
 
     private void OnGamePlayerJoined(NetworkRunner runner, PlayerRef player)
