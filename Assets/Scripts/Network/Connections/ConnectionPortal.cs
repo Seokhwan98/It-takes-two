@@ -10,6 +10,9 @@ public class ConnectionPortal : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        if (other.GetComponentInParent<NetworkObject>() == null)
+            return;
+        
         if (other.GetComponentInParent<NetworkObject>().HasInputAuthority)
         {
             InterfaceManager.Instance.GateUI.Focus();

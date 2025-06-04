@@ -1724,7 +1724,7 @@ GameObject:
   - component: {fileID: 215226232}
   - component: {fileID: 215226233}
   - component: {fileID: 215226234}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Portal1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2643,7 +2643,7 @@ GameObject:
   - component: {fileID: 427330130}
   - component: {fileID: 427330129}
   - component: {fileID: 427330128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5337,7 +5337,7 @@ GameObject:
   - component: {fileID: 941912210}
   - component: {fileID: 941912209}
   - component: {fileID: 941912208}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 'Portal '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7009,7 +7009,7 @@ GameObject:
   - component: {fileID: 1223382177}
   - component: {fileID: 1223382176}
   - component: {fileID: 1223382175}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7050,7 +7050,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Size: {x: 0.5, y: 2.5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1223382176
 MeshRenderer:
@@ -7790,7 +7790,7 @@ GameObject:
   - component: {fileID: 1440255181}
   - component: {fileID: 1440255180}
   - component: {fileID: 1440255179}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Portal2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11100,7 +11100,7 @@ GameObject:
   - component: {fileID: 2009843157}
   - component: {fileID: 2009843156}
   - component: {fileID: 2009843155}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11126,7 +11126,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.6, z: 0.6}
+  m_Size: {x: 0.5, y: 2.5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2009843156
 MeshRenderer:
