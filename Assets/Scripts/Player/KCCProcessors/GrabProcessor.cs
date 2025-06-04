@@ -2,7 +2,7 @@ using Fusion.Addons.KCC;
 
 public class GrabProcessor : KCCProcessor, ISetKinematicSpeed
 {
-    private readonly float DefaultPriority = 2000;
+    private readonly float DefaultPriority = default;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
     public void Execute(ISetKinematicSpeed stage, KCC kcc, KCCData data)
