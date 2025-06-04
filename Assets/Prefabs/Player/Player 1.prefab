@@ -991,8 +991,8 @@ Transform:
   - {fileID: 3177825814904530519}
   - {fileID: 7732199269806435123}
   - {fileID: 3631811529716269613}
-  - {fileID: 7930122144279813473}
   - {fileID: 6962808738818959373}
+  - {fileID: 7930122144279813473}
   - {fileID: 3463485910896410541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1135,6 +1135,7 @@ MonoBehaviour:
   _grabPoint: {fileID: 3463485910896410541}
   _distance: 1.5
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  _Grabbable: {fileID: 0}
 --- !u!114 &8469500152695076564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,6 +1152,7 @@ MonoBehaviour:
   cameraPivot: {fileID: 7929672037946538886}
   _NetworkYaw: 0
   _NetworkPitch: 0
+  _grabInteractor: {fileID: 0}
 --- !u!114 &4065558687241209263
 MonoBehaviour:
   m_ObjectHideFlags: 0

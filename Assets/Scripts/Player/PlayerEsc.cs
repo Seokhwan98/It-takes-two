@@ -14,7 +14,7 @@ public class PlayerEsc : NetworkBehaviour
     }
 
     private void Update()
-    {
+    {   
         if (!Object.HasInputAuthority)
             return;
         
