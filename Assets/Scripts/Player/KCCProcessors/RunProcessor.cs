@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class RunProcessor : KCCProcessor, ISetKinematicSpeed
 {
-    [SerializeField, Min(1f)] private float _runMultiplier = 2f;
+    [field: SerializeField, Min(1f)] 
+    public float RunMultiplier { get; private set; } = 2f;
 
     private readonly float DefaultPriority = default;
     public override float GetPriority(KCC kcc) => DefaultPriority;
@@ -23,7 +24,7 @@ public class RunProcessor : KCCProcessor, ISetKinematicSpeed
     private void ApplyRun(KCC kcc)
     {
         var fixedData = kcc.FixedData;
-        fixedData.KinematicSpeed *= _runMultiplier;
+        fixedData.KinematicSpeed *= RunMultiplier;
     }
 
     private void SuppressOtherProcessors(KCC kcc)
