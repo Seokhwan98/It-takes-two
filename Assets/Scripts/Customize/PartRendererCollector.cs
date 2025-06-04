@@ -7,11 +7,10 @@ public class PartRendererCollector : MonoBehaviour
 
     void Awake()
     {
-        // 자동 수집 예시 (이름 기반이나 태그 기반도 가능)
         entries = new List<PartRendererEntry>();
         foreach (var renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
         {
-            var partType = GuessPartTypeFromName(renderer.name); // 유틸 함수 작성
+            var partType = GuessPartTypeFromName(renderer.name);
             entries.Add(new PartRendererEntry { partType = partType, renderer = renderer });
         }
     }
