@@ -8,6 +8,9 @@ public class InterfaceManager : MonoBehaviour
     
     public GateUI GateUI;
     public GameObject EscUI;
+    public ClearUI ClearUI;
+
+    public bool isActive;
 
     private void Awake()
     {
@@ -31,12 +34,14 @@ public class InterfaceManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        isActive = true;
     }
     
     public void MouseDisable()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        isActive = false;
     }
     
     public void ClearInterface()

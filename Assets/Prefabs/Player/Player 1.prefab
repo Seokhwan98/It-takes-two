@@ -992,8 +992,8 @@ Transform:
   - {fileID: 3177825814904530519}
   - {fileID: 7732199269806435123}
   - {fileID: 3631811529716269613}
-  - {fileID: 7930122144279813473}
   - {fileID: 6962808738818959373}
+  - {fileID: 7930122144279813473}
   - {fileID: 3463485910896410541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1068,7 +1068,7 @@ MonoBehaviour:
     Radius: 0.5
     Height: 2
     Extent: 0.035
-    ColliderLayer: 0
+    ColliderLayer: 6
     CollisionLayerMask:
       serializedVersion: 2
       m_Bits: 129
@@ -1077,7 +1077,7 @@ MonoBehaviour:
     StateAuthorityBehavior: 0
     ProxyInterpolationMode: 0
     ForcePredictedLookRotation: 0
-    AllowClientTeleports: 0
+    AllowClientTeleports: 1
     Processors:
     - {fileID: 4219866145273439913, guid: 1ab62523487a65745ab7ee9663ad9025, type: 3}
     - {fileID: 561824206424634091, guid: 68c4081a63f1dfd469da9c95bea22158, type: 3}
@@ -1195,9 +1195,9 @@ MonoBehaviour:
   Animator: {fileID: -3150959145295216065}
   ApplyTiming: 2
   SyncSettings: 79
-  StateHashes: 00000000a1f7ab0dbb6691e78fbd809892ba47dfcd98ad5aee28aefce18ff492fc8833d5083a811aca4840b8826979ab5cc238c8ec5b0da132f04cc2cecf83b6ed7f8010c7db473b29b98f4ef5741ae5c6c73fd23dc42db0d607a54d35ad18cab18ece259eeb29c1316b0e52
+  StateHashes: 00000000a1f7ab0dbb6691e78fbd809892ba47dfcd98ad5aee28aefce18ff492fc8833d5083a811aca4840b8826979ab5cc238c8ec5b0da132f04cc2cecf83b6ed7f8010c7db473b29b98f4ef5741ae5c6c73fd23dc42db0d607a54d35ad18cab18ece259eeb29c1316b0e52d5a4f652e617d365
   TriggerHashes: 000000001606b3a7
-  TotalWords: 4
+  TotalWords: 3
 --- !u!114 &4214232857091390213
 MonoBehaviour:
   m_ObjectHideFlags: 0

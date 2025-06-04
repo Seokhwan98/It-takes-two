@@ -1,6 +1,5 @@
 using Fusion;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerEsc : NetworkBehaviour
 {
@@ -14,14 +13,15 @@ public class PlayerEsc : NetworkBehaviour
     }
 
     private void Update()
-    {
+    {   
         if (!Object.HasInputAuthority)
             return;
         
-        if (Runner != null
-            && SceneManager.GetActiveScene().buildIndex == 3
-            && Input.GetKeyDown(KeyCode.Escape))
+        if (Runner != null && Input.GetKeyDown(KeyCode.Escape))
         {
+            if (!_escUI.activeSelf && InterfaceManager.Instance.isActive)
+                return;
+            
             ToggleEscMenu();
         }
     }

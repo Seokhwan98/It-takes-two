@@ -41,6 +41,8 @@ public class PlayerMovement : NetworkBehaviour
     #endregion
 
     private Action _playJumpTimer;
+    
+    private bool isUIActive => InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused;
 
     public override void Spawned()
     {
@@ -117,6 +119,11 @@ public class PlayerMovement : NetworkBehaviour
             {
                 _dir = Vector3.zero;
             }
+            
+            if (isUIActive)
+            {
+                _dir = Vector3.zero;
+            }
                 
             _cc.SetInputDirection(_dir.normalized);
 
@@ -131,7 +138,7 @@ public class PlayerMovement : NetworkBehaviour
                 _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
             }
 
-            if (_grabInteractor?.Grabbable == null)
+            if (_grabInteractor?.Grabbable == null && !isUIActive)
             {
                 if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
                 {
@@ -172,7 +179,15 @@ public class PlayerMovement : NetworkBehaviour
         Vector3 moveSpeed = _cc.Data.RealVelocity;
         speedY = moveSpeed.y; 
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
+        
+        var environmentProcessor = _cc.GetProcessor<EnvironmentProcessor>();
+        if (!environmentProcessor) return;
+
+        float normalSpeed = environmentProcessor.KinematicSpeed;
+        var runProcessor = _cc.GetProcessor<RunProcessor>();
+        float maxMoveSpeed = normalSpeed * (runProcessor != null ? runProcessor.RunMultiplier : 1);
+        
+        speed = moveSpeed.magnitude / maxMoveSpeed;
     }
 
     private void UpdateSpeedAnim()
