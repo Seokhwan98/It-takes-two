@@ -1,5 +1,4 @@
-using System;
-using Fusion.Addons.KCC;
+using Fusion;
 using UnityEngine;
 
 public class PlayerData
@@ -7,7 +6,6 @@ public class PlayerData
     // Values
     public int PlayerID { get; private set; }
     public bool Running { get; set; }
-    public Grabbable Grabbable { get; set; }
     public bool Wall { get; set; }
 
     public Vector3 WallNormal { get; set; }
