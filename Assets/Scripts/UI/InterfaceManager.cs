@@ -46,6 +46,7 @@ public class InterfaceManager : MonoBehaviour
     
     public void ClearInterface()
     {
+        if (UIScreen.activeScreen == null) return;
         UIScreen.activeScreen.Defocus();
     }
 }
