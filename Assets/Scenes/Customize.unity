@@ -1395,6 +1395,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic_Character
       objectReference: {fileID: 0}
+    - target: {fileID: 4911497037151681024, guid: 5bb095d3e14682a47b7f4ddea7721b82, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5514455154609703838, guid: 5bb095d3e14682a47b7f4ddea7721b82, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1473,6 +1477,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4911497037151681024, guid: 5bb095d3e14682a47b7f4ddea7721b82, type: 3}
       insertIndex: -1
       addedObject: {fileID: 766383994}
+    - targetCorrespondingSourceObject: {fileID: 4911497037151681024, guid: 5bb095d3e14682a47b7f4ddea7721b82, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 766383995}
   m_SourcePrefab: {fileID: 100100000, guid: 5bb095d3e14682a47b7f4ddea7721b82, type: 3}
 --- !u!1 &191548306
 GameObject:
@@ -7078,6 +7085,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &766383995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766383989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fa9aca5d235747bc847c66cbbf52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &783985546
 GameObject:
   m_ObjectHideFlags: 0
@@ -9667,7 +9686,6 @@ GameObject:
   - component: {fileID: 1128315886}
   - component: {fileID: 1128315885}
   - component: {fileID: 1128315884}
-  - component: {fileID: 1128315887}
   m_Layer: 5
   m_Name: Button-Back
   m_TagString: Untagged
@@ -9739,16 +9757,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1128315887}
-        m_TargetAssemblyTypeName: LocalSceneHandler, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 5
+      - m_Target: {fileID: 680473566}
+        m_TargetAssemblyTypeName: CustomUIManager, Assembly-CSharp
+        m_MethodName: OnBackClicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: StartScene
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1128315885
@@ -9789,18 +9807,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128315882}
   m_CullTransparentMesh: 1
---- !u!114 &1128315887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128315882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5575f0c6f39737c4e87a13ee2124b0af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1137878507
 GameObject:
   m_ObjectHideFlags: 0
