@@ -59,10 +59,11 @@ public class ChatManager : NetworkBehaviour
                 if (string.IsNullOrEmpty(msg))
                 {
                     isInputFocused = false;
+                    
                     inputField.gameObject.SetActive(false);
                     inputField.DeactivateInputField();
                     
-                    // _chatUI.Defocus();
+                    InterfaceManager.Instance.MouseDisable();
                 }
                 else
                 {

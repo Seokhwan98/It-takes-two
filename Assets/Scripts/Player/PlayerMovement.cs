@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Fusion;
 using Fusion.Addons.KCC;
 using Unity.Cinemachine;
@@ -77,18 +78,16 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     private void Update()
-    {   
+    {
         Debug.LogWarning($"IsGrounded => {_cc.Data.IsGrounded} | Velocity => {_cc.Data.RealVelocity}");
     }
 
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority) return;
-        if (ChatManager.Instance.isInputFocused) return;
         
         _playerData.ReleaseAllTrigger();
         
-        UpdateMoveCD();
         UpdateJumpCD();
         
         if (!_canMove) return;
@@ -118,6 +117,11 @@ public class PlayerMovement : NetworkBehaviour
             }
 
             if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
+            {
+                _dir = Vector3.zero;
+            }
+            
+            if (InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused)
             {
                 _dir = Vector3.zero;
             }
@@ -161,6 +165,7 @@ public class PlayerMovement : NetworkBehaviour
         UpdateAnimator();
         
         if (_myOrbitalFollow == null) return;
+        
         smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
         smoothPitch = Mathf.Lerp(smoothPitch, NetworkPitch, Time.deltaTime * smoothSpeed);
 
