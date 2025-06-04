@@ -16,7 +16,7 @@ public class ChatManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
@@ -49,6 +49,7 @@ public class ChatManager : NetworkBehaviour
                 isInputFocused = true;
                 
                 _chatUI.Focus();
+                _chatUI.SetBackgroundAlpha(0.5f);
                 inputField.gameObject.SetActive(true);
                 inputField.ActivateInputField();
             }
@@ -62,6 +63,7 @@ public class ChatManager : NetworkBehaviour
                     
                     inputField.gameObject.SetActive(false);
                     inputField.DeactivateInputField();
+                    _chatUI.DefocusImmediate();
                     
                     InterfaceManager.Instance.MouseDisable();
                 }

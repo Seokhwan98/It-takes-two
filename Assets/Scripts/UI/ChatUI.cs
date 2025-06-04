@@ -32,7 +32,7 @@ public class ChatUI : UIScreen
             sv.verticalNormalizedPosition = 0f;
         }
     }
-
+    
     
     public override void Focus()
     {
@@ -45,9 +45,33 @@ public class ChatUI : UIScreen
         _defocusCoroutine = StartCoroutine(DefocusProcess());
     }
     
+    public void DefocusImmediate()
+    {
+        if (_defocusCoroutine != null)
+        {
+            StopCoroutine(_defocusCoroutine);
+            _defocusCoroutine = null;
+        }
+        
+        SetBackgroundAlpha(0f);
+        Defocus();
+    }
+    
     private IEnumerator DefocusProcess()
     {
         yield return new WaitForSeconds(5f);
+        SetBackgroundAlpha(0f);
         Defocus();
+    }
+    
+    public void SetBackgroundAlpha(float alpha)
+    {
+        var image = sv.GetComponent<Image>();
+        if (image != null)
+        {
+            Color color = image.color;
+            color.a = alpha;
+            image.color = color;
+        }
     }
 }
