@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 [System.Serializable]
@@ -60,6 +62,20 @@ public class CustomizationManager : MonoBehaviour
                 PartRenderers.Add(entry.partType, entry.renderer);
             }
         }
+    }
+    
+    public MeshPartOption GetOption(PartType partType, string optionId)
+    {
+        if (_optionIndex.TryGetValue(partType, out var optionsById))
+        {
+            if (optionsById.TryGetValue(optionId, out var option))
+            {
+                return option;
+            }
+        }
+
+        Debug.LogWarning($"[Customization] 옵션을 찾을 수 없음: {partType} / {optionId}");
+        return null;
     }
 
     private void LoadAllOptions()
@@ -160,6 +176,34 @@ public class CustomizationManager : MonoBehaviour
         }
 
         Debug.Log("[Customization] 저장된 데이터 로드 완료");
+    }
+    public string LoadRawAsJson()
+    {
+        var partDict = new Dictionary<string, string>();
+
+        foreach (var partType in PartOptions.Keys)
+        {
+            if (CurrentSelections.TryGetValue(partType, out var option))
+            {
+                partDict[partType.ToString()] = option.id;
+            }
+            else
+            {
+                partDict[partType.ToString()] = "Empty";
+            }
+        }
+
+        var data = new CustomizationData
+        {
+            partSelections = partDict
+        };
+
+        return JsonConvert.SerializeObject(data);
+    }
+
+    public CustomizationData ParseJsonToCustomizationData(string json)
+    {
+        return JsonConvert.DeserializeObject<CustomizationData>(json);
     }
 
     public bool HasSavedData()

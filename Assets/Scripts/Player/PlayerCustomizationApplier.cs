@@ -1,25 +1,39 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartRendererCollector : MonoBehaviour
+public class PlayerCustomizationApplier : MonoBehaviour
 {
     private List<PartRendererEntry> entries;
+    private Dictionary<PartType, SkinnedMeshRenderer> renderers;
 
     void Awake()
     {
         entries = new List<PartRendererEntry>();
+        renderers = new Dictionary<PartType, SkinnedMeshRenderer>();
         
         foreach (var renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
         {
             var partType = GuessPartTypeFromName(renderer.name);
             entries.Add(new PartRendererEntry { partType = partType, renderer = renderer });
+            renderers.TryAdd(partType, renderer);
         }
     }
     
-    private void Start()
+    public void ApplyCustomization(CustomizationData data)
     {
-        CustomizationManager.Instance.RegisterRenderers(entries);
-        CustomizationManager.Instance.LoadCustomization();
+        foreach (var kvp in data.partSelections)
+        {
+            if (!Enum.TryParse(kvp.Key, out PartType partType)) continue;
+            var option = CustomizationManager.Instance.GetOption(partType, kvp.Value);
+            if (option == null) continue;
+
+            if (renderers.TryGetValue(partType, out var renderer))
+            {
+                renderer.sharedMesh = option.mesh;
+                renderer.gameObject.SetActive(!option.IsEmpty);
+            }
+        }
     }
     
     private PartType GuessPartTypeFromName(string name)
