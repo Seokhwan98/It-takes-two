@@ -1352,7 +1352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3241901076998771724, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: Lens.FieldOfView
-      value: 60
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3241901076998771724, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: Target.TrackingTarget
@@ -1364,15 +1364,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8137898927253476969, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23
+      value: 23.13
       objectReference: {fileID: 0}
     - target: {fileID: 8137898927253476969, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14
+      value: 14.44
       objectReference: {fileID: 0}
     - target: {fileID: 8137898927253476969, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.11
+      value: -60.8
       objectReference: {fileID: 0}
     - target: {fileID: 8137898927253476969, guid: 4d3d7b2277cc601479ec3856d87edbfb, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1452,7 +1452,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 0, z: -15}
+  FollowOffset: {x: 0, y: 1, z: -60}
 --- !u!1 &915273774
 GameObject:
   m_ObjectHideFlags: 0
@@ -2840,7 +2840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 869698750977743545, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: field of view
-      value: 60
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 869698750977743545, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_NormalizedViewPortRect.width
@@ -2848,15 +2848,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1826963145028409425, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.15
+      value: 23.13
       objectReference: {fileID: 0}
     - target: {fileID: 1826963145028409425, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.19
+      value: 14.44
       objectReference: {fileID: 0}
     - target: {fileID: 1826963145028409425, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.11
+      value: -59.5
       objectReference: {fileID: 0}
     - target: {fileID: 2371279694648912373, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_Name
@@ -2876,7 +2876,7 @@ PrefabInstance:
       objectReference: {fileID: 1576211175}
     - target: {fileID: 4992444024723348020, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: Lens.FieldOfView
-      value: 60
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4992444024723348020, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: Target.TrackingTarget
@@ -2888,15 +2888,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5665605161214096347, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 23.075
+      value: 23.13
       objectReference: {fileID: 0}
     - target: {fileID: 5665605161214096347, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.094999
+      value: 14.44
       objectReference: {fileID: 0}
     - target: {fileID: 5665605161214096347, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.11
+      value: -60.15
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1071518170516875394, guid: f6b1029c99d77174aa51a1ce790b8315, type: 3}
@@ -3001,7 +3001,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 0, z: -15}
+  FollowOffset: {x: 0, y: 1, z: -60}
 --- !u!114 &1576211179
 MonoBehaviour:
   m_ObjectHideFlags: 0
