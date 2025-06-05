@@ -12,36 +12,71 @@ public class GrabInteractor : Interactor
     [SerializeField] private Color _gizmoColor = Color.red;
     
     private PlayerMovement _playerMovement;
+    private Grabbable hitGrabbable;
+    private Vector3 hitPosition;
     
     public Transform GrabPoint => _grabPoint;
-    [Networked, OnChangedRender(nameof(OnChangeGrabbable))] public Grabbable Grabbable { get; set; }
+    [Networked, OnChangedRender(nameof(OnChangeGrabbable))] 
+    public Grabbable Grabbable { get; set; }
     
     private void Start()
     {
         _playerMovement = GetComponent<PlayerMovement>();
+    }
+
+    public void Update()
+    {
+        if (Grabbable != null)
+        {
+            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(true);
+            _playerMovement.InteractionUIUpdater?.SetActiveGrabInteractionUI(false);
+        }
+        else
+        {
+            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(false);
+            if (hitGrabbable != null)
+            {
+                _playerMovement.InteractionUIUpdater?.SetActiveGrabInteractionUI(true);
+                _playerMovement.InteractionUIUpdater?.SetGrabInteractionUIPositionWorld(hitPosition);
+            }
+            else
+            {
+                _playerMovement.InteractionUIUpdater?.SetActiveGrabInteractionUI(false);
+            }
+        }
     }
     
     public override void FixedUpdateNetwork()
     {
         if (_playerMovement == null) return;
 
-        Grabbable grabbable = null;
-        RaycastHit hit = default;
-        if (Grabbable == null && Physics.Raycast(_grabPoint.position, _grabPoint.forward, out hit, _distance))
+        if (Grabbable == null)
         {
-            grabbable = hit.collider.GetComponent<Grabbable>();
+            if (Physics.Raycast(_grabPoint.position, _grabPoint.forward, out RaycastHit hit, _distance))
+            {
+                hitGrabbable = hit.collider.GetComponent<Grabbable>();
+                hitPosition = hit.point;
+                if (hitGrabbable == null || !hitGrabbable.IsInteractable(this))
+                {
+                    hitGrabbable = null;
+                }
+            }
+            else
+            {
+                hitGrabbable = null;
+            }
         }
         
         if (GetInput(out MyNetworkInput data) && HasStateAuthority)
         {
-            if (grabbable != null)
+            if (hitGrabbable != null)
             {
                 if (data.IsDown(MyNetworkInput.BUTTON_INTERACT))
                 {
-                    bool result = grabbable.TryInteract(this);
+                    bool result = hitGrabbable.TryInteract(this);
                     if (result)
                     {
-                        Grabbable = grabbable;
+                        Grabbable = hitGrabbable;
                     }
                 }
             }
@@ -55,25 +90,6 @@ public class GrabInteractor : Interactor
                     Grabbable.FinishInteract(this);
                     Grabbable = null;
                 }
-            }
-        }
-        
-        if (Grabbable != null)
-        {
-            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(true);
-            _playerMovement.InteractionUIUpdater?.SetActiveInteractionUI(false);
-        }
-        else
-        {
-            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(false);
-            if (grabbable != null)
-            {
-                _playerMovement.InteractionUIUpdater?.SetActiveInteractionUI(true);
-                _playerMovement.InteractionUIUpdater?.SetInteractionUIPositionWorld(hit.point);
-            }
-            else
-            {
-                _playerMovement.InteractionUIUpdater?.SetActiveInteractionUI(false);
             }
         }
     }

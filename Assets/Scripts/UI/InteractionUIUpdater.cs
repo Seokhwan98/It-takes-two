@@ -6,7 +6,8 @@ public class InteractionUIUpdater : MonoBehaviour
     [field: SerializeField] public Camera camera { get; private set; }
 
     [Header("UI Elements")] 
-    [SerializeField] private GameObject _interactionUI;
+    [SerializeField] private GameObject _grabInteractionUI;
+    [SerializeField] private GameObject _triggerInteractionUI;
     [SerializeField] private GameObject _endInteractionUI;
 
     public void SetActiveEndInteractionUI(bool value)
@@ -14,15 +15,39 @@ public class InteractionUIUpdater : MonoBehaviour
         _endInteractionUI.SetActive(value);
     }
 
-    public void SetActiveInteractionUI(bool value)
+    public void SetActiveGrabInteractionUI(bool value)
     {
-        _interactionUI.SetActive(value);
+        _grabInteractionUI.SetActive(value);
     }
     
-    public void SetInteractionUIPositionScreen(Vector2 rectPosition)
+    public void SetGrabInteractionUIPositionScreen(Vector2 rectPosition)
     {
-        var rect = _interactionUI.GetComponent<RectTransform>();
+        var rect = _grabInteractionUI.GetComponent<RectTransform>();
         rect.anchoredPosition = rectPosition;
+    }
+    
+    public void SetGrabInteractionUIPositionWorld(Vector3 world)
+    {
+        var screenPos = camera.WorldToScreenPoint(world);
+        SetGrabInteractionUIPositionScreen(screenPos);
+    }
+    
+    public void SetActiveTriggerInteractionUI(bool value)
+    {
+        _triggerInteractionUI.SetActive(value);
+    }
+    
+    public void SetTriggerInteractionUIPositionScreen(Vector2 rectPosition)
+    {
+        var rect = _triggerInteractionUI.GetComponent<RectTransform>();
+        rect.anchoredPosition = rectPosition;
+    }
+    
+    public void SetTriggerInteractionUIPositionWorld(Vector3 world)
+    {
+        var screenPos = camera.WorldToScreenPoint(world);
+        Debug.Log(camera.name);
+        SetTriggerInteractionUIPositionScreen(screenPos);
     }
 
     public void SetCamera(Camera camera)
@@ -30,10 +55,5 @@ public class InteractionUIUpdater : MonoBehaviour
         this.camera = camera;
     }
     
-    public void SetInteractionUIPositionWorld(Vector3 world)
-    {
-        var screenPos = camera.WorldToScreenPoint(world);
-        Debug.Log(camera.name);
-        SetInteractionUIPositionScreen(screenPos);
-    }
+    
 }

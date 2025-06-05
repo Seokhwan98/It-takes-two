@@ -955,6 +955,7 @@ GameObject:
   - component: {fileID: 2904461595144121375}
   - component: {fileID: -3150959145295216065}
   - component: {fileID: 49755165060025894}
+  - component: {fileID: 1048961382125341853}
   - component: {fileID: 8469500152695076564}
   - component: {fileID: 4065558687241209263}
   - component: {fileID: -5083169746699833266}
@@ -1015,6 +1016,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 2904461595144121375}
   - {fileID: 49755165060025894}
+  - {fileID: 1048961382125341853}
   - {fileID: 8469500152695076564}
   - {fileID: 4065558687241209263}
   - {fileID: -5083169746699833266}
@@ -1134,8 +1136,19 @@ MonoBehaviour:
   _grabPoint: {fileID: 3463485910896410541}
   _distance: 1.5
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
-  _interactionUIController: {fileID: 1081624358804737084, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
   _Grabbable: {fileID: 0}
+--- !u!114 &1048961382125341853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893172310950985558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd8b81dd4ae04ed99d32ad28e8ebc0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8469500152695076564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1152,7 +1165,6 @@ MonoBehaviour:
   cameraPivot: {fileID: 7929672037946538886}
   _NetworkYaw: 0
   _NetworkPitch: 0
-  _grabInteractor: {fileID: 0}
 --- !u!114 &4065558687241209263
 MonoBehaviour:
   m_ObjectHideFlags: 0
