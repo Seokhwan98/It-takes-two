@@ -6,18 +6,23 @@ public class MixingCameraFOVScaler : MonoBehaviour
     [SerializeField] private CinemachineCamera camA;
     [SerializeField] private CinemachineCamera camB;
     
-    private float minFOV = 60f;
-    private float maxFOV = 90f;
-    
-    private float xWeight = 1.0f;
-    private float yWeight = 2.0f;
+    private float minZOffset = -60f;
+    private float maxZOffset = -240f;
 
-    private float xThreshold = 20f;
+    private float xThreshold = 10f;
     private float yThreshold = 5f;
     
-    private float startDistance = 0f;   // 변화 시작 거리
-    private float endDistance = 60f;    // 변화 끝 거리
+    private float maxX = 60f;
+    private float maxY = 30f;
 
+    private CinemachineFollow aFollow;
+    private CinemachineFollow bFollow;
+
+    private void Awake()
+    {
+        aFollow = camA.GetComponent<CinemachineFollow>();
+        bFollow = camB.GetComponent<CinemachineFollow>();
+    }
     
     void LateUpdate()
     {
@@ -28,20 +33,15 @@ public class MixingCameraFOVScaler : MonoBehaviour
         float dx = Mathf.Abs(posA.x - posB.x);
         float dy = Mathf.Abs(posA.y - posB.y);
 
-        float xFactor = Mathf.Max(0f, dx - xThreshold);
-        float yFactor = Mathf.Max(0f, dy - yThreshold);
-
-        float weightedDistance = (xFactor * xWeight) + (yFactor * yWeight);
+        float xRatio = Mathf.Clamp01((dx - xThreshold) / (maxX - xThreshold));
+        float yRatio = Mathf.Clamp01((dy - yThreshold) / (maxY - yThreshold));
         
-        // 0 ~ 1 사이 보간 비율 계산
-        float t = Mathf.InverseLerp(startDistance, endDistance, weightedDistance);
-        
-        float targetFOV = Mathf.Lerp(minFOV, maxFOV, t);
+        float t = Mathf.Max(xRatio, yRatio);
+        float targetZ = Mathf.Lerp(minZOffset, maxZOffset, t);
         
         // Debug.Log($"dx: {dx}, dy: {dy}, weightedDistance: {weightedDistance}, targetFOV: {targetFOV}");
-        
-        // 둘 다 같은 FOV로 맞춰줌
-        camA.Lens.FieldOfView = Mathf.Lerp(camA.Lens.FieldOfView, targetFOV, Time.deltaTime * 5f);
-        camB.Lens.FieldOfView = Mathf.Lerp(camB.Lens.FieldOfView, targetFOV, Time.deltaTime * 5f);
+
+        aFollow.FollowOffset.z = Mathf.Lerp(aFollow.FollowOffset.z, targetZ, Time.deltaTime * 5f);
+        bFollow.FollowOffset.z = Mathf.Lerp(bFollow.FollowOffset.z, targetZ, Time.deltaTime * 5f);
     }
 }
