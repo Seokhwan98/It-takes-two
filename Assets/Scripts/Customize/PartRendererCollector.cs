@@ -8,6 +8,7 @@ public class PartRendererCollector : MonoBehaviour
     void Awake()
     {
         entries = new List<PartRendererEntry>();
+        
         foreach (var renderer in GetComponentsInChildren<SkinnedMeshRenderer>())
         {
             var partType = GuessPartTypeFromName(renderer.name);
