@@ -959,6 +959,7 @@ GameObject:
   - component: {fileID: 4065558687241209263}
   - component: {fileID: -5083169746699833266}
   - component: {fileID: 4214232857091390213}
+  - component: {fileID: -4831364757104025512}
   m_Layer: 6
   m_Name: Player 1
   m_TagString: Untagged
@@ -990,8 +991,8 @@ Transform:
   - {fileID: 3177825814904530519}
   - {fileID: 7732199269806435123}
   - {fileID: 3631811529716269613}
-  - {fileID: 7930122144279813473}
   - {fileID: 6962808738818959373}
+  - {fileID: 7930122144279813473}
   - {fileID: 3463485910896410541}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1074,7 +1075,7 @@ MonoBehaviour:
     StateAuthorityBehavior: 0
     ProxyInterpolationMode: 0
     ForcePredictedLookRotation: 0
-    AllowClientTeleports: 0
+    AllowClientTeleports: 1
     Processors:
     - {fileID: 4219866145273439913, guid: 1ab62523487a65745ab7ee9663ad9025, type: 3}
     - {fileID: 561824206424634091, guid: 68c4081a63f1dfd469da9c95bea22158, type: 3}
@@ -1188,6 +1189,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7ac0cdd7053a42bab1b3ad02334301e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4831364757104025512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893172310950985558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b4fa9aca5d235747bc847c66cbbf52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2004252798624030549

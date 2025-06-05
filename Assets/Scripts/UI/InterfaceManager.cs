@@ -10,6 +10,8 @@ public class InterfaceManager : MonoBehaviour
     public GameObject EscUI;
     public ClearUI ClearUI;
 
+    public bool isActive;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,16 +34,19 @@ public class InterfaceManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        isActive = true;
     }
     
     public void MouseDisable()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        isActive = false;
     }
     
     public void ClearInterface()
     {
+        if (UIScreen.activeScreen == null) return;
         UIScreen.activeScreen.Defocus();
     }
 }

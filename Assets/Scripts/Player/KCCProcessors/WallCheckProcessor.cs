@@ -36,8 +36,6 @@ public class WallCheckProcessor : KCCProcessor, ISetDynamicVelocity
             _wallLayer
         );
 
-        Debug.Log(result);
-
         if (result && data.RealVelocity.y < 0f && Vector3.Angle(Vector3.up, hit.normal) > data.MaxGroundAngle)
         {
             playerData.Wall = true;
