@@ -27,6 +27,7 @@ public class GameStarter : NetworkBehaviour {
             {
                 var playerMovement = kvp.Value.GetComponent<PlayerMovement>();
                 playerMovement?.TryBindOtherCamera();
+                playerMovement?.TryBindOtherInteractionUIUpdater();
             }
         }
     }

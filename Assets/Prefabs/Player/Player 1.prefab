@@ -955,10 +955,10 @@ GameObject:
   - component: {fileID: 2904461595144121375}
   - component: {fileID: -3150959145295216065}
   - component: {fileID: 49755165060025894}
+  - component: {fileID: 1048961382125341853}
   - component: {fileID: 8469500152695076564}
   - component: {fileID: 4065558687241209263}
   - component: {fileID: -5083169746699833266}
-  - component: {fileID: 3481618972319629524}
   - component: {fileID: 4214232857091390213}
   - component: {fileID: -4831364757104025512}
   m_Layer: 6
@@ -1016,10 +1016,10 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 2904461595144121375}
   - {fileID: 49755165060025894}
+  - {fileID: 1048961382125341853}
   - {fileID: 8469500152695076564}
   - {fileID: 4065558687241209263}
   - {fileID: -5083169746699833266}
-  - {fileID: 3481618972319629524}
   - {fileID: 4214232857091390213}
   ForceRemoteRenderTimeframe: 0
 --- !u!54 &1367043984268377578
@@ -1137,6 +1137,18 @@ MonoBehaviour:
   _distance: 1.5
   _gizmoColor: {r: 1, g: 0, b: 0, a: 1}
   _Grabbable: {fileID: 0}
+--- !u!114 &1048961382125341853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893172310950985558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd8b81dd4ae04ed99d32ad28e8ebc0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8469500152695076564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,7 +1165,6 @@ MonoBehaviour:
   cameraPivot: {fileID: 7929672037946538886}
   _NetworkYaw: 0
   _NetworkPitch: 0
-  _grabInteractor: {fileID: 0}
 --- !u!114 &4065558687241209263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,24 +1191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _model: {fileID: 4433954637396568645}
   _grabPoint: {fileID: 3463485910896410541}
---- !u!114 &3481618972319629524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1893172310950985558}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: -3150959145295216065}
-  ApplyTiming: 2
-  SyncSettings: 79
-  StateHashes: 00000000a1f7ab0dbb6691e78fbd809892ba47dfcd98ad5aee28aefce18ff492fc8833d5083a811aca4840b8826979ab5cc238c8ec5b0da132f04cc2cecf83b6ed7f8010c7db473b29b98f4ef5741ae5c6c73fd23dc42db0d607a54d35ad18cab18ece259eeb29c1316b0e52d5a4f652e617d365
-  TriggerHashes: 000000001606b3a7
-  TotalWords: 3
 --- !u!114 &4214232857091390213
 MonoBehaviour:
   m_ObjectHideFlags: 0
