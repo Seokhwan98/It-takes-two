@@ -7,7 +7,6 @@ public class PlayerEsc : NetworkBehaviour
     private GameObject _escUI => InterfaceManager.Instance.EscUI;
     private EscUI _escUIComponent => _escUI.GetComponent<EscUI>();
     private GameObject _pauseUI => InterfaceManager.Instance.PauseUI;
-    private bool isPaused;
     
     private void OnEnable()
     {
@@ -17,7 +16,8 @@ public class PlayerEsc : NetworkBehaviour
     private void OnDisable()
     {
         EscUI.OnMenuClosedByButton -= CloseMenuByEvent;
-        _pauseUI.SetActive(false);
+        if (_pauseUI.activeSelf)
+            _pauseUI.SetActive(false);
     }
     
     private void CloseMenuByEvent()
@@ -33,7 +33,6 @@ public class PlayerEsc : NetworkBehaviour
 
     private void Update()
     { 
-        Debug.Log($"isPaused {isPaused}");
         if (!Object.HasInputAuthority)
             return;
         
@@ -50,6 +49,8 @@ public class PlayerEsc : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     private void RPC_TogglePauseMenus(bool open)
     {
+        InterfaceManager.Instance.UIActiveCount += open ? 1 : -1;
+        
         if (Object.HasInputAuthority)
         {
             if (_escUI == null)
@@ -66,9 +67,11 @@ public class PlayerEsc : NetworkBehaviour
             else
             {
                 _escUIComponent.Defocus();
+
+                if (InterfaceManager.Instance.UIActiveCount == 0)
+                    return;
                 
-                if (isPaused)
-                    _pauseUI.SetActive(true);
+                _pauseUI.SetActive(true);
             }
         }
         else
@@ -76,7 +79,7 @@ public class PlayerEsc : NetworkBehaviour
             if (_pauseUI == null)
                 return;
 
-            if (open && Runner.GameMode == GameMode.Shared)
+            if (Runner.GameMode == GameMode.Shared)
                 return;
 
             if (open)
@@ -89,10 +92,6 @@ public class PlayerEsc : NetworkBehaviour
             {
                 _pauseUI.SetActive(false);
             }
-            
-            isPaused = open;
         }
-
-        InterfaceManager.Instance.UIActiveCount += open ? 1 : -1;
     }
 }
