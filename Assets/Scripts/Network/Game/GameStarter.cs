@@ -9,7 +9,6 @@ public class GameStarter : NetworkBehaviour {
     
     private Dictionary<PlayerRef, NetworkObject> _playerAvatars;
     
-
     public override void Spawned()
     {
         InterfaceManager.Instance.MouseDisable();
