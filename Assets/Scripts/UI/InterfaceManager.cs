@@ -1,6 +1,5 @@
-using System;
+using Fusion;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -9,8 +8,10 @@ public class InterfaceManager : MonoBehaviour
     public GateUI GateUI;
     public GameObject EscUI;
     public ClearUI ClearUI;
+    public GameObject PauseUI;
 
-    public bool isActive;
+    public bool isActive { get; set; }
+    [Networked] public int UIActiveCount { get; set; }
 
     private void Awake()
     {

@@ -41,8 +41,13 @@ public class PlayerMovement : NetworkBehaviour
     #endregion
 
     private Action _playJumpTimer;
+
+    private bool isUIActiveInGame => Runner.GameMode != GameMode.Shared 
+                               && (InterfaceManager.Instance.isActive || InterfaceManager.Instance.UIActiveCount >= 1);
+    private bool isLocalUIActive => Runner.GameMode == GameMode.Shared 
+                                    && (InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused);
     
-    private bool isUIActive => InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused;
+    private bool isUIActive => isUIActiveInGame || isLocalUIActive;
 
     public override void Spawned()
     {
@@ -119,7 +124,7 @@ public class PlayerMovement : NetworkBehaviour
             {
                 _dir = Vector3.zero;
             }
-            
+
             if (isUIActive)
             {
                 _dir = Vector3.zero;
