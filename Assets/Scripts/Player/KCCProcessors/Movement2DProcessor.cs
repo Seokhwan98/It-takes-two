@@ -1,3 +1,4 @@
+using Fusion;
 using Fusion.Addons.KCC;
 
 public class Movement2DProcessor: KCCProcessor, ISetDynamicVelocity, ISetKinematicVelocity 

@@ -12,8 +12,8 @@ public class GrabInteractor : Interactor
     [SerializeField] private Color _gizmoColor = Color.red;
     
     private PlayerMovement _playerMovement;
-    private Grabbable hitGrabbable;
-    private Vector3 hitPosition;
+    [Networked] private Grabbable hitGrabbable { get; set; }
+    [Networked] private Vector3 hitPosition { get; set; }
     
     public Transform GrabPoint => _grabPoint;
     [Networked, OnChangedRender(nameof(OnChangeGrabbable))] 
@@ -48,7 +48,7 @@ public class GrabInteractor : Interactor
     
     public override void FixedUpdateNetwork()
     {
-        if (_playerMovement == null) return;
+        if (_playerMovement == null || !HasStateAuthority) return;
 
         if (Grabbable == null)
         {
@@ -83,13 +83,10 @@ public class GrabInteractor : Interactor
 
             if (data.IsDown(MyNetworkInput.BUTTON_END_INTERACT))
             {
-                if (HasStateAuthority)
-                {
-                    if (Grabbable == null) return;
-                
-                    Grabbable.FinishInteract(this);
-                    Grabbable = null;
-                }
+                if (Grabbable == null) return;
+            
+                Grabbable.FinishInteract(this);
+                Grabbable = null;
             }
         }
     }

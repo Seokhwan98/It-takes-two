@@ -1087,11 +1087,9 @@ MonoBehaviour:
     - {fileID: 355494504082852736, guid: 04dc7b0db5173494c81aa62a89fab55e, type: 3}
     - {fileID: 2543976751638466746, guid: 7e596d896f40e4647859b55760312af9, type: 3}
     - {fileID: 8019625208958451984, guid: 27fc4fc1b3cd34a2ab7b22e8a71afa88, type: 3}
-    - {fileID: 2680702879983887941, guid: b0861ca608672400f96de074755365b7, type: 3}
     - {fileID: 8791201229247429360, guid: 88ae8c143c5f94b65a2fbecb99fddd70, type: 3}
     - {fileID: 6229294081875787251, guid: 6257a766e8b5b44eea3fce350a107b12, type: 3}
     - {fileID: 7297661878568932791, guid: cc26b5176df7f4e3ba91b7293c998dc5, type: 3}
-    - {fileID: 2418592971245403583, guid: c761e89a982d246b9b1e24a9b59e2b6d, type: 3}
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75
     AntiJitterDistance: {x: 0.25, y: 0.1}

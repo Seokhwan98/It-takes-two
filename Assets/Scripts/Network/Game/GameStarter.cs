@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Fusion.Addons.KCC;
 
 public class GameStarter : NetworkBehaviour {
     [SerializeField] private NetworkPrefabRef _playerPrefab;
-
+    [SerializeField] private List<KCCProcessorInjectData> _injectProcessors;
+    
     private Dictionary<PlayerRef, NetworkObject> _playerAvatars;
     
 
@@ -30,7 +32,28 @@ public class GameStarter : NetworkBehaviour {
                 var playerMovement = kvp.Value.GetComponent<PlayerMovement>();
                 playerMovement?.TryBindOtherCamera();
                 playerMovement?.TryBindOtherInteractionUIUpdater();
+
+                var kcc = kvp.Value.GetComponent<KCC>();
+                foreach (var processorInjectData in _injectProcessors)
+                {
+                    TryInjectKCCProcessor(kcc, processorInjectData);
+                }
             }
+        }
+    }
+
+    private void TryInjectKCCProcessor(KCC kcc, KCCProcessorInjectData processorInjectData)
+    {
+        KCCProcessor processor = processorInjectData.Processor;
+        KCCProcessorInjectData.EInjectTarget target = processorInjectData.InjectTarget;
+        
+        if(kcc.Object.InputAuthority.PlayerId == 1 && target.HasFlag(KCCProcessorInjectData.EInjectTarget.Host))
+        {
+            kcc.AddLocalProcessor(processor);
+        }
+        else if(kcc.Object.InputAuthority.PlayerId == 2 && target.HasFlag(KCCProcessorInjectData.EInjectTarget.Client))
+        {
+            kcc.AddLocalProcessor(processor);
         }
     }
 }

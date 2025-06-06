@@ -11,10 +11,6 @@ public class PlayerData
     public Vector3 WallNormal { get; set; }
     public int AirJump { get; private set; }
     public EPlayerScale PlayerScale { get; private set; }
-    public Vector3 ExternalDelta { get; set; }
-
-    public readonly int AirJumpPlayerID = 1;
-    public readonly int ScalePlayerID = 2;
     
     public Trigger JumpTrigger { get; private set; }
     public Trigger BiggerTrigger { get; private set; }
@@ -26,7 +22,7 @@ public class PlayerData
         PlayerID = playerID;
         Running = false;
         Wall = false;
-        AirJump = playerID == AirJumpPlayerID ? 1 : 0;
+        AirJump = 1;
         PlayerScale = EPlayerScale.Normal;
         
         JumpTrigger = new Trigger();
@@ -48,14 +44,12 @@ public class PlayerData
     
     public void ResetAirJump()
     {
-        if (PlayerID != AirJumpPlayerID) return;
-
         AirJump = 1;
     }
 
     public bool TrySmaller()
     {
-        if (PlayerID != ScalePlayerID || PlayerScale == EPlayerScale.Small) return false;
+        if (PlayerScale == EPlayerScale.Small) return false;
         
         PlayerScale = PlayerScale switch
         {
@@ -68,7 +62,7 @@ public class PlayerData
 
     public bool TryBigger()
     {
-        if (PlayerID != ScalePlayerID || PlayerScale == EPlayerScale.Big) return false;
+        if (PlayerScale == EPlayerScale.Big) return false;
         
         PlayerScale = PlayerScale switch
         {

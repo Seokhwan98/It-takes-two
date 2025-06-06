@@ -826,6 +826,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab:
     RawGuidValue: 114631f83c27b854db2ff21f6235f2ff
+  _injectProcessors:
+  - Processor: {fileID: 2680702879983887941, guid: b0861ca608672400f96de074755365b7, type: 3}
+    InjectTarget: 1
+  - Processor: {fileID: 2418592971245403583, guid: c761e89a982d246b9b1e24a9b59e2b6d, type: 3}
+    InjectTarget: 2
 --- !u!1 &543529003
 GameObject:
   m_ObjectHideFlags: 0
