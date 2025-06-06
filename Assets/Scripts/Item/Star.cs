@@ -11,7 +11,7 @@ public class Star : NetworkBehaviour, IItem
     public void TryGet(GameObject target)
     {
         bool isInteractable = (_interactorLayer & 1 << target.layer) > 0;
-        if (isInteractable)
+        if (isInteractable && HasStateAuthority)
         {
             Get(target);
         }
@@ -19,6 +19,7 @@ public class Star : NetworkBehaviour, IItem
     
     public void Get(GameObject target)
     {
+        Debug.Log("*");
         OnGet?.Invoke(target);
         RPC_Destroy();
     }

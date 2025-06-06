@@ -3877,7 +3877,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GateUI: {fileID: 1201161255}
   EscUI: {fileID: 132689177}
-  ClearUI: {fileID: 0}
+  ClearUI: {fileID: 492867819}
   isActive: 0
 --- !u!1 &1024219878
 GameObject:

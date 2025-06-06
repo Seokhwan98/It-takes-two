@@ -17,7 +17,10 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            if (Instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
