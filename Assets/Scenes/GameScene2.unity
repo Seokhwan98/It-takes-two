@@ -694,6 +694,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab:
     RawGuidValue: 114631f83c27b854db2ff21f6235f2ff
+  _injectProcessors:
+  - Processor: {fileID: 2680702879983887941, guid: b0861ca608672400f96de074755365b7, type: 3}
+    InjectTarget: 1
+  - Processor: {fileID: 2418592971245403583, guid: c761e89a982d246b9b1e24a9b59e2b6d, type: 3}
+    InjectTarget: 2
+  - Processor: {fileID: 5497732735832298215, guid: 82d7bc08c22d24a88b23a4ab5b0df5b0, type: 3}
+    InjectTarget: -1
 --- !u!114 &143131152
 MonoBehaviour:
   m_ObjectHideFlags: 0
