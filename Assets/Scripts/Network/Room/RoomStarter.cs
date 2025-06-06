@@ -19,7 +19,16 @@ public class RoomStarter : NetworkBehaviour {
         bool isHost = Runner.SessionInfo.PlayerCount == 1;
         Vector3 SpawnPoint = isHost ? _spawnPointA.position : _spawnPointB.position;
         
-        var playerObject = Runner.Spawn(_playerPrefab, SpawnPoint, inputAuthority: Runner.LocalPlayer);
+        var playerObject = Runner.Spawn(_playerPrefab, SpawnPoint, inputAuthority: Runner.LocalPlayer
+        );
+        
+        /*
+         * , 
+            onBeforeSpawned: (runner, obj) =>
+            {
+                obj.GetComponent<PlayerNetworkApplier>()?.ApplyCustomization();
+            }
+         */
         
         playerObject.GetComponent<PlayerMovement>().enabled = false;
         playerObject.GetComponent<KCC>().enabled = false;

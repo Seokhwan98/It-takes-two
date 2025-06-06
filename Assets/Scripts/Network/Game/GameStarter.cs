@@ -8,6 +8,7 @@ public class GameStarter : NetworkBehaviour {
     [SerializeField] private List<KCCProcessorInjectData> _injectProcessors;
     
     private Dictionary<PlayerRef, NetworkObject> _playerAvatars;
+    
 
     public override void Spawned()
     {
@@ -16,14 +17,15 @@ public class GameStarter : NetworkBehaviour {
         if (Object.HasStateAuthority == false) return;
         _playerAvatars = new Dictionary<PlayerRef, NetworkObject>();
     
-        Vector3 pos = Vector3.zero;
+        int i = 0;
         foreach (var playerRef in Runner.ActivePlayers)
         {
-            pos = Random.insideUnitSphere * 3;
-            pos.y = 2;
-            var netObj = Runner.Spawn(_playerPrefab, pos, Quaternion.identity, playerRef);
+            var spawnPos = (i % 2 == 0) ? Constant.spawnPoint1 : Constant.spawnPoint2;
+            var netObj = Runner.Spawn(_playerPrefab, spawnPos, Constant.spawnRotation, playerRef);
             Runner.SetPlayerObject(playerRef, netObj);
             _playerAvatars[playerRef] = netObj;
+
+            i++;
             
             foreach (var kvp in _playerAvatars)
             {
