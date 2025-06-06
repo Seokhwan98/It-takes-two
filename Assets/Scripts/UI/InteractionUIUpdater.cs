@@ -46,7 +46,7 @@ public class InteractionUIUpdater : MonoBehaviour
     public void SetTriggerInteractionUIPositionWorld(Vector3 world)
     {
         var screenPos = camera.WorldToScreenPoint(world);
-        Debug.Log(camera.name);
+        // Debug.Log(camera.name);
         SetTriggerInteractionUIPositionScreen(screenPos);
     }
 
