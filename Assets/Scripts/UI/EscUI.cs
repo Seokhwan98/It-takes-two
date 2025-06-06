@@ -1,12 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.Collections;
+using System.Threading.Tasks;
 
 public class EscUI : UIScreen
 {
+    public static event Action OnMenuClosedByButton;
+    
     [SerializeField] private ConnectionData _lobbyConnectionData;
     
     public async void OnClickQuit()
     {
+        OnMenuClosedByButton?.Invoke();
         Defocus();
         
         Scene activeScene = SceneManager.GetActiveScene();
@@ -29,11 +35,11 @@ public class EscUI : UIScreen
         {
             await ConnectionManager.Instance.ConnectToRunner(_lobbyConnectionData);
         }
-
     }
 
     public void OnClickContinue()
     {
+        OnMenuClosedByButton?.Invoke();
         Defocus();
     }
 }
