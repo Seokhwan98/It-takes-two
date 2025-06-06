@@ -9,13 +9,22 @@ public class Switch : ATriggerInteractable
     public bool isPressed { get; private set; } = false;
 
     [SerializeField] private GameObject _switchUiObj;
-
+    [SerializeField] private bool isBig;
     public override bool IsInteractable(TriggerInteractor interactor) => !isPressed;
 
     private SwitchGroup _switchGroup;
     
     public override void Interact(TriggerInteractor interactor)
     {
+        if (isBig)
+        {
+            var playerMovement = interactor.GetComponent<PlayerMovement>();
+            var playerData = playerMovement.PlayerData;
+            if (playerData.PlayerScale != EPlayerScale.Big)
+            {
+                return;
+            }
+        }
         if (!isPressed && HasStateAuthority)
         {
             isPressed = true;
