@@ -11,7 +11,9 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
 
-    private GameObject _camInstance;
+    private GameObject _vcamInstance;
+    private Camera _cam;
+
     private CinemachineOrbitalFollow _myOrbitalFollow;
 
     private NetworkAnimatorController _animatorController;
@@ -29,8 +31,9 @@ public class PlayerMovement : NetworkBehaviour
 
     private PlayerData _playerData;
     public PlayerData PlayerData => _playerData;
-    
-    public GrabInteractor _grabInteractor;
+    public InteractionUIUpdater InteractionUIUpdater { get; private set; }
+
+    private GrabInteractor _grabInteractor;
 
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
@@ -67,8 +70,8 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (HasStateAuthority)
             {
-                _camInstance = Instantiate(freeLookPrefab);
-                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
+                _vcamInstance = Instantiate(freeLookPrefab);
+                var freeLook = _vcamInstance.GetComponent<CinemachineCamera>();
 
                 freeLook.Follow = cameraPivot;
                 freeLook.LookAt = cameraPivot;
@@ -78,8 +81,16 @@ public class PlayerMovement : NetworkBehaviour
         else if (Runner.GameMode is GameMode.Client or GameMode.Host)
         {
             if (currentScene == "RoomScene") return;
-            if (HasInputAuthority) TryBindMyCamera();
-            else TryBindOtherCamera();
+            if (HasInputAuthority)
+            {
+                TryBindMyCamera();
+                TryBindMyInteractionUIUpdater();
+            }
+            else
+            {
+                TryBindOtherCamera();
+                TryBindOtherInteractionUIUpdater();
+            }
         }
     }
 
@@ -101,8 +112,8 @@ public class PlayerMovement : NetworkBehaviour
         
         if (GetInput<MyNetworkInput>(out var input))
         {
-            Vector3 camForward = _camInstance.transform.forward;
-            Vector3 camRight = _camInstance.transform.right;
+            Vector3 camForward = _vcamInstance.transform.forward;
+            Vector3 camRight = _vcamInstance.transform.right;
             camForward.y = 0;
             camRight.y = 0;
             camForward.Normalize();
@@ -214,11 +225,12 @@ public class PlayerMovement : NetworkBehaviour
                 camSet.Camera.Follow = cameraPivot;
                 camSet.Camera.LookAt = cameraPivot;
 
-                _camInstance = camSet.Camera.gameObject;
+                _vcamInstance = camSet.Camera.gameObject;
+                _cam = camSet.MainCameraObj.GetComponent<Camera>();
 
-                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+                _myOrbitalFollow = _vcamInstance.GetComponent<CinemachineOrbitalFollow>();
 
-                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                var axisController = _vcamInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
                 {
                     axisController.enabled = false;
@@ -238,15 +250,44 @@ public class PlayerMovement : NetworkBehaviour
                 camSet.Camera.Follow = cameraPivot;
                 camSet.Camera.LookAt = cameraPivot;
                     
-                _camInstance = camSet.Camera.gameObject;
+                _vcamInstance = camSet.Camera.gameObject;
+                _cam = camSet.MainCameraObj.GetComponent<Camera>();
                     
-                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+                _myOrbitalFollow = _vcamInstance.GetComponent<CinemachineOrbitalFollow>();
                     
-                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                var axisController = _vcamInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
                 {
                     axisController.enabled = false;
                 }
+            }
+        }
+    }
+
+    public void TryBindMyInteractionUIUpdater()
+    {
+        if(HasInputAuthority)
+        {
+            var updaterIndex = (int)Object.InputAuthority.PlayerId;
+            var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(updaterIndex);
+            if (interactionUiUpdater != null)
+            {
+                InteractionUIUpdater = interactionUiUpdater;
+                InteractionUIUpdater.SetCamera(_cam);
+            }
+        }
+    }
+    
+    public void TryBindOtherInteractionUIUpdater()
+    {
+        if(!HasInputAuthority)
+        {
+            var updaterIndex = (int)Object.InputAuthority.PlayerId == 1 ? 1 : 2;
+            var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(updaterIndex);
+            if (interactionUiUpdater != null)
+            {
+                InteractionUIUpdater = interactionUiUpdater;
+                InteractionUIUpdater.SetCamera(_cam);
             }
         }
     }
