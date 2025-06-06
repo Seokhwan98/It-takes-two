@@ -136,6 +136,7 @@ public class PlayerMovement : NetworkBehaviour
                 _dir = Vector3.zero;
             }
             
+            Debug.Log($"{InterfaceManager.Instance.UIActiveCount}");
             if (isUIActive)
             {
                 _dir = Vector3.zero;

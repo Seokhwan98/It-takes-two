@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -11,7 +12,8 @@ public class InterfaceManager : MonoBehaviour
     public GameObject PauseUI;
 
     public bool isActive { get; set; }
-    [Networked] public int UIActiveCount { get; set; }
+    public List<PlayerEsc> uiActivePlayers = new();
+    public int UIActiveCount => uiActivePlayers.Count;
 
     private void Awake()
     {
