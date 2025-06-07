@@ -2614,9 +2614,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2571924800431820949, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
+    - target: {fileID: 2571924800431820949, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3245116727076389823, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
+    - target: {fileID: 3245116727076389823, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4294989060117611221, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
       propertyPath: m_Name
       value: Interaction UI Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613794148439335531, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8199595331176322075, guid: b747a9d7bd9944ee595086ce7b055c71, type: 3}
       propertyPath: m_Pivot.x
@@ -7546,6 +7566,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 599966531501117563, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3211797300031763588, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
       propertyPath: m_Name
       value: InformationBoard
@@ -7565,8 +7593,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1021897582}
   m_SourcePrefab: {fileID: 100100000, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+--- !u!1 &1021897581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+  m_PrefabInstance: {fileID: 1021897580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1021897582
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021897581}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4619099946965799825, guid: 2c983d1c7479e2044bcd9e503b9aa040, type: 3}
 --- !u!1001 &1041915415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11718,6 +11776,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 599966531501117563, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
+    - target: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3211797300031763588, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
       propertyPath: m_Name
       value: InformationBoard (1)
@@ -11737,8 +11803,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1708844696}
   m_SourcePrefab: {fileID: 100100000, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+--- !u!1 &1708844695 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3208076553909450509, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+  m_PrefabInstance: {fileID: 1708844694}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1708844696
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708844695}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4619099946965799825, guid: 2c983d1c7479e2044bcd9e503b9aa040, type: 3}
 --- !u!1001 &1738338066
 PrefabInstance:
   m_ObjectHideFlags: 0
