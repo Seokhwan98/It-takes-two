@@ -77,6 +77,8 @@ public class PlayerMovement : NetworkBehaviour
                 freeLook.Follow = cameraPivot;
                 freeLook.LookAt = cameraPivot;
                 _myInputAxisController = freeLook.GetComponent<CinemachineInputAxisController>();
+                
+                TryBindMyInteractionUIUpdaterInShared();
             }
         }
 
@@ -273,11 +275,22 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    public void TryBindMyInteractionUIUpdaterInShared()
+    {
+        var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(1);
+        if (interactionUiUpdater != null)
+        {
+            InteractionUIUpdater = interactionUiUpdater;
+            InteractionUIUpdater.SetCamera(Camera.main);
+        }
+    }
+
     public void TryBindMyInteractionUIUpdater()
     {
-        if(HasInputAuthority)
-        {
-            var updaterIndex = (int)Object.InputAuthority.PlayerId;
+        if (HasInputAuthority)
+        { 
+            var updaterIndex = Object.InputAuthority.PlayerId;
+            
             var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(updaterIndex);
             if (interactionUiUpdater != null)
             {
