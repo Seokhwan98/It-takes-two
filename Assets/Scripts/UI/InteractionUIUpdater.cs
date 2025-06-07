@@ -7,11 +7,17 @@ public class InteractionUIUpdater : MonoBehaviour
     [Header("UI Elements")] 
     [SerializeField] private GameObject _grabInteractionUI;
     [SerializeField] private GameObject _triggerInteractionUI;
-    [SerializeField] private GameObject _endInteractionUI;
+    [SerializeField] private GameObject _grabEndInteractionUI;
+    [SerializeField] private GameObject _triggerEndInteractionUI;
 
-    public void SetActiveEndInteractionUI(bool value)
+    public void SetActiveGrabEndInteractionUI(bool value)
     {
-        _endInteractionUI.SetActive(value);
+        _grabEndInteractionUI.SetActive(value);
+    }
+    
+    public void SetActiveTriggerEndInteractionUI(bool value)
+    {
+        _triggerEndInteractionUI.SetActive(value);
     }
 
     public void SetActiveGrabInteractionUI(bool value)
