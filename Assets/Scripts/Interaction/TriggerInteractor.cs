@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TriggerInteractor: Interactor
 {
-    [Networked] private ATriggerInteractable TriggerInteractable { get; set; }
-    
+    [Networked] private ATriggerInteractable HitInteractable { get; set; }
+    [Networked, OnChangedRender(nameof(OnChangeTriggerInteractable))] 
+    private ATriggerInteractable TriggerInteractable { get; set; }
     private PlayerMovement _playerMovement;
     
     private void Start()
@@ -13,13 +14,13 @@ public class TriggerInteractor: Interactor
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
-    public void Update()
+    private void Update()
     {
-        if (TriggerInteractable != null && TriggerInteractable.IsInteractable(this))
+        if (HitInteractable != null && HitInteractable.IsInteractable(this))
         {
             var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
             interactionUIUpdater?.SetActiveTriggerInteractionUI(true);
-            interactionUIUpdater?.SetTriggerInteractionUIPositionWorld(TriggerInteractable.transform.position);    
+            interactionUIUpdater?.SetTriggerInteractionUIPositionWorld(HitInteractable.transform.position);    
         }
         else
         {
@@ -36,14 +37,41 @@ public class TriggerInteractor: Interactor
         {
             if (data.IsDown(MyNetworkInput.BUTTON_INTERACT))
             {
-                TriggerInteractable?.TryInteract(this);
+                if (TriggerInteractable != null) return;
+                
+                var result = HitInteractable?.TryInteract(this) ?? false;
+
+                if (result)
+                {
+                    if (HitInteractable.isClosable)
+                    {
+                        TriggerInteractable = HitInteractable;
+                        Debug.Log("*");
+                        var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
+                        Debug.Log(interactionUIUpdater);
+                        interactionUIUpdater?.SetActiveTriggerEndInteractionUI(true);
+                    }
+                }
             }
 
             if (data.IsDown(MyNetworkInput.BUTTON_END_INTERACT))
             {
                 TriggerInteractable?.FinishInteract(this);
+
+                if (TriggerInteractable != null)
+                {
+                    TriggerInteractable = null;
+                    var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
+                    interactionUIUpdater?.SetActiveTriggerEndInteractionUI(false);
+                }
             }
         }
+    }
+
+    private void OnChangeTriggerInteractable()
+    {
+        var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
+        interactionUIUpdater?.SetActiveGrabEndInteractionUI(TriggerInteractable != null);
     }
     
     public void OnTriggerEnter(Collider other)
@@ -55,9 +83,9 @@ public class TriggerInteractor: Interactor
         
         if (interactable == null) return;
         
-        if (TriggerInteractable == null)
+        if (HitInteractable == null)
         {
-            TriggerInteractable = interactable;
+            HitInteractable = interactable;
         }
     }
 
@@ -70,9 +98,9 @@ public class TriggerInteractor: Interactor
     
         if (interactable == null) return;
         
-        if (TriggerInteractable == interactable)
+        if (HitInteractable == interactable)
         {
-            TriggerInteractable = null;
+            HitInteractable = null;
         }
     }
 }

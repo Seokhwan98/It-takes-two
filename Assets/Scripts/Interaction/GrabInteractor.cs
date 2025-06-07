@@ -28,12 +28,12 @@ public class GrabInteractor : Interactor
     {
         if (Grabbable != null)
         {
-            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(true);
+            _playerMovement.InteractionUIUpdater?.SetActiveGrabEndInteractionUI(true);
             _playerMovement.InteractionUIUpdater?.SetActiveGrabInteractionUI(false);
         }
         else
         {
-            _playerMovement.InteractionUIUpdater?.SetActiveEndInteractionUI(false);
+            _playerMovement.InteractionUIUpdater?.SetActiveGrabEndInteractionUI(false);
             if (hitGrabbable != null)
             {
                 _playerMovement.InteractionUIUpdater?.SetActiveGrabInteractionUI(true);
@@ -95,7 +95,7 @@ public class GrabInteractor : Interactor
     {
         _animatorController.RPC_SetBool(Constant.IsGrabbingHash, Grabbable);
         var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
-        interactionUIUpdater.SetActiveEndInteractionUI(Grabbable);
+        interactionUIUpdater.SetActiveGrabEndInteractionUI(Grabbable);
     }
 
     private void OnDrawGizmosSelected()

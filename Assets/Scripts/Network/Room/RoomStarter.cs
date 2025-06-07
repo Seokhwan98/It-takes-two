@@ -34,6 +34,7 @@ public class RoomStarter : NetworkBehaviour {
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ComponentDisabled(NetworkObject playerObject)
     {
+        Debug.Log("55");
         playerObject.GetComponent<PlayerMovement>().enabled = false;
         playerObject.GetComponent<KCC>().enabled = false;
     }

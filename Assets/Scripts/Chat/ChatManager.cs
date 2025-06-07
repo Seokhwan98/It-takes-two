@@ -49,6 +49,7 @@ public class ChatManager : NetworkBehaviour
                 isInputFocused = true;
                 
                 _chatUI.Focus();
+                _chatUI.StopDefocusCoroutine();
                 _chatUI.SetBackgroundAlpha(0.5f);
                 inputField.gameObject.SetActive(true);
                 inputField.ActivateInputField();
