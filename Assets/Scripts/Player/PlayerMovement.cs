@@ -15,6 +15,7 @@ public class PlayerMovement : NetworkBehaviour
     private Camera _cam;
 
     private CinemachineOrbitalFollow _myOrbitalFollow;
+    private CinemachineInputAxisController _myInputAxisController;
 
     private NetworkAnimatorController _animatorController;
 
@@ -75,6 +76,7 @@ public class PlayerMovement : NetworkBehaviour
 
                 freeLook.Follow = cameraPivot;
                 freeLook.LookAt = cameraPivot;
+                _myInputAxisController = freeLook.GetComponent<CinemachineInputAxisController>();
             }
         }
 
@@ -125,11 +127,6 @@ public class PlayerMovement : NetworkBehaviour
             else if (input.IsDown(MyNetworkInput.BUTTON_BACKWARD)) _dir -= camForward;
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
-            
-            NetworkYaw -= input.LookYaw * camSpeed;
-            NetworkPitch += input.LookPitch * camSpeed;
-                
-            NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
 
             if (_grabInteractor?.Grabbable != null && _grabInteractor?.Grabbable?.IsCollide(_dir) == true)
             {
@@ -138,9 +135,21 @@ public class PlayerMovement : NetworkBehaviour
             
             if (isUIActive)
             {
+                if (_myInputAxisController != null) _myInputAxisController.enabled = false;
                 _dir = Vector3.zero;
+                input.LookYaw = 0;
+                input.LookPitch = 0;
+            }
+            else
+            {
+                if (_myInputAxisController != null) _myInputAxisController.enabled = true;
             }
                 
+            NetworkYaw -= input.LookYaw * camSpeed;
+            NetworkPitch += input.LookPitch * camSpeed;
+            
+            NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
+            
             _cc.SetInputDirection(_dir.normalized);
 
             if (_grabInteractor?.Grabbable == null && _dir.sqrMagnitude > 0.001f)
