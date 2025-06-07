@@ -1787,8 +1787,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: EscUI, Assembly-CSharp
+      - m_Target: {fileID: 492867819}
+        m_TargetAssemblyTypeName: ClearUI, Assembly-CSharp
         m_MethodName: OnClickQuit
         m_Mode: 1
         m_Arguments:
