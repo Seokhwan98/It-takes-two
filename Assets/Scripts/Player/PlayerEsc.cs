@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using Fusion;
 using UnityEngine;
 
@@ -18,6 +17,9 @@ public class PlayerEsc : NetworkBehaviour
         EscUI.OnMenuClosedByButton -= CloseMenuByEvent;
         if (_pauseUI.activeSelf)
             _pauseUI.SetActive(false);
+
+        if (InterfaceManager.Instance.uiActivePlayers.Contains(this))
+            InterfaceManager.Instance.uiActivePlayers.Remove(this);
     }
     
     private void CloseMenuByEvent()
@@ -49,7 +51,10 @@ public class PlayerEsc : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     private void RPC_TogglePauseMenus(bool open)
     {
-        InterfaceManager.Instance.UIActiveCount += open ? 1 : -1;
+        if (open)
+            InterfaceManager.Instance.uiActivePlayers.Add(this);
+        else
+            InterfaceManager.Instance.uiActivePlayers.Remove(this);
         
         if (Object.HasInputAuthority)
         {
