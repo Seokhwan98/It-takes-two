@@ -2956,7 +2956,9 @@ PrefabInstance:
       value: shared_social_hub
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5094502080811748783, guid: 9d8327ce3d0447b4c9e8f3e57d8800b2, type: 3}
+    - {fileID: 870385417915820412, guid: 9d8327ce3d0447b4c9e8f3e57d8800b2, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d8327ce3d0447b4c9e8f3e57d8800b2, type: 3}
