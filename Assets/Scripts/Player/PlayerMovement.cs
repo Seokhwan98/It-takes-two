@@ -133,7 +133,6 @@ public class PlayerMovement : NetworkBehaviour
                 _dir = Vector3.zero;
             }
             
-            Debug.Log($"{InterfaceManager.Instance.UIActiveCount}");
             if (isUIActive)
             {
                 if (_myInputAxisController != null) _myInputAxisController.enabled = false;

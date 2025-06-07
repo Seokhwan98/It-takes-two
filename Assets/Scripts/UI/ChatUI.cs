@@ -31,18 +31,22 @@ public class ChatUI : UIScreen
         {
             sv.verticalNormalizedPosition = 0f;
         }
+
+
+        if (ChatManager.Instance.isInputFocused)
+            return;
+        
+        StopDefocusCoroutine();
+        _defocusCoroutine = StartCoroutine(DefocusProcess());
     }
     
-    
-    public override void Focus()
+    public void StopDefocusCoroutine()
     {
-        base.Focus();
-        
         if (_defocusCoroutine != null)
         {
             StopCoroutine(_defocusCoroutine);
+            _defocusCoroutine = null;
         }
-        _defocusCoroutine = StartCoroutine(DefocusProcess());
     }
     
     public void DefocusImmediate()
