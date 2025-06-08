@@ -37,6 +37,7 @@ public class ChatManager : NetworkBehaviour
             isInputFocused = false;
             inputField.gameObject.SetActive(false);
             inputField.DeactivateInputField();
+            _chatUI.DefocusImmediate();
         });
     }
     
