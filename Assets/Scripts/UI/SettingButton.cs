@@ -14,12 +14,18 @@ public class SettingButton : MonoBehaviour
     
     private void OnEnable()
     {
-        button.onClick.AddListener(OnClick);
+        StartCoroutine(AddListenerSequence());
     }
 
     private void OnDisable()
     {
         button.onClick.RemoveAllListeners();
+    }
+
+    private IEnumerator AddListenerSequence()
+    {
+        yield return new WaitUntil(() => InterfaceManager.Instance.SettingUI != null);
+        button.onClick.AddListener(OnClick);
     }
 
     private void OnClick()

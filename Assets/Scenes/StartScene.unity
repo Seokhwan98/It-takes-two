@@ -4466,10 +4466,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2957110346991776976, guid: 5b26106d2ae844727b598bcca1b32bbb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 633736597}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b26106d2ae844727b598bcca1b32bbb, type: 3}
 --- !u!1 &633736592 stripped
 GameObject:
@@ -4486,18 +4483,6 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 6856682439373053529, guid: 5b26106d2ae844727b598bcca1b32bbb, type: 3}
   m_PrefabInstance: {fileID: 633736591}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &633736597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633736592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdaee37c981a4c4b96e8822db3dd68cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &644580912
 GameObject:
   m_ObjectHideFlags: 0
@@ -6782,7 +6767,7 @@ MonoBehaviour:
   EscUI: {fileID: 4491913217800676183}
   ClearUI: {fileID: 492867819}
   PauseUI: {fileID: 3617646538545906712}
-  SettingUI: {fileID: 0}
+  SettingUI: {fileID: 633736592}
   uiActivePlayers: []
 --- !u!1001 &1001563942
 PrefabInstance:
