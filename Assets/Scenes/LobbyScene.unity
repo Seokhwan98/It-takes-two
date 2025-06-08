@@ -6153,6 +6153,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8937067155576581193, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
+      propertyPath: Flags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937067155576581193, guid: 65e8969ca530448bab5689d4c05842a8, type: 3}
       propertyPath: SortKey
       value: 1929858708
       objectReference: {fileID: 0}
@@ -9872,7 +9876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1792412334
   ObjectInterest: 1
-  Flags: 262145
+  Flags: 1
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1816975315}
