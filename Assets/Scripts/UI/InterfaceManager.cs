@@ -9,6 +9,7 @@ public class InterfaceManager : MonoBehaviour
     public GameObject EscUI;
     public ClearUI ClearUI;
     public GameObject PauseUI;
+    public GameObject SettingUI;
 
     public bool isActive { get; set; }
     public List<PlayerEsc> uiActivePlayers = new();
