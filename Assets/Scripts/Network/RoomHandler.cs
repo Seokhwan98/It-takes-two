@@ -10,9 +10,14 @@ public class RoomHandler : NetworkBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI _titleText;
+    [SerializeField] private Image _titleImage;
     [SerializeField] private Button _startButton;
     [SerializeField] private TextMeshProUGUI _startButtonText;
     [SerializeField] private TextMeshProUGUI _clientStatusText;
+    
+    [Header("Images")]
+    [SerializeField] private Sprite game1_Image;
+    [SerializeField] private Sprite game2_Image;
     
     [Networked, Capacity(2)]
     private NetworkDictionary<PlayerRef, bool> _ready =>
@@ -25,9 +30,11 @@ public class RoomHandler : NetworkBehaviour
     public override void Spawned()
     {
         _startButton.onClick.AddListener(OnClickMain);
-        _titleText.text = _data.ID == ConnectionData.ConnectionID.FirstGame
-            ? "Game1"
-            : "Game2";
+        
+        bool isGame1 = Runner.name == "FirstGame";
+        
+        _titleText.text = isGame1 ? "Roll Together" : "Plat Jump";
+        _titleImage.sprite = isGame1 ? game1_Image : game2_Image;
 
         UpdateButtonUI(force: true);
     }

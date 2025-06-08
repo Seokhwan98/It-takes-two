@@ -16,14 +16,17 @@ public class RoomStarter : NetworkBehaviour {
     public void AutoHostOrClientSpawn()
     {
         bool isHost = Runner.SessionInfo.PlayerCount == 1;
-        Vector3 SpawnPoint = isHost ? _spawnPointA.position : _spawnPointB.position;
+        var spawnPoint = isHost ? _spawnPointA : _spawnPointB;
+        var spawnPosition = spawnPoint.position;
+        var spawnRotation = spawnPoint.rotation;
         
         foreach (PlayerRef playerRef in Runner.ActivePlayers)
         {
             if (Runner.SessionInfo.PlayerCount == 2 && playerRef == Runner.LocalPlayer)
                 continue;
             
-            var playerObject = Runner.Spawn(_playerPrefab, SpawnPoint, inputAuthority: playerRef);
+            var playerObject = Runner.Spawn(_playerPrefab, spawnPosition, spawnRotation, inputAuthority: playerRef);
+            
             RPC_ComponentDisabled(playerObject);
         }
     }
@@ -31,6 +34,7 @@ public class RoomStarter : NetworkBehaviour {
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ComponentDisabled(NetworkObject playerObject)
     {
+        Debug.Log("55");
         playerObject.GetComponent<PlayerMovement>().enabled = false;
         playerObject.GetComponent<KCC>().enabled = false;
     }

@@ -591,7 +591,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_text
-      value: "<sprite name=\"Q\"> \uB2EB\uAE30"
+      value: <sprite name="Q">  Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 5885456443816912908, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_Name
@@ -706,7 +714,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_text
-      value: "<sprite name=\"Q\"> \uB2EB\uAE30"
+      value: <sprite name="Q">  Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 5885456443816912908, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_Name
@@ -932,7 +948,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_text
-      value: "<sprite name=\"Q\"> \uB2EB\uAE30"
+      value: <sprite name="Q">  Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885456443816912908, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_Name
@@ -1269,8 +1301,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_text
-      value: "<sprite name=\"Q\"> \uB2EB\uAE30"
+      value: <sprite name="Q">  Quit
       objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278254983283152113, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 7374927986402738804, guid: c1482dbce654844b9ba1c753cbea5d80, type: 2}
     - target: {fileID: 5885456443816912908, guid: 73d3f5301bbef4278b3f22272b5a8f80, type: 3}
       propertyPath: m_Name
       value: GrabEndInteractionUI
