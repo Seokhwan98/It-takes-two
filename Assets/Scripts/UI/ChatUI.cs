@@ -25,6 +25,7 @@ public class ChatUI : UIScreen
         
         Canvas.ForceUpdateCanvases();
         Focus();
+        InterfaceManager.Instance.MouseDisable();
         
         bool isRecent = sv.verticalNormalizedPosition < 3f;
         if (isRecent)
