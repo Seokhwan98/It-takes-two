@@ -92,6 +92,8 @@ public class ConnectionManager : MonoBehaviour
             connection.Callback.ActionOnPlayerJoined += OnGamePlayerJoined;
             connection.Callback.ActionOnPlayerLeft += OnGamePlayerLeft;
         }
+        connection.Callback.ActionOnSceneLoadDone += OnSceneLoadDone;
+        connection.Callback.ActionOnSceneLoadStart += OnSceneLoadStart;
 
         if (connection.IsRunning)
         {
@@ -180,5 +182,16 @@ public class ConnectionManager : MonoBehaviour
             Debug.Log("모든 플레이어가 나갔습니다. 게임을 종료합니다.");
             _ = runner.Shutdown(true, ShutdownReason.DisconnectedByPluginLogic);
         }
+    }
+
+    private void OnSceneLoadDone(NetworkRunner runner)
+    {
+        var sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        AudioManager.Instance.PlayBGM((BGMType)sceneIndex);
+    }
+    
+    private void OnSceneLoadStart(NetworkRunner runner)
+    {
+        AudioManager.Instance.StopBGM();
     }
 }

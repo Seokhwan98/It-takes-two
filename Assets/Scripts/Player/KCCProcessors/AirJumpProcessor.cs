@@ -33,19 +33,11 @@ public class AirJumpProcessor : KCCProcessor, ISetDynamicVelocity
         fixedData.DynamicVelocity = Vector3.zero;
         fixedData.JumpImpulse = jumpImpulse;
         playerData.ApplyAirJump();
-        ApplyJumpAnimation(kcc);
-    }
-
-    private void ApplyJumpAnimation(KCC kcc)
-    {
-        var animatorController = kcc.GetComponent<NetworkAnimatorController>();
-        animatorController.RPC_SetTrigger(Constant.JumpHash);
     }
     
     private void SuppressOtherSameTypeProcessors(KCC kcc)
     {
         kcc.SuppressProcessors<WallProcessor>();
-        
     }
 
     private void SuppressOtherJumpProcessors(KCC kcc)
