@@ -37,14 +37,14 @@ public class TriggerInteractor: Interactor
         {
             if (data.IsDown(MyNetworkInput.BUTTON_INTERACT))
             {
-                if (TriggerInteractable != null) return;
-                
                 var result = HitInteractable?.TryInteract(this) ?? false;
 
                 if (result)
                 {
                     if (HitInteractable.isClosable)
                     {
+                        TriggerInteractable?.FinishInteract(this);
+
                         TriggerInteractable = HitInteractable;
                         Debug.Log("*");
                         var interactionUIUpdater = _playerMovement.InteractionUIUpdater;
