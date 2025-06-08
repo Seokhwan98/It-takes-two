@@ -8,55 +8,74 @@ public class ChatUI : UIScreen
     public TMP_InputField inputField;
     [SerializeField] private RectTransform content;
     [SerializeField] private GameObject messagePrefab;
+    [SerializeField] private ScrollRect sv;
     
     private Coroutine _defocusCoroutine;
+
+    private void Awake()
+    {
+        Canvas.ForceUpdateCanvases();
+    }
 
     public void AddMessage(string text, bool isLocal)
     {
         var go = Instantiate(messagePrefab, content);
         var tmp = go.GetComponentInChildren<TMP_Text>();
         tmp.text = text;
-
-        var rt = go.GetComponent<RectTransform>();
-
-        if (isLocal)
-        {
-            rt.anchorMin = new Vector2(0f, rt.anchorMin.y);
-            rt.anchorMax = new Vector2(0f, rt.anchorMax.y);
-            rt.pivot     = new Vector2(0f, rt.pivot.y);
-
-            tmp.alignment = TextAlignmentOptions.Left;
-            tmp.margin = new Vector4(0f, 0f, 200f, 0f);
-        }
-        else
-        {
-            rt.anchorMin = new Vector2(1f, rt.anchorMin.y);
-            rt.anchorMax = new Vector2(1f, rt.anchorMax.y);
-            rt.pivot     = new Vector2(1f, rt.pivot.y);
-
-            tmp.alignment = TextAlignmentOptions.Right;
-            tmp.margin = new Vector4(200f, 0f, 0f, 0f);
-        }
         
         Canvas.ForceUpdateCanvases();
         Focus();
-    }
-
-    
-    public override void Focus()
-    {
-        base.Focus();
         
+        bool isRecent = sv.verticalNormalizedPosition < 3f;
+        if (isRecent)
+        {
+            sv.verticalNormalizedPosition = 0f;
+        }
+
+
+        if (ChatManager.Instance.isInputFocused)
+            return;
+        
+        StopDefocusCoroutine();
+        _defocusCoroutine = StartCoroutine(DefocusProcess());
+    }
+    
+    public void StopDefocusCoroutine()
+    {
         if (_defocusCoroutine != null)
         {
             StopCoroutine(_defocusCoroutine);
+            _defocusCoroutine = null;
         }
-        _defocusCoroutine = StartCoroutine(DefocusProcess());
+    }
+    
+    public void DefocusImmediate()
+    {
+        if (_defocusCoroutine != null)
+        {
+            StopCoroutine(_defocusCoroutine);
+            _defocusCoroutine = null;
+        }
+        
+        SetBackgroundAlpha(0f);
+        Defocus();
     }
     
     private IEnumerator DefocusProcess()
     {
         yield return new WaitForSeconds(5f);
+        SetBackgroundAlpha(0f);
         Defocus();
+    }
+    
+    public void SetBackgroundAlpha(float alpha)
+    {
+        var image = sv.GetComponent<Image>();
+        if (image != null)
+        {
+            Color color = image.color;
+            color.a = alpha;
+            image.color = color;
+        }
     }
 }

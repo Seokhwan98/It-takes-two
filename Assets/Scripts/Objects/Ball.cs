@@ -1,4 +1,3 @@
-using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -26,8 +25,7 @@ public class Ball : Grabbable
             if (hit.collider.gameObject == this.gameObject) continue;
             minAngle = Mathf.Min(minAngle, Vector3.Angle(Vector3.up, hit.normal));
         }
-
-        Debug.Log(minAngle);
+        
         return minAngle < 120f;
     }
     

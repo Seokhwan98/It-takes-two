@@ -9,6 +9,8 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
     public Action<NetworkRunner, PlayerRef> ActionOnPlayerJoined;
     public Action<NetworkRunner, PlayerRef> ActionOnPlayerLeft;
     public Action<NetworkRunner, ShutdownReason> ActionOnShutdown;
+    public Action<NetworkRunner> ActionOnSceneLoadDone;
+    public Action<NetworkRunner> ActionOnSceneLoadStart;
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
@@ -103,6 +105,12 @@ public class ConnectionCallbacks : INetworkRunnerCallbacks {
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
 
-    public void OnSceneLoadDone(NetworkRunner runner) {}
-    public void OnSceneLoadStart(NetworkRunner runner) {}
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        ActionOnSceneLoadDone?.Invoke(runner);
+    }
+    public void OnSceneLoadStart(NetworkRunner runner)
+    {
+        ActionOnSceneLoadStart?.Invoke(runner);
+    }
 }

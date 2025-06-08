@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -8,6 +7,13 @@ public class InterfaceManager : MonoBehaviour
     
     public GateUI GateUI;
     public GameObject EscUI;
+    public ClearUI ClearUI;
+    public GameObject PauseUI;
+    public GameObject SettingUI;
+
+    public bool isActive { get; set; }
+    public List<PlayerEsc> uiActivePlayers = new();
+    public int UIActiveCount => uiActivePlayers.Count;
 
     private void Awake()
     {
@@ -31,16 +37,19 @@ public class InterfaceManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        isActive = true;
     }
     
     public void MouseDisable()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        isActive = false;
     }
     
     public void ClearInterface()
     {
+        if (UIScreen.activeScreen == null) return;
         UIScreen.activeScreen.Defocus();
     }
 }

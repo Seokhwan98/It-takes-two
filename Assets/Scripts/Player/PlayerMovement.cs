@@ -11,12 +11,13 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private GameObject freeLookPrefab;
     [SerializeField] private Transform cameraPivot;
 
-    private GameObject _camInstance;
-    private CinemachineOrbitalFollow _myOrbitalFollow;
+    private GameObject _vcamInstance;
+    private Camera _cam;
 
-    private Animator _animator;
-    private bool _wasGrounded = true;
-    private bool _wasWall = false;
+    private CinemachineOrbitalFollow _myOrbitalFollow;
+    private CinemachineInputAxisController _myInputAxisController;
+
+    private NetworkAnimatorController _animatorController;
 
     private KCC _cc;
     private Vector3 _dir;
@@ -27,21 +28,36 @@ public class PlayerMovement : NetworkBehaviour
     private float smoothSpeed = 15f;
 
     [Networked] public float NetworkYaw { get; set; }
-
     [Networked] public float NetworkPitch { get; set; }
 
     private PlayerData _playerData;
     public PlayerData PlayerData => _playerData;
+    public InteractionUIUpdater InteractionUIUpdater { get; private set; }
+
+    private GrabInteractor _grabInteractor;
 
     [Networked] private TickTimer _moveTimer { get; set; }
     [Networked] private TickTimer _jumpTimer { get; set; }
+    
+    #region Animation Values
+    [Networked, OnChangedRender(nameof(UpdateSpeedAnim))] private float speed { get; set; }
+    [Networked, OnChangedRender(nameof(UpdateSpeedAnim))] private float speedY { get; set; }
+    #endregion
 
     private Action _playJumpTimer;
+
+    private bool isUIActiveInGame => Runner.GameMode != GameMode.Shared 
+                               && (InterfaceManager.Instance.isActive || InterfaceManager.Instance.UIActiveCount >= 1);
+    private bool isLocalUIActive => Runner.GameMode == GameMode.Shared 
+                                    && (InterfaceManager.Instance.isActive || ChatManager.Instance.isInputFocused);
+    
+    private bool isUIActive => isUIActiveInGame || isLocalUIActive;
 
     public override void Spawned()
     {
         _cc = GetComponent<KCC>();
-        _animator = GetComponent<Animator>();
+        _grabInteractor = GetComponent<GrabInteractor>();
+        _animatorController = GetComponent<NetworkAnimatorController>();
 
         string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
@@ -55,19 +71,30 @@ public class PlayerMovement : NetworkBehaviour
         {
             if (HasStateAuthority)
             {
-                _camInstance = Instantiate(freeLookPrefab);
-                var freeLook = _camInstance.GetComponent<CinemachineCamera>();
+                _vcamInstance = Instantiate(freeLookPrefab);
+                var freeLook = _vcamInstance.GetComponent<CinemachineCamera>();
 
                 freeLook.Follow = cameraPivot;
                 freeLook.LookAt = cameraPivot;
+                _myInputAxisController = freeLook.GetComponent<CinemachineInputAxisController>();
+                
+                TryBindMyInteractionUIUpdaterInShared();
             }
         }
 
         else if (Runner.GameMode is GameMode.Client or GameMode.Host)
         {
             if (currentScene == "RoomScene") return;
-            if (HasInputAuthority) TryBindMyCamera();
-            else TryBindOtherCamera();
+            if (HasInputAuthority)
+            {
+                TryBindMyCamera();
+                TryBindMyInteractionUIUpdater();
+            }
+            else
+            {
+                TryBindOtherCamera();
+                TryBindOtherInteractionUIUpdater();
+            }
         }
     }
 
@@ -76,14 +103,9 @@ public class PlayerMovement : NetworkBehaviour
         _playerData.JumpTrigger.OnShot -= _playJumpTimer;
     }
 
-    private void Update()
-    {   
-        Debug.LogWarning($"IsGrounded => {_cc.Data.IsGrounded} | Velocity => {_cc.Data.RealVelocity}");
-    }
-
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasStateAuthority) return;
+        if (IsProxy) return;
         
         _playerData.ReleaseAllTrigger();
         
@@ -94,8 +116,8 @@ public class PlayerMovement : NetworkBehaviour
         
         if (GetInput<MyNetworkInput>(out var input))
         {
-            Vector3 camForward = _camInstance.transform.forward;
-            Vector3 camRight = _camInstance.transform.right;
+            Vector3 camForward = _vcamInstance.transform.forward;
+            Vector3 camRight = _vcamInstance.transform.right;
             camForward.y = 0;
             camRight.y = 0;
             camForward.Normalize();
@@ -107,23 +129,32 @@ public class PlayerMovement : NetworkBehaviour
             else if (input.IsDown(MyNetworkInput.BUTTON_BACKWARD)) _dir -= camForward;
             if (input.IsDown(MyNetworkInput.BUTTON_RIGHT)) _dir += camRight;
             else if (input.IsDown(MyNetworkInput.BUTTON_LEFT)) _dir -= camRight;
-            
-            if (HasStateAuthority)
-            {
-                NetworkYaw -= input.LookYaw * camSpeed;
-                NetworkPitch += input.LookPitch * camSpeed;
-                
-                NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
-            }
 
-            if (_playerData.Grabbable != null && _playerData.Grabbable.IsCollide(_dir))
+            if (_grabInteractor?.Grabbable != null && _grabInteractor?.Grabbable?.IsCollide(_dir) == true)
             {
                 _dir = Vector3.zero;
             }
+            
+            if (isUIActive)
+            {
+                if (_myInputAxisController != null) _myInputAxisController.enabled = false;
+                _dir = Vector3.zero;
+                input.LookYaw = 0;
+                input.LookPitch = 0;
+            }
+            else
+            {
+                if (_myInputAxisController != null) _myInputAxisController.enabled = true;
+            }
                 
+            NetworkYaw -= input.LookYaw * camSpeed;
+            NetworkPitch += input.LookPitch * camSpeed;
+            
+            NetworkYaw = Mathf.Clamp(NetworkYaw, -10f, 45f);
+            
             _cc.SetInputDirection(_dir.normalized);
 
-            if (_playerData.Grabbable == null && _dir.sqrMagnitude > 0.001f)
+            if (_grabInteractor?.Grabbable == null && _dir.sqrMagnitude > 0.001f)
             {
                 Quaternion rot = Quaternion.LookRotation(_dir);
                 _cc.SetLookRotation(rot);
@@ -134,7 +165,7 @@ public class PlayerMovement : NetworkBehaviour
                 _playerData.Running = input.IsDown(MyNetworkInput.BUTTON_RUN);
             }
 
-            if (_playerData.Grabbable == null)
+            if (_grabInteractor?.Grabbable == null && !isUIActive)
             {
                 if (_canJump && input.IsDown(MyNetworkInput.BUTTON_JUMP))
                 {
@@ -157,7 +188,10 @@ public class PlayerMovement : NetworkBehaviour
     
     public override void Render()
     {
-        UpdateAnimator();
+        if (HasStateAuthority)
+        {
+            UpdateAnimator();    
+        }
         
         if (_myOrbitalFollow == null) return;
         smoothYaw = Mathf.Lerp(smoothYaw, NetworkYaw, Time.deltaTime * smoothSpeed);
@@ -170,26 +204,23 @@ public class PlayerMovement : NetworkBehaviour
     private void UpdateAnimator()
     {
         Vector3 moveSpeed = _cc.Data.RealVelocity;
+        speedY = moveSpeed.y; 
         moveSpeed = new Vector3(moveSpeed.x, 0, moveSpeed.z);
-        float speed = moveSpeed.magnitude / _cc.Data.KinematicSpeed / 2f;
         
-        _animator.SetFloat("speed", speed);
+        var environmentProcessor = _cc.GetProcessor<EnvironmentProcessor>();
+        if (!environmentProcessor) return;
 
-        bool isGrounded = _cc.Data.IsGrounded;
-        _animator.SetBool("isGrounded", isGrounded);
+        float normalSpeed = environmentProcessor.KinematicSpeed;
+        var runProcessor = _cc.GetProcessor<RunProcessor>();
+        float maxMoveSpeed = normalSpeed * (runProcessor != null ? runProcessor.RunMultiplier : 1);
         
-        bool isWall = _playerData.Wall;
-        _animator.SetBool("isWall", isWall);
-        
-        if ((!isGrounded && _wasGrounded) || (!isWall && _wasWall))
-        {
-            _animator.SetTrigger("jump");
-        }
-        _wasGrounded = isGrounded;
-        _wasWall = isWall;
-        
-        bool isGrabbing = _playerData.Grabbable != null;
-        _animator.SetBool("isGrabbing", isGrabbing);
+        speed = moveSpeed.magnitude / maxMoveSpeed;
+    }
+
+    private void UpdateSpeedAnim()
+    {
+        _animatorController.Animator.SetFloat(Constant.SpeedHash, speed);
+        _animatorController.Animator.SetFloat(Constant.SpeedYHash, speedY);
     }
     
     public void TryBindMyCamera()
@@ -205,11 +236,12 @@ public class PlayerMovement : NetworkBehaviour
                 camSet.Camera.Follow = cameraPivot;
                 camSet.Camera.LookAt = cameraPivot;
 
-                _camInstance = camSet.Camera.gameObject;
+                _vcamInstance = camSet.Camera.gameObject;
+                _cam = camSet.MainCameraObj.GetComponent<Camera>();
 
-                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+                _myOrbitalFollow = _vcamInstance.GetComponent<CinemachineOrbitalFollow>();
 
-                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                var axisController = _vcamInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
                 {
                     axisController.enabled = false;
@@ -229,15 +261,55 @@ public class PlayerMovement : NetworkBehaviour
                 camSet.Camera.Follow = cameraPivot;
                 camSet.Camera.LookAt = cameraPivot;
                     
-                _camInstance = camSet.Camera.gameObject;
+                _vcamInstance = camSet.Camera.gameObject;
+                _cam = camSet.MainCameraObj.GetComponent<Camera>();
                     
-                _myOrbitalFollow = _camInstance.GetComponent<CinemachineOrbitalFollow>();
+                _myOrbitalFollow = _vcamInstance.GetComponent<CinemachineOrbitalFollow>();
                     
-                var axisController = _camInstance.GetComponent<CinemachineInputAxisController>();
+                var axisController = _vcamInstance.GetComponent<CinemachineInputAxisController>();
                 if (axisController != null)
                 {
                     axisController.enabled = false;
                 }
+            }
+        }
+    }
+
+    public void TryBindMyInteractionUIUpdaterInShared()
+    {
+        var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(1);
+        if (interactionUiUpdater != null)
+        {
+            InteractionUIUpdater = interactionUiUpdater;
+            InteractionUIUpdater.SetCamera(Camera.main);
+        }
+    }
+
+    public void TryBindMyInteractionUIUpdater()
+    {
+        if (HasInputAuthority)
+        { 
+            var updaterIndex = Object.InputAuthority.PlayerId;
+            
+            var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(updaterIndex);
+            if (interactionUiUpdater != null)
+            {
+                InteractionUIUpdater = interactionUiUpdater;
+                InteractionUIUpdater.SetCamera(_cam);
+            }
+        }
+    }
+    
+    public void TryBindOtherInteractionUIUpdater()
+    {
+        if(!HasInputAuthority)
+        {
+            var updaterIndex = (int)Object.InputAuthority.PlayerId == 1 ? 1 : 2;
+            var interactionUiUpdater = InteractionUIHolder.Instance.GetInteractionUIUpdater(updaterIndex);
+            if (interactionUiUpdater != null)
+            {
+                InteractionUIUpdater = interactionUiUpdater;
+                InteractionUIUpdater.SetCamera(_cam);
             }
         }
     }

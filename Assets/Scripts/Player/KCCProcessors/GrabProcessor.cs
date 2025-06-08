@@ -1,17 +1,18 @@
 using Fusion.Addons.KCC;
 
-public class GrabProcessor : KCCProcessor, ISetKinematicVelocity
+public class GrabProcessor : KCCProcessor, ISetKinematicSpeed
 {
-    private readonly float DefaultPriority = -5000;
+    private readonly float DefaultPriority = default;
     public override float GetPriority(KCC kcc) => DefaultPriority;
     
-    public void Execute(ISetKinematicVelocity stage, KCC kcc, KCCData data)
+    public void Execute(ISetKinematicSpeed stage, KCC kcc, KCCData data)
     {
-        var playerData = kcc.GetComponent<PlayerMovement>().PlayerData;
-
-        if (playerData.Grabbable != null)
+        var grabInteractor = kcc.GetComponent<GrabInteractor>();
+        var fixedData = kcc.FixedData;
+        
+        if (grabInteractor?.Grabbable != null)
         {
-            data.KinematicVelocity *= playerData.Grabbable.SpeedMultiplier;
+            fixedData.KinematicSpeed *= grabInteractor.Grabbable.SpeedMultiplier;
         }
     }
 }
